@@ -196,11 +196,11 @@ const ICON_PATHS={frequent:'<path d="M6 3h12v18l-6-3-6 3z"/><path d="M9 8h6M9 12
 const defaultState={budget:4800,categories:[{name:'Home',icon:'home',budget:1200},{name:'Car',icon:'car',budget:2000},{name:'Food',icon:'food',budget:1000},{name:'Marco',icon:'person',budget:200},{name:'Kylie',icon:'person',budget:200},{name:'Other',icon:'other',budget:200}],transactions:[{id:'t1',date:'2026-08-30',desc:'Rent',amount:-1200,cat:'Home'},{id:'t2',date:'2026-08-29',desc:'Grocery Shopping',amount:-123.45,cat:'Food'},{id:'t3',date:'2026-08-29',desc:'Gas Station',amount:-45,cat:'Car'},{id:'t4',date:'2026-08-28',desc:'Salary',amount:3500,cat:'Income'},{id:'t5',date:'2026-08-29',desc:'Netflix',amount:-15.99,cat:'Other'},{id:'t6',date:'2026-08-28',desc:'Coffee',amount:-4.5,cat:'Food'},{id:'t7',date:'2026-08-28',desc:'Freelance Work',amount:250,cat:'Income'},{id:'t8',date:'2026-08-27',desc:'Home Supplies',amount:-1320,cat:'Home'},{id:'t9',date:'2026-08-26',desc:'Car Service',amount:-255,cat:'Car'},{id:'t10',date:'2026-08-25',desc:'Marco Transfer',amount:-920,cat:'Marco'},{id:'t11',date:'2026-08-24',desc:'Kylie Expense',amount:-150,cat:'Kylie'},{id:'t12',date:'2026-08-23',desc:'Other Purchase',amount:-234.56,cat:'Other'},{id:'t13',date:'2026-08-22',desc:'Food & Dining',amount:-322.05,cat:'Food'}],archive:[],frequent:[{id:'r1',desc:'Monthly Rent',amount:1200,cat:'Home'}],recurring:[]};
 const totalBudget=()=>state?.categories?.reduce((sum,c)=>sum+(Number(c.budget)||0),0)||0;
 // Google Sheets sync: set your deployed Google Apps Script URL here.
-// Leave blank to keep the original browser-only localStorage behavior.
+// Google Sheets is the app's only persistent data source.
 const GOOGLE_SHEETS_URL=(window.GOOGLE_SHEETS_URL||'').trim();
 const GOOGLE_SHEETS_TOKEN=(window.GOOGLE_SHEETS_TOKEN||'').trim();
-let state=loadLocalFallback(),page='dashboard',sortCat='spent',sortTx='date',sortDir='desc',editingTxId=null,editingArchive=false,txAmount='',selectedTopCategory=null,editingFrequentId=null,editingRecurringId=null;
-let lastUpdatedAt=localStorage.getItem('pulse-budget-last-updated')||'';
+let state=structuredClone(defaultState),page='dashboard',sortCat='spent',sortTx='date',sortDir='desc',editingTxId=null,editingArchive=false,txAmount='',selectedTopCategory=null,editingFrequentId=null,editingRecurringId=null;
+let lastUpdatedAt='';
 let cloudReady=false,cloudSyncing=false;
 
 const money=n=>'$'+Math.abs(Number(n)||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -208,15 +208,12 @@ const ym=d=>{const x=new Date(d+'T12:00:00');return x.getFullYear()+'-'+String(x
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const currentYM=()=>ym(today());
 function id(){return 't_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
-function loadLocalFallback(){try{const saved=JSON.parse(localStorage.getItem('pulse-budget-v3'));return saved?migrate(saved):structuredClone(defaultState)}catch{return structuredClone(defaultState)}}
 function migrate(s){s.categories=(s.categories||[]).map(c=>({name:c.name,icon:ICONS.includes(c.icon)?c.icon:(c.icon==='⌂'?'home':c.icon==='♨'?'food':c.icon==='⌁'?'car':c.icon==='◇'?'bag':c.icon==='✚'?'person':c.icon==='♥'?'person':c.icon==='heart'?'person':c.icon==='❤'?'person':c.icon==='✈'?'plane':c.icon==='☕'?'gift':c.icon==='⚡'?'bolt':c.icon==='🎮'?'bolt':c.icon==='🛒'?'bag':c.icon==='🏠'?'home':c.icon==='🚗'?'car':c.icon==='💡'?'bolt':c.icon==='🎵'?'bolt':c.icon==='phone'?'other':c.icon==='briefcase'?'money':'home'),budget:Number(c.budget)||0}));s.transactions=(s.transactions||s.tx||[]).map(t=>({...t,id:t.id||id()}));s.archive=(s.archive||[]).map(t=>({...t,id:t.id||id()}));const legacyRecurring=Array.isArray(s.recurring)?s.recurring:[];s.frequent=(s.frequent||legacyRecurring.filter(r=>!r.frequency&&!r.startDate)).map(r=>({id:r.id||id(),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||''}));s.recurring=legacyRecurring.filter(r=>r.frequency||r.startDate).map(r=>({id:r.id||('rr_'+Date.now().toString(36)),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||'',frequency:r.frequency||'monthly',startDate:r.startDate||today()}));s.budget=s.categories.reduce((sum,c)=>sum+(Number(c.budget)||0),0);return s}
-function saveLocal(){state.budget=totalBudget();localStorage.setItem('pulse-budget-v3',JSON.stringify(state))}
-function markUpdated(){lastUpdatedAt=new Date().toISOString();localStorage.setItem('pulse-budget-last-updated',lastUpdatedAt)}
-function save(){state.budget=totalBudget();markUpdated();saveLocal();if(GOOGLE_SHEETS_URL)syncToGoogleSheets()}
-async function loadFromGoogleSheets(){if(!GOOGLE_SHEETS_URL)return false;try{const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Cloud load failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(data&&data.state){state=migrate(data.state);cloudReady=true;lastUpdatedAt=new Date().toISOString();localStorage.setItem('pulse-budget-last-updated',lastUpdatedAt);return true}state=structuredClone(defaultState);cloudReady=true;return true}catch(e){console.error('Google Sheets load failed:',e);cloudReady=false;state=loadLocalFallback();return false}}
-async function syncToGoogleSheets(){if(!GOOGLE_SHEETS_URL)return;cloudSyncing=true;try{const r=await fetch(GOOGLE_SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',token:GOOGLE_SHEETS_TOKEN,state})});if(!r.ok)throw new Error('Cloud save failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);cloudReady=true}catch(e){cloudReady=false;console.error('Google Sheets save failed:',e);saveLocal()}finally{cloudSyncing=false}}
-function archiveOldTransactions(){const cur=currentYM();const old=state.transactions.filter(t=>ym(t.date)!==cur);if(old.length){state.archive.push(...old.map(t=>({...t,archivedAt:t.archivedAt||new Date().toISOString()})));state.transactions=state.transactions.filter(t=>ym(t.date)===cur);saveLocal()}}
-archiveOldTransactions();
+function markUpdated(){lastUpdatedAt=new Date().toISOString()}
+async function save(){state.budget=totalBudget();markUpdated();if(GOOGLE_SHEETS_URL)return syncToGoogleSheets();console.error('Google Sheets is not configured; changes are not persisted.')}
+async function loadFromGoogleSheets(){if(!GOOGLE_SHEETS_URL)return false;try{const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Cloud load failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(data&&data.state){state=migrate(data.state);cloudReady=true;markUpdated();return true}state=structuredClone(defaultState);cloudReady=true;return true}catch(e){console.error('Google Sheets load failed:',e);cloudReady=false;return false}}
+async function syncToGoogleSheets(){if(!GOOGLE_SHEETS_URL)return;cloudSyncing=true;try{const r=await fetch(GOOGLE_SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',token:GOOGLE_SHEETS_TOKEN,state})});if(!r.ok)throw new Error('Cloud save failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);cloudReady=true}catch(e){cloudReady=false;console.error('Google Sheets save failed:',e)}finally{cloudSyncing=false}}
+function archiveOldTransactions(){const cur=currentYM();const old=state.transactions.filter(t=>ym(t.date)<cur);if(!old.length)return false;state.archive.push(...old.map(t=>({...t,archivedAt:t.archivedAt||new Date().toISOString()})));state.transactions=state.transactions.filter(t=>ym(t.date)>=cur);return true}
 function currentTransactions(){return state.transactions.filter(t=>ym(t.date)===currentYM())}
 function spentByCategory(){const map={};currentTransactions().forEach(t=>{if(t.amount<0)map[t.cat]=(map[t.cat]||0)+Math.abs(t.amount)});return map}
 function categoriesWithSpent(){const map=spentByCategory();return state.categories.map(c=>({...c,spent:map[c.name]||0}))}
@@ -230,7 +227,7 @@ function greetingForHour(hour){return hour<12?'Good Morning':hour<17?'Good After
 function currentMonthLabel(){return new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}
 function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}, Marlie 👋</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard"><div class="spark"></div><div class="hero-top"><div class="label">Remaining</div><div class="month-pill">${currentMonthLabel()}</div></div><div class="amount">${money(remaining)}</div><div class="hero-chart"><span></span><span></span><span></span><span></span><span></span></div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
 function budget(){const budget=totalBudget();return `<h1>Budget</h1><div class="sub">Manage your monthly budget</div><section class="hero hero-budget"><div class="hero-top"><div class="label">Total Budget</div></div><div class="amount">${money(budget)}</div><div class="budget-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><section class="card budget-card"><div class="cardhead"><h2>Categories</h2><button class="add-category-btn" id="addCategory">＋ Add Category</button></div>${catRows({swipe:true})}</section>`}
-function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=endAngle-startAngle>180?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
+function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6,total=endPct-startPct;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];if(total>=99.999){return `M 86 ${86-outer} A ${outer} ${outer} 0 1 1 85.999 ${86+outer} A ${outer} ${outer} 0 1 1 86 ${86-outer} M 86 ${86-inner} A ${inner} ${inner} 0 1 0 86.001 ${86+inner} A ${inner} ${inner} 0 1 0 86 ${86-inner} Z`;}const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=total>50?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
 function reportMonths(){const keys=new Set([currentYM(),...state.transactions.map(t=>ym(t.date)),...state.archive.map(t=>ym(t.date))]);return [...keys].filter(Boolean).sort((a,b)=>b.localeCompare(a));}
 function monthLabel(key){const [y,m]=key.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}
 function categories(){const spent=totalSpent();const arr=categoriesWithSpent().sort((a,b)=>b.spent-a.spent);const totalForDonut=Math.max(1,arr.reduce((n,c)=>n+c.spent,0));const palette=['#2c9b68','#f0a51c','#7047b7','#2d8ed8','#a9b3ad','#9d45a9','#e65a8d','#20a6a1'];let offset=0;const paths=arr.map((c,i)=>{const pct=c.spent/totalForDonut*100;const out=`<path class="donut-slice" d="${donutPath(offset,offset+pct)}" fill="${palette[i%palette.length]}" data-category-name="${escAttr(c.name)}" role="button" tabindex="0" aria-label="${escAttr(c.name)}: ${Math.round(pct)}%"/>`;offset+=pct;return out}).join('');const months=reportMonths();const selectedMonth=months[0]||currentYM();return `<div class="categories-page"><h1>Categories</h1><div class="sub">Track your spending by category</div><section class="card categories-card"><div class="donut"><svg viewBox="0 0 172 172" aria-label="Spending by category">${paths}</svg><div><small>Total Spent</small><b>${money(spent)}</b><span>This Month</span></div></div><div class="legend">${arr.map((c,i)=>{const color=palette[i%palette.length];const hex=color.replace('#','');const rgb=parseInt(hex.slice(0,2),16)+','+parseInt(hex.slice(2,4),16)+','+parseInt(hex.slice(4,6),16);return `<button type="button" class="category-legend-row category-clickable" data-category-name="${escAttr(c.name)}" style="--cat-color:${color};--cat-bg:rgba(${rgb},.08);--cat-border:rgba(${rgb},.18);--cat-icon-bg:rgba(${rgb},.14)"><span><i class="category-icon">${iconSVG(c.icon)}</i>${esc(c.name)}</span><b>${money(c.spent)}</b><small>${Math.round(c.spent/totalForDonut*100)}%</small></button>`}).join('')}</div></section><section class="card monthly-report-card"><div class="cardhead"><h2>Monthly Report</h2><span class="report-card-note">PDF</span></div><div class="report-row"><div class="report-field"><label for="reportMonth">Month</label><div class="report-select-wrap"><select id="reportMonth" class="report-month" aria-label="Report month">${months.map(m=>`<option value="${m}" ${m===selectedMonth?'selected':''}>${monthLabel(m)}</option>`).join('')}${months.length?'':'<option value="'+selectedMonth+'">'+monthLabel(selectedMonth)+'</option>'}</select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg></div></div><button type="button" class="report-download" id="downloadMonthlyReport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Download PDF</span></button></div><div class="report-status" id="reportStatus" aria-live="polite"></div></section></div>`}
@@ -247,7 +244,7 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&l
 function render(scrollTop=false){const content=page==='dashboard'?dashboard():page==='budget'?budget():page==='categories'?categories():page==='archive'?archivePage():page==='frequent'?frequentPage():transactions();document.getElementById('screen').innerHTML=`${page==='frequent'?'':`<div class="page-refresh"><div class="transactions-tools"><button class="refresh-btn" id="refreshTransactions" aria-label="Refresh data" title="Refresh data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v4h4"/><path d="M4 13a8 8 0 0 0 14.9 4M20 19v-4h-4"/></svg></button><span class="last-updated" id="lastUpdated">${lastUpdatedLabel()}</span></div></div>`}${content}`;document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));bind();if(scrollTop)window.scrollTo({top:0,behavior:'auto'})}
 let refreshInFlight=false;
 function refreshIsDue(){if(!GOOGLE_SHEETS_URL)return false;if(!lastUpdatedAt)return true;const t=Date.parse(lastUpdatedAt);return !Number.isFinite(t)||Date.now()-t>=5*60*1000}
-async function refreshFromEndpoint(silent=false){if(refreshInFlight)return false;refreshInFlight=true;const btn=document.getElementById('refreshTransactions');if(btn)btn.disabled=true;if(btn)btn.classList.add('loading');try{if(!GOOGLE_SHEETS_URL)throw new Error('No data endpoint is configured.');const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Refresh failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(!data||!data.state)throw new Error('Refresh returned no data.');state=migrate(data.state);cloudReady=true;markUpdated();if(generateRecurringTransactions())saveLocal();render(false);return true}catch(e){console.error('Refresh failed:',e);if(!silent)alert('Unable to refresh data. '+(e.message||'Please try again.'));return false}finally{refreshInFlight=false;const b=document.getElementById('refreshTransactions');if(b){b.disabled=false;b.classList.remove('loading')}}}
+async function refreshFromEndpoint(silent=false){if(refreshInFlight)return false;refreshInFlight=true;const btn=document.getElementById('refreshTransactions');if(btn)btn.disabled=true;if(btn)btn.classList.add('loading');try{if(!GOOGLE_SHEETS_URL)throw new Error('No data endpoint is configured.');const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Refresh failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(!data||!data.state)throw new Error('Refresh returned no data.');state=migrate(data.state);cloudReady=true;markUpdated();let changed=archiveOldTransactions();if(generateRecurringTransactions())changed=true;if(changed)await save();render(false);return true}catch(e){console.error('Refresh failed:',e);if(!silent)alert('Unable to refresh data. '+(e.message||'Please try again.'));return false}finally{refreshInFlight=false;const b=document.getElementById('refreshTransactions');if(b){b.disabled=false;b.classList.remove('loading')}}}
 async function goToPage(nextPage){page=nextPage;if(refreshIsDue()&&!document.querySelector('.modal.open')){const refreshed=await refreshFromEndpoint(true);if(refreshed)return}render(true)}
 function startAutoRefresh(){const check=()=>{if(document.visibilityState==='visible'&&refreshIsDue()&&!document.querySelector('.modal.open'))refreshFromEndpoint(true)};setInterval(check,30000);document.addEventListener('visibilitychange',check)}
 function transactionsForMonth(monthKey){return [...state.transactions,...state.archive].filter(t=>ym(t.date)===monthKey && Number(t.amount)<0).sort((a,b)=>b.date.localeCompare(a.date));}
@@ -269,8 +266,9 @@ function pdfPageHeader(label,eyebrow,title,subtitle){let c='';c+=pdfRect(0,744,6
 function pdfSectionTitle(y,title,subtitle){let c=pdfText(42,y,14,title,true);if(subtitle)c+=pdfText(42,y-16,8,subtitle);return c}
 function reportPdfBytes(monthKey){
  const d=reportData(monthKey),pages=[];
+ let c='';
  // Page 1 — executive summary
- let c=pdfPageHeader(d.label,'Monthly report','Executive summary',`Expense activity for ${d.label}.`);
+ c=pdfPageHeader(d.label,'Monthly report','Executive summary',`Expense activity for ${d.label}.`);
  const cards=[[42,572,250,66,'TOTAL SPEND',pdfMoney(d.total),`${d.txs.length} expense transaction${d.txs.length===1?'':'s'}`],[320,572,250,66,'BUDGET USAGE',d.budget?d.usage.toFixed(1)+'%':'N/A','Of planned category budgets'],[42,492,250,66,'REMAINING BUDGET',pdfMoney(d.remaining),d.remaining>=0?'Budget headroom':'Above planned budget'],[320,492,250,66,'PLANNED BUDGET',pdfMoney(d.budget),'Total category budgets']];
  cards.forEach(a=>{c+=pdfRect(a[0],a[1],a[2],a[3],[0.965,0.975,0.965],true,10);c+=pdfText(a[0]+14,a[1]+45,7,a[4],true);c+=pdfText(a[0]+14,a[1]+21,18,a[5],true);c+=pdfText(a[0]+14,a[1]+8,7,a[6])});
  c+=pdfSectionTitle(445,'Monthly overview','A concise summary of spending and budget position.');
@@ -282,15 +280,17 @@ function reportPdfBytes(monthKey){
  const insight=d.cats[0]?`${d.cats[0].name} is the largest spending category at ${pdfMoney(d.cats[0].spent)}, or ${d.total?(d.cats[0].spent/d.total*100).toFixed(1):'0.0'}% of total spending.`:'There is no spending to summarize for this month.';
  yy=112;for(const line of pdfWrapLines(insight,91)){c+=pdfText(42,yy,9,line);yy-=14}
  pages.push(c);
+
  // Page 2 — spending mix
  c=pdfPageHeader(d.label,'Spending mix','Where your money went','Category ranking and share of total spending.');
  c+=pdfSectionTitle(610,'Category ranking','Only expense transactions dated in the selected month are included.');
  let y=560;c+=pdfText(42,y,7,'CATEGORY',true)+pdfText(400,y,7,'SPEND',true)+pdfText(512,y,7,'SHARE',true);y-=16;
- const mix=d.cats.filter(x=>x.spent>0), maxMix=Math.max(1,...mix.map(x=>x.spent));
+ const mix=d.cats.filter(x=>x.spent>0),maxMix=Math.max(1,...mix.map(x=>x.spent));
  mix.forEach(cat=>{const share=d.total?cat.spent/d.total*100:0;c+=pdfLine(42,y-9,570,y-9);c+=pdfText(42,y,9,cat.name);c+=pdfRect(205,y-4,160,8,[0.90,0.94,0.92],false,4);c+=pdfRect(205,y-4,Math.max(4,160*cat.spent/maxMix),8,[0.145,0.541,0.376],false,4);c+=pdfText(400,y,9,pdfMoney(cat.spent));c+=pdfText(512,y,9,share.toFixed(1)+'%');y-=30});
- if(!mix)c+=pdfText(42,y,9,'No expense categories have spending in this month.');
+ if(!mix.length)c+=pdfText(42,y,9,'No expense categories have spending in this month.');
  y=Math.max(180,y-10);c+=pdfSectionTitle(y,'Summary');y-=34;const lead=mix.length?`${mix[0].name} is the largest category at ${pdfMoney(mix[0].spent)}, followed by ${mix[1]?mix[1].name:'no other category'}.`:'There is no spending to summarize for this month.';for(const line of pdfWrapLines(lead,91)){c+=pdfText(42,y,9,line);y-=14}
  pages.push(c);
+
  // Page 3 — budget performance
  c=pdfPageHeader(d.label,'Budget performance','Actual spending vs. budget','Category-level performance for the selected month.');
  c+=pdfSectionTitle(610,'Budget performance','Positive variance means budget remains available; negative variance means spending exceeded budget.');
@@ -299,26 +299,59 @@ function reportPdfBytes(monthKey){
  ty-=6;c+=pdfSectionTitle(ty,'Categories needing attention');ty-=30;
  if(d.over.length){d.over.slice(0,5).forEach(cat=>{const txt=`${cat.name}: ${pdfMoney(cat.spent)} spent vs. ${pdfMoney(cat.budget)} budget — ${pdfMoney(cat.spent-cat.budget)} over.`;c+=pdfRect(42,ty-8,528,26,[0.99,0.965,0.965],true,7);c+=pdfText(53,ty+1,8,txt);ty-=34})}else c+=pdfText(42,ty,9,'No category exceeded its budget this month.');
  pages.push(c);
- // Page 4 — daily trend
- c=pdfPageHeader(d.label,'Daily spending','Expense trend','Daily expense totals for the selected month.');
- c+=pdfSectionTitle(610,'Daily expense trend','Days with no recorded expenses are omitted from the plotted list.');
- const dayEntries=Object.entries(d.days).sort(([a],[b])=>a.localeCompare(b)), maxDay=Math.max(1,...dayEntries.map(x=>x[1]));
- if(dayEntries.length){let by=545;dayEntries.forEach(([date,val])=>{const w=Math.max(5,Math.round(val/maxDay*350));c+=pdfText(42,by,8,date.slice(5).replace('-','/'));c+=pdfRect(95,by-5,350,10,[0.91,0.94,0.92],false,5);c+=pdfRect(95,by-5,w,10,[0.145,0.541,0.376],false,5);c+=pdfText(462,by,8,pdfMoney(val));by-=25});}
- else c+=pdfText(42,545,9,'No expense activity was recorded in this month.');
- c+=pdfSectionTitle(280,'Key expense indicators');
- [[42,220,'Total spend',pdfMoney(d.total)],[320,220,'Average expense',pdfMoney(d.avg)],[42,154,'Largest single expense',d.largest?pdfMoney(Math.abs(d.largest.amount)):'$0.00'],[320,154,'Over-budget categories',String(d.over.length)]].forEach(a=>{c+=pdfRect(a[0],a[1],250,48,[0.985,0.988,0.985],true,9);c+=pdfText(a[0]+12,a[1]+29,7,a[2],true);c+=pdfText(a[0]+12,a[1]+10,13,a[3],true)});
+
+ // Page 4+ — daily trend, paginated so the indicators never overlap the chart.
+ const dayEntries=Object.entries(d.days).sort(([a],[b])=>a.localeCompare(b));
+ const dailyPerPage=16;
+ const dailyChunks=[];
+ for(let i=0;i<dayEntries.length;i+=dailyPerPage)dailyChunks.push(dayEntries.slice(i,i+dailyPerPage));
+ if(!dailyChunks.length)dailyChunks.push([]);
+ const maxDay=Math.max(1,...dayEntries.map(x=>x[1]));
+ dailyChunks.forEach((chunk,idx)=>{
+   c=pdfPageHeader(d.label,'Daily spending','Expense trend',`Daily expense totals for the selected month.${dailyChunks.length>1?' Page '+(idx+1)+' of '+dailyChunks.length+'.':''}`);
+   c+=pdfSectionTitle(610,'Daily expense trend','Days with no recorded expenses are omitted from the plotted list.');
+   if(chunk.length){
+     let by=545;
+     chunk.forEach(([date,val])=>{const w=Math.max(5,Math.round(val/maxDay*350));c+=pdfText(42,by,8,date.slice(5).replace('-','/'));c+=pdfRect(95,by-5,350,10,[0.91,0.94,0.92],false,5);c+=pdfRect(95,by-5,w,10,[0.145,0.541,0.376],false,5);c+=pdfText(462,by,8,pdfMoney(val));by-=25});
+   }else c+=pdfText(42,545,9,'No expense activity was recorded in this month.');
+   pages.push(c);
+ });
+
+ // Key indicators on their own page so they cannot cover daily trend rows.
+ c=pdfPageHeader(d.label,'Expense indicators','Key expense indicators','A compact view of the month’s main spending metrics.');
+ c+=pdfSectionTitle(610,'Key expense indicators','Summary metrics for the selected month.');
+ [[42,525,'Total spend',pdfMoney(d.total)],[320,525,'Average expense',pdfMoney(d.avg)],[42,455,'Largest single expense',d.largest?pdfMoney(Math.abs(d.largest.amount)):'$0.00'],[320,455,'Over-budget categories',String(d.over.length)]].forEach(a=>{c+=pdfRect(a[0],a[1],250,50,[0.985,0.988,0.985],true,9);c+=pdfText(a[0]+12,a[1]+32,7,a[2],true);c+=pdfText(a[0]+12,a[1]+12,14,a[3],true)});
  pages.push(c);
- // Page 5 — recurring + insights
- c=pdfPageHeader(d.label,'Recurring commitments','Known monthly obligations','Recurring expense commitments configured in the app.');
- c+=pdfSectionTitle(610,'Recurring commitments');let ry=552;
- if(d.recurring.length){d.recurring.forEach(r=>{c+=pdfLine(42,ry-9,570,ry-9);c+=pdfText(42,ry,9,r.desc,true);c+=pdfText(42,ry-14,8,`${r.cat}  |  Monthly`);c+=pdfText(500,ry,9,pdfMoney(r.amount),true);ry-=40});c+=pdfText(42,ry-4,8,`Known monthly recurring total: ${pdfMoney(d.recTotal)}`,true);ry-=40}else{c+=pdfText(42,ry,9,'No monthly recurring commitments are configured.');ry-=40}
- c+=pdfSectionTitle(ry,'Automated insights');ry-=30;
+
+ // Recurring commitments, paginated independently.
+ const recurringPerPage=9;
+ const recurringItems=d.recurring||[];
+ const recurringChunks=[];
+ for(let i=0;i<recurringItems.length;i+=recurringPerPage)recurringChunks.push(recurringItems.slice(i,i+recurringPerPage));
+ if(!recurringChunks.length)recurringChunks.push([]);
+ recurringChunks.forEach((chunk,idx)=>{
+   c=pdfPageHeader(d.label,'Recurring commitments','Known monthly obligations','Recurring expense commitments configured in the app.');
+   c+=pdfSectionTitle(610,'Recurring commitments',recurringChunks.length>1?`Page ${idx+1} of ${recurringChunks.length}.`:'');
+   let ry=552;
+   if(chunk.length){
+     chunk.forEach(r=>{c+=pdfLine(42,ry-9,570,ry-9);c+=pdfText(42,ry,9,r.desc,true);c+=pdfText(42,ry-14,8,`${r.cat}  |  Monthly`);c+=pdfText(500,ry,9,pdfMoney(r.amount),true);ry-=40});
+     if(idx===recurringChunks.length-1){c+=pdfText(42,ry-4,8,`Known monthly recurring total: ${pdfMoney(d.recTotal)}`,true);}
+   }else c+=pdfText(42,552,9,'No monthly recurring commitments are configured.');
+   pages.push(c);
+ });
+
+ // Automated insights get a dedicated page so long text can never be clipped.
+ c=pdfPageHeader(d.label,'Automated insights','Spending insights','Highlights generated from the selected month.');
+ c+=pdfSectionTitle(610,'Automated insights','Highlights based on spending, budget performance, and transaction activity.');
+ let iy=548;
  const insights=[d.cats[0]?`Largest category: ${d.cats[0].name} at ${pdfMoney(d.cats[0].spent)}, or ${d.total?(d.cats[0].spent/d.total*100).toFixed(1):'0.0'}% of total spending.`:'No spending categories recorded.',d.over[0]?`Largest variance: ${d.over[0].name} is ${pdfMoney(d.over[0].spent-d.over[0].budget)} over budget.`:'No category exceeded budget.',d.largest?`Largest transaction: ${reportEscape(d.largest.desc)} at ${pdfMoney(d.largest.amount)}.`:'No transactions recorded.',`Budget utilization: ${d.budget?d.usage.toFixed(1):'0.0'}% of planned category budgets was used.`];
- insights.forEach(t=>{c+=pdfRect(42,ry-8,528,32,[0.97,0.98,0.97],true,7);let lines=pdfWrapLines(t,84);lines.slice(0,2).forEach((line,i)=>c+=pdfText(54,ry-i*11,8,line));ry-=42});
+ insights.forEach(t=>{const lines=pdfWrapLines(t,84);const h=Math.max(44,lines.length*14+20);c+=pdfRect(42,iy-h+8,528,h,[0.97,0.98,0.97],true,7);lines.forEach((line,i)=>c+=pdfText(54,iy-i*14,8,line));iy-=h+16});
  pages.push(c);
- // Page 6+ — appendix, paginate cleanly
+
+ // Appendix — paginate the complete transaction list.
  const perPage=24;const chunks=[];for(let i=0;i<d.txs.length;i+=perPage)chunks.push(d.txs.slice(i,i+perPage));if(!chunks.length)chunks.push([]);
- chunks.forEach((chunk,idx)=>{let pageNo=6+idx;c=pdfPageHeader(d.label,'Transaction appendix','Complete expense transaction list',`Expense transactions included in ${d.label}.`);let txY=592;c+=pdfText(42,txY,7,'DATE',true)+pdfText(100,txY,7,'DESCRIPTION',true)+pdfText(310,txY,7,'CATEGORY',true)+pdfText(430,txY,7,'TYPE',true)+pdfText(520,txY,7,'AMOUNT',true);txY-=18;chunk.forEach(t=>{c+=pdfLine(42,txY-8,570,txY-8);c+=pdfText(42,txY,8,t.date.slice(5).replace('-','/'));c+=pdfText(100,txY,8,reportEscape(t.desc).slice(0,34));c+=pdfText(310,txY,8,reportEscape(t.cat).slice(0,18));c+=pdfText(430,txY,8,'Expense');c+=pdfText(520,txY,8,pdfMoney(Math.abs(Number(t.amount)||0)));txY-=21});c+=pdfText(42,txY-2,8,`${d.txs.length} expense transaction${d.txs.length===1?'':'s'} included in this report.`);pages.push(c)});
+ const appendixStart=pages.length+1;
+ chunks.forEach((chunk,idx)=>{let pageNo=appendixStart+idx;c=pdfPageHeader(d.label,'Transaction appendix','Complete expense transaction list',`Expense transactions included in ${d.label}.`);let txY=592;c+=pdfText(42,txY,7,'DATE',true)+pdfText(100,txY,7,'DESCRIPTION',true)+pdfText(310,txY,7,'CATEGORY',true)+pdfText(430,txY,7,'TYPE',true)+pdfText(520,txY,7,'AMOUNT',true);txY-=18;chunk.forEach(t=>{c+=pdfLine(42,txY-8,570,txY-8);c+=pdfText(42,txY,8,t.date.slice(5).replace('-','/'));c+=pdfText(100,txY,8,reportEscape(t.desc).slice(0,34));c+=pdfText(310,txY,8,reportEscape(t.cat).slice(0,18));c+=pdfText(430,txY,8,'Expense');c+=pdfText(520,txY,8,pdfMoney(Math.abs(Number(t.amount)||0)));txY-=21});c+=pdfText(42,txY-2,8,`${d.txs.length} expense transaction${d.txs.length===1?'':'s'} included in this report.`);pages.push(c)});
  const totalPages=pages.length;pages.forEach((pg,i)=>pages[i]=pg+pdfFooter(i+1,totalPages));
  return makePdf(pages)
 }
@@ -384,9 +417,11 @@ document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault
 async function initApp(){
   if(GOOGLE_SHEETS_URL){
     const loaded=await loadFromGoogleSheets();
-    if(!loaded) console.warn('Google Sheets is configured but unavailable; localStorage fallback is active.');
+    if(!loaded) console.warn('Google Sheets is configured but unavailable; no localStorage fallback is used.');
   }
-  if(generateRecurringTransactions()) save();
+  let changed=archiveOldTransactions();
+  if(generateRecurringTransactions()) changed=true;
+  if(changed) await save();
   render(true);
   startAutoRefresh();
 }
