@@ -202,6 +202,13 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 #txModal .key{background:rgba(255,255,255,.48);color:#071b0d}
 #txModal .key:active{background:rgba(255,255,255,.7)}
 #txModal .danger{background:rgba(255,255,255,.55);border-color:rgba(190,40,40,.25)}
+
+/* Budget category alignment fix: make the category row fill the card width. */
+.budget-category-card .swipe-content{width:100%;box-sizing:border-box}
+.budget-category-card .category{width:100%!important;box-sizing:border-box;display:grid!important;grid-template-columns:34px minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important}
+.budget-category-card .catmain{min-width:0!important;width:auto!important}
+.budget-category-card .catnum{padding-left:0!important;text-align:right!important;min-width:72px}
+.budget-category-card .catbar{width:100%!important}
 </style>
 <script src="google-sheets-config.js"></script>
 <style>/* Tip calculator */
