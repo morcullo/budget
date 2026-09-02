@@ -463,6 +463,41 @@ html,body{overscroll-behavior-y:contain}
 .modal .sheet.receipt-sheet,.modal .sheet.frequent-receipt-sheet{max-height:calc(100dvh - 24px)!important;}
 @supports not (height: 100dvh){.modal .sheet.receipt-sheet,.modal .sheet.frequent-receipt-sheet{max-height:calc(100vh - 24px)!important;}}
 </style>
+
+<style id="frequent-full-width-fix">
+/* Frequent Transactions modal: match the app's full-width bottom sheet */
+#frequentListModal .frequent-receipt-sheet{
+  width:100% !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+  border-radius:24px 24px 0 0 !important;
+}
+</style>
+
+<style>
+/* Final fix: Frequent Transactions must stay inside the mobile app frame */
+.modal#frequentListModal{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:430px!important;
+  margin:0 auto!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+}
+.modal#frequentListModal .frequent-receipt-sheet{
+  width:100%!important;
+  max-width:430px!important;
+  min-width:0!important;
+  margin:0!important;
+  align-self:flex-end!important;
+  box-sizing:border-box!important;
+  border-radius:28px 28px 0 0!important;
+}
+</style>
 </head>
 <body>
 <div id="initialLoading" class="initial-loading" role="status" aria-live="polite" aria-label="Loading budget data">
@@ -1938,6 +1973,9 @@ html,body{background:#f7f7f5;color:#111}
 /* Splitwise receipt redesign */
 .splitwise-page{padding-bottom:32px}.splitwise-page .sw-back{margin-bottom:18px}.splitwise-receipt{margin-top:0;padding:20px 17px 24px}.splitwise-receipt-head{padding-bottom:16px}.splitwise-receipt-head .transactions-receipt-title{font-size:27px}.splitwise-receipt-body{padding-top:0}.splitwise-section{margin-top:0!important;padding:0}.splitwise-section+.receipt-rule{margin:16px 0}.splitwise-section .sw-section-head{margin-bottom:9px}.splitwise-section .sw-section-head h3{font-size:11px;letter-spacing:.03em;text-transform:uppercase}.splitwise-section .sw-section-head span{font-size:9px}.splitwise-section .sw-add-row{grid-template-columns:minmax(0,1fr) auto}.splitwise-section .sw-input{height:40px;border-radius:10px;background:#f7f8f6;font-size:11px}.splitwise-section .sw-add{height:40px;padding:0 13px;border-radius:10px;font-size:10px}.splitwise-section .sw-people{margin-top:8px}.splitwise-section .sw-person{padding:5px 8px 5px 6px;font-size:9px;background:#fafbf9}.splitwise-section .sw-person-dot{width:22px;height:22px}.splitwise-section .sw-expense{border:0;border-top:1px dashed #dfe2dd;border-radius:0;background:transparent;padding:11px 0 9px;margin-top:0}.splitwise-section .sw-expense:first-child{border-top:0}.splitwise-section .sw-exp-main strong{font-size:11px}.splitwise-section .sw-exp-main small{font-size:8px}.splitwise-section .sw-exp-amount{font-size:12px}.splitwise-section .sw-exp-controls{gap:7px;margin-top:8px}.splitwise-section .sw-field label{font-size:8px}.splitwise-section .sw-input,.splitwise-section .sw-select{height:36px}.splitwise-section .sw-select{font-size:9px}.splitwise-section .sw-split-panel{background:#f8faf8;border-radius:9px;padding:8px;margin-top:8px}.splitwise-section .sw-add-expense{height:40px;margin-top:8px;border:1px solid #b9ddc9;background:var(--accent-soft);color:var(--accent-strong);border-radius:10px;font-size:10px}.splitwise-summary{margin:0!important;background:transparent;border:0;border-radius:0;padding:0;position:static!important}.splitwise-summary .sw-summary-total{padding-bottom:10px;margin-bottom:7px;border-bottom:1px dashed #d7dbd6}.splitwise-summary .sw-summary-total span{font-size:9px;text-transform:uppercase;letter-spacing:.04em}.splitwise-summary .sw-summary-total strong{font-size:25px}.splitwise-summary .sw-balance{padding:5px 0;border-bottom:1px dashed #e2e5e1}.splitwise-summary .sw-settlement{font-size:9px;padding:7px 0}.splitwise-summary .sw-actions{margin-top:12px}.splitwise-summary .sw-clear{height:40px;border-radius:10px}.splitwise-receipt .transactions-receipt-foot{margin-top:17px}
 @media(max-width:560px){.splitwise-receipt{padding:18px 14px 22px}.splitwise-receipt-head .transactions-receipt-title{font-size:24px}}
+
+/* Frequent Transactions: use the exact same width behavior as the View Transaction receipt */
+.frequent-receipt-sheet{width:min(400px,calc(100% - 24px))!important;max-width:none!important;box-sizing:border-box!important;margin:auto!important}
 </style>
 
 
