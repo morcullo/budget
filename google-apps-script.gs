@@ -76,11 +76,33 @@ function doPost(e) {
 
 function readState_() {
   const sheet = getSheet_();
-  const values = sheet.getDataRange().getValues();
-  for (let i = 1; i < values.length; i++) {
-    if (values[i][0] === 'state') {
-      try { return JSON.parse(values[i][1]); }
-      catch (err) { throw new Error('Stored state is invalid'); }
+
+  // Fast path: the app state lives in the fixed second row. This avoids
+  // reading the entire sheet on every app launch.
+  const fast = sheet.getRange(2, 1, 1, 3).getValues()[0];
+  if (fast[0] === 'state') {
+    try { return JSON.parse(fast[1]); }
+    catch (err) { throw new Error('Stored state is invalid'); }
+  }
+
+  // One-time compatibility path for sheets created by older versions.
+  // Only the first column is read, rather than the entire data range.
+  const lastRow = sheet.getLastRow();
+  if (lastRow >= 2) {
+    const keys = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i][0] === 'state') {
+        const row = i + 2;
+        const serialized = sheet.getRange(row, 2).getValue();
+        try {
+          const state = JSON.parse(serialized);
+          // Migrate the state to the fixed fast-path row for future loads.
+          sheet.getRange(2, 1, 1, 3).setValues([['state', serialized, new Date()]]);
+          return state;
+        } catch (err) {
+          throw new Error('Stored state is invalid');
+        }
+      }
     }
   }
   return null;
@@ -90,16 +112,7 @@ function saveState_(state) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sheet = getSheet_();
-    const serialized = JSON.stringify(state);
-    const values = sheet.getDataRange().getValues();
-    let row = -1;
-    for (let i = 1; i < values.length; i++) {
-      if (values[i][0] === 'state') { row = i + 1; break; }
-    }
-    const data = ['state', serialized, new Date()];
-    if (row === -1) sheet.appendRow(data);
-    else sheet.getRange(row, 1, 1, 3).setValues([data]);
+    saveStateUnlocked_(state);
   } finally {
     lock.releaseLock();
   }
@@ -155,14 +168,8 @@ function addTransaction_(payload) {
 function saveStateUnlocked_(state) {
   const sheet = getSheet_();
   const serialized = JSON.stringify(state);
-  const values = sheet.getDataRange().getValues();
-  let row = -1;
-  for (let i = 1; i < values.length; i++) {
-    if (values[i][0] === 'state') { row = i + 1; break; }
-  }
-  const data = ['state', serialized, new Date()];
-  if (row === -1) sheet.appendRow(data);
-  else sheet.getRange(row, 1, 1, 3).setValues([data]);
+  // Fixed row = fast reads and no sheet-wide scan on every save.
+  sheet.getRange(2, 1, 1, 3).setValues([['state', serialized, new Date()]]);
 }
 
 function normalizeDate_(value) {

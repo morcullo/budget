@@ -462,6 +462,30 @@ let state=structuredClone(defaultState),page='dashboard',sortCat='spent',sortTx=
 let recurringFormMode=false;
 let lastUpdatedAt='';
 let cloudReady=false,cloudSyncing=false,cloudLoading=!!GOOGLE_SHEETS_URL;
+const LOCAL_CACHE_KEY='budget_app_state_v1';
+const LOCAL_CACHE_VERSION=1;
+let localCacheLoaded=false;
+let localEditsSinceCloudLoad=false;
+function cacheState(){
+  try {
+    localStorage.setItem(LOCAL_CACHE_KEY,JSON.stringify({version:LOCAL_CACHE_VERSION,savedAt:new Date().toISOString(),state}));
+  } catch(e) { console.warn('Local cache write failed:',e); }
+}
+function loadFromLocalCache(){
+  try {
+    const raw=localStorage.getItem(LOCAL_CACHE_KEY);
+    if(!raw)return false;
+    const cached=JSON.parse(raw);
+    if(!cached||cached.version!==LOCAL_CACHE_VERSION||!cached.state)return false;
+    state=migrate(cached.state);
+    lastUpdatedAt=cached.savedAt||'';
+    localCacheLoaded=true;
+    return true;
+  } catch(e) {
+    console.warn('Local cache read failed:',e);
+    return false;
+  }
+}
 
 const money=n=>'$'+Math.abs(Number(n)||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 const ym=d=>{const x=new Date(d+'T12:00:00');return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')};
@@ -470,9 +494,59 @@ const currentYM=()=>ym(today());
 function id(){return 't_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
 function migrate(s){s.categories=(s.categories||[]).map(c=>({name:c.name,icon:ICONS.includes(c.icon)?c.icon:(c.icon==='⌂'?'home':c.icon==='♨'?'food':c.icon==='⌁'?'car':c.icon==='◇'?'bag':c.icon==='✚'?'person':c.icon==='♥'?'person':c.icon==='heart'?'person':c.icon==='❤'?'person':c.icon==='✈'?'plane':c.icon==='☕'?'gift':c.icon==='⚡'?'bolt':c.icon==='🎮'?'bolt':c.icon==='🛒'?'bag':c.icon==='🏠'?'home':c.icon==='🚗'?'car':c.icon==='💡'?'bolt':c.icon==='🎵'?'bolt':c.icon==='phone'?'other':c.icon==='briefcase'?'money':'home'),budget:Number(c.budget)||0}));s.transactions=(s.transactions||s.tx||[]).map(t=>({...t,id:t.id||id()}));s.archive=(s.archive||[]).map(t=>({...t,id:t.id||id()}));const legacyRecurring=Array.isArray(s.recurring)?s.recurring:[];s.frequent=(s.frequent||legacyRecurring.filter(r=>!r.frequency&&!r.startDate)).map(r=>({id:r.id||id(),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||''}));s.recurring=legacyRecurring.filter(r=>r.frequency||r.startDate).map(r=>({id:r.id||('rr_'+Date.now().toString(36)),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||'',frequency:r.frequency||'monthly',startDate:r.startDate||today()}));s.eom=s.eom&&typeof s.eom==='object'?s.eom:{balance:0,items:[]};s.eom.balance=Math.max(0,Number(s.eom.balance)||0);s.eom.items=Array.isArray(s.eom.items)?s.eom.items.map(i=>({id:i.id||('eom_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6)),name:String(i.name||'').trim(),amount:Math.max(0,Number(i.amount)||0),dueDate:i.dueDate||today(),icon:ICONS.includes(i.icon)?i.icon:'money',paid:!!i.paid})).filter(i=>i.name&&i.amount>0&&i.dueDate):[];s.financialTipIndex=Number.isInteger(Number(s.financialTipIndex))?((Number(s.financialTipIndex)%20)+20)%20:19;s.budget=s.categories.reduce((sum,c)=>sum+(Number(c.budget)||0),0);return s}
 function markUpdated(){lastUpdatedAt=new Date().toISOString()}
-async function save(){state.budget=totalBudget();markUpdated();if(GOOGLE_SHEETS_URL)return syncToGoogleSheets();console.error('Google Sheets is not configured; changes are not persisted.')}
-async function loadFromGoogleSheets(){if(!GOOGLE_SHEETS_URL)return false;try{const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Cloud load failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(data&&data.state){state=migrate(data.state);cloudReady=true;markUpdated();return true}state=structuredClone(defaultState);cloudReady=true;return true}catch(e){console.error('Google Sheets load failed:',e);cloudReady=false;return false}}
-async function syncToGoogleSheets(){if(!GOOGLE_SHEETS_URL)return;cloudSyncing=true;try{const r=await fetch(GOOGLE_SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',token:GOOGLE_SHEETS_TOKEN,state})});if(!r.ok)throw new Error('Cloud save failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);cloudReady=true}catch(e){cloudReady=false;console.error('Google Sheets save failed:',e)}finally{cloudSyncing=false}}
+async function save(){
+  localEditsSinceCloudLoad=true;
+  state.budget=totalBudget();
+  markUpdated();
+  cacheState();
+  if(GOOGLE_SHEETS_URL)return syncToGoogleSheets();
+  console.error('Google Sheets is not configured; changes are not persisted.');
+}
+async function loadFromGoogleSheets(){
+  if(!GOOGLE_SHEETS_URL)return false;
+  try{
+    const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');
+    const r=await fetch(url,{cache:'no-store'});
+    if(!r.ok)throw new Error('Cloud load failed: HTTP '+r.status);
+    const data=await r.json();
+    if(data&&data.error)throw new Error(data.error);
+    if(data&&data.state){
+      // If the user changed anything while the cloud request was in flight,
+      // never replace those local edits with an older Google snapshot.
+      if(localEditsSinceCloudLoad){
+        cloudReady=true;
+        return true;
+      }
+      state=migrate(data.state);
+      cloudReady=true;
+      markUpdated();
+      cacheState();
+      return true;
+    }
+    state=structuredClone(defaultState);
+    cloudReady=true;
+    cacheState();
+    return true;
+  }catch(e){
+    console.error('Google Sheets load failed:',e);
+    cloudReady=false;
+    return false;
+  }
+}
+async function syncToGoogleSheets(){
+  if(!GOOGLE_SHEETS_URL)return;
+  cloudSyncing=true;
+  try{
+    const r=await fetch(GOOGLE_SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',token:GOOGLE_SHEETS_TOKEN,state})});
+    if(!r.ok)throw new Error('Cloud save failed: HTTP '+r.status);
+    const data=await r.json();
+    if(data&&data.error)throw new Error(data.error);
+    cloudReady=true;
+  }catch(e){
+    cloudReady=false;
+    console.error('Google Sheets save failed:',e);
+  }finally{cloudSyncing=false}
+}
 function archiveOldTransactions(){const cur=currentYM();const old=state.transactions.filter(t=>ym(t.date)<cur);if(!old.length)return false;state.archive.push(...old.map(t=>({...t,archivedAt:t.archivedAt||new Date().toISOString()})));state.transactions=state.transactions.filter(t=>ym(t.date)>=cur);return true}
 function currentTransactions(){return state.transactions.filter(t=>ym(t.date)===currentYM())}
 function spentByCategory(){const map={};currentTransactions().forEach(t=>{if(t.amount<0)map[t.cat]=(map[t.cat]||0)+Math.abs(t.amount)});return map}
@@ -777,21 +851,33 @@ function setupPullToRefresh(){
 
 
 async function initApp(){
-  // Render the shell immediately so the app does not appear frozen.
-  // Google Sheets remains the only persistent source of truth.
   setupPullToRefresh();
-  render(true);
 
-  if(GOOGLE_SHEETS_URL){
-    const loaded=await loadFromGoogleSheets();
+  // Paint the shell immediately, then hydrate it from the last local snapshot.
+  // This means a slow Apps Script request no longer leaves the user staring at
+  // the loading screen. Google remains the persistent source of truth.
+  const cached=loadFromLocalCache();
+  render(true);
+  if(cached){
     cloudLoading=false;
     hideInitialLoading();
-    if(!loaded){
-      console.warn('Google Sheets is configured but unavailable; no localStorage fallback is used.');
+  }
+
+  if(GOOGLE_SHEETS_URL){
+    localEditsSinceCloudLoad=false;
+    // Always reconcile with Google in the background. If there is no cache,
+    // keep the initial loading screen until this first cloud response arrives.
+    const loaded=await loadFromGoogleSheets();
+    cloudLoading=false;
+    if(!cached)hideInitialLoading();
+    if(!loaded && !cached){
+      console.warn('Google Sheets is configured but unavailable and no local cache exists.');
       render(true);
       return;
     }
-  } else {
+    if(loaded)render(true);
+    if(localEditsSinceCloudLoad)syncToGoogleSheets().catch(err=>console.error('Post-load sync failed:',err));
+  } else if(!cached){
     cloudLoading=false;
     hideInitialLoading();
   }
@@ -800,10 +886,8 @@ async function initApp(){
   let changed=archiveOldTransactions();
   if(generateRecurringTransactions()) changed=true;
 
-  // Show the loaded data immediately. If initialization changed recurring/archive
-  // data, sync it in the background instead of blocking the UI on a POST.
   render(true);
-  if(changed) save().catch(err=>console.error('Initial sync failed:',err));
+  if(changed)save().catch(err=>console.error('Initial sync failed:',err));
 }
 initApp();
 </script>
