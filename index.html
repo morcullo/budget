@@ -589,10 +589,10 @@ html,body{overscroll-behavior-y:contain}
 <div class="modal" id="frequentListModal"><div class="sheet receipt-sheet frequent-receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="frequentListModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Frequent Ledger</div><div class="receipt-title">Frequent Transactions</div><div class="receipt-date">Quickly reuse your most common transactions</div></div><div class="frequent-receipt-body"><div id="frequentList"></div><button class="primary frequent-new-btn" id="newFrequentFromList">＋ New Frequent Transaction</button></div><div class="receipt-divider"></div><div class="receipt-foot">— End of frequent transactions —</div></div></div>
 <div class="modal" id="frequentModal"><div class="sheet frequent-sheet"><div class="handle"></div><div class="row"><h2 id="frequentModalTitle">Add Frequent Transaction</h2><button class="modal-close" data-close="frequentModal">×</button></div><form class="form" id="frequentForm"><input type="hidden" id="editFrequentId"><label>Description</label><input id="frequentDesc" placeholder="e.g. Monthly Rent" required><label>Amount</label><input id="frequentAmount" type="number" min="0.01" step="0.01" placeholder="100.00" required><label>Category</label><select id="frequentCat" required></select><button class="primary">Save Frequent Transaction</button><button type="button" id="frequentDelete" class="danger" style="display:none;margin-top:10px;width:100%">Delete Frequent Transaction</button></form></div></div>
 <div class="modal" id="recurringModal"><div class="sheet recurring-sheet"><div class="handle"></div><div class="row"><h2 id="recurringModalTitle">New Recurring Transaction</h2><button class="modal-close" data-close="recurringModal">×</button></div><div class="sub recurring-modal-sub">Automatically add this transaction on its schedule.</div><form class="form" id="recurringForm"><input type="hidden" id="editRecurringId"><label>Description</label><input id="recurringDesc" placeholder="e.g. Rent" required><label>Amount</label><input id="recurringAmount" type="number" min="0.01" step="0.01" placeholder="1200.00" required><label>Category</label><select id="recurringCat" required></select><label>Frequency</label><select id="recurringFrequency" required><option value="weekly">Weekly</option><option value="biweekly">Bi-weekly</option><option value="monthly" selected>Monthly</option><option value="yearly">Yearly</option></select><label>Starting Date</label><input id="recurringStartDate" type="date" required><button class="primary recurring-save">Save Recurring Transaction</button><button type="button" id="recurringAddNow" class="secondary recurring-add-now" style="display:none">＋ Add Transaction Now</button><button type="button" id="recurringDelete" class="danger recurring-delete" style="display:none">Delete Recurring Transaction</button></form></div></div>
-<div class="modal" id="transactionViewModal"><div class="sheet receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="transactionViewModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Transaction Receipt</div><div class="receipt-title" id="viewTxTitle">Transaction</div><div class="receipt-date" id="viewTxDate"></div></div><div class="receipt-amount" id="viewTxAmount"></div><div class="receipt-divider"></div><div class="receipt-row"><span>Category</span><b id="viewTxCategory"></b></div><div class="receipt-row"><span>Description</span><b id="viewTxDescription"></b></div><div class="receipt-row" id="viewTxStatusRow"><span>Status</span><b id="viewTxStatus"></b></div></div></div><div class="modal" id="categoryTransactionsModal"><div class="sheet tx-list-modal"><div class="handle"></div><div class="row"><h2 id="categoryTransactionsTitle">Category Transactions</h2><button class="modal-close" data-close="categoryTransactionsModal">×</button></div><div id="categoryTransactionsList"></div></div></div><div class="modal" id="pendingTransactionsModal"><div class="sheet pending-list-sheet"><div class="handle"></div><div class="row"><div><h2>Pending Transactions</h2><div class="sub pending-note">Upcoming recurring transactions</div></div><button class="modal-close" data-close="pendingTransactionsModal">×</button></div><div id="pendingTransactionsList"></div></div></div>
+<div class="modal" id="transactionViewModal"><div class="sheet receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="transactionViewModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Transaction Receipt</div><div class="receipt-title" id="viewTxTitle">Transaction</div><div class="receipt-date" id="viewTxDate"></div></div><div class="receipt-amount" id="viewTxAmount"></div><div class="receipt-divider"></div><div class="receipt-row"><span>Category</span><b id="viewTxCategory"></b></div><div class="receipt-row"><span>Description</span><b id="viewTxDescription"></b></div><div class="receipt-row" id="viewTxStatusRow"><span>Status</span><b id="viewTxStatus"></b></div></div></div><div class="modal" id="categoryTransactionsModal"><div class="sheet tx-list-modal"><div class="handle"></div><div class="row"><h2 id="categoryTransactionsTitle">Category Transactions</h2><button class="modal-close" data-close="categoryTransactionsModal">×</button></div><div id="categoryTransactionsList"></div></div></div><div class="modal" id="pendingTransactionsModal"><div class="sheet receipt-sheet pending-list-sheet pending-receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="pendingTransactionsModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Upcoming Ledger</div><div class="receipt-title">Pending Transactions</div><div class="receipt-date">Upcoming recurring transactions</div></div><div class="pending-receipt-body" id="pendingTransactionsList"></div><div class="receipt-divider"></div><div class="receipt-foot">— End of pending transactions —</div></div></div>
 <div class="modal" id="eomItemModal"><div class="sheet eom-item-sheet"><div class="handle"></div><div class="row"><h2 id="eomItemTitle">Add Payable</h2><button class="modal-close" data-close="eomItemModal">×</button></div><form class="form" id="eomItemForm"><input type="hidden" id="eomEditId"><label>Name</label><input id="eomItemName" placeholder="e.g. Rent" required><label>Amount</label><input id="eomItemAmount" type="number" min="0.01" step="0.01" placeholder="1200.00" required><label>Due date</label><input id="eomItemDueDate" type="date" required><label>Icon</label><div class="icon-picker" id="eomItemIconPicker"></div><button class="primary">Save Payable</button><button type="button" id="eomItemDelete" class="danger" style="display:none;margin-top:10px;width:100%">Delete Payable</button></form></div></div>
 <div class="modal" id="eomBalanceModal"><div class="sheet eom-balance-sheet"><div class="handle"></div><div class="row"><h2>Account Balance</h2><button class="modal-close" data-close="eomBalanceModal">×</button></div><form class="form" id="eomBalanceForm"><label>Current account balance</label><input id="eomBalanceInput" type="number" min="0" step="0.01" placeholder="2350.00" required><button class="primary">Save Balance</button></form></div></div>
-<div class="modal" id="tipModal"><div class="sheet tip-sheet"><div class="handle"></div><div class="tx-top"><div class="tx-recipient"><div class="tx-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M5.6 18.4 7 17M12 19v2M17 17l1.4 1.4M19 12h2M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4.5"/><path d="M12 9.5v5M10.5 11h3"/></svg></div><div class="tx-to"><b>Tip Calculator</b></div></div><button class="modal-close" data-close="tipModal" aria-label="Close tip calculator">×</button></div><form id="tipForm"><div class="tip-amount-wrap"><label for="tipBill">Bill Amount</label><div class="tip-input-wrap"><span>$</span><input id="tipBill" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0.00" autocomplete="off"></div></div><div class="tip-grid"><div class="meta-field"><label for="tipTax">Tax % <span>(optional)</span></label><input id="tipTax" inputmode="decimal" type="number" min="0" max="100" step="0.01" placeholder="0"></div><div class="meta-field"><label for="tipPeople">People</label><input id="tipPeople" inputmode="numeric" type="number" min="1" max="1000" step="1" value="1"></div></div><div class="tip-section"><div class="tip-section-head"><label>Tip</label><span id="tipRateLabel">18%</span></div><div class="tip-presets" id="tipPresets"><button type="button" class="tip-preset" data-tip-rate="10">10%</button><button type="button" class="tip-preset" data-tip-rate="15">15%</button><button type="button" class="tip-preset active" data-tip-rate="18">18%</button><button type="button" class="tip-preset" data-tip-rate="20">20%</button><button type="button" class="tip-preset" data-tip-rate="25">25%</button></div><div class="tip-custom-row"><label for="tipRate">Custom</label><div class="tip-custom-input"><input id="tipRate" inputmode="decimal" type="number" min="0" max="100" step="0.1" value="18"><span>%</span></div></div><label class="tip-check"><input type="checkbox" id="tipOnTax"><span>Calculate tip on tax too</span></label></div><div class="tip-section"><div class="tip-section-head"><label>Rounding</label></div><div class="tip-round-grid"><button type="button" class="tip-round active" data-round="none">No rounding</button><button type="button" class="tip-round" data-round="up">Round total up</button><button type="button" class="tip-round" data-round="person">Round / person</button></div></div><section class="tip-results" aria-live="polite"><div class="tip-result-main"><span>Total</span><strong id="tipTotal">$0.00</strong></div><div class="tip-result-row"><span>Bill</span><b id="tipBillOut">$0.00</b></div><div class="tip-result-row"><span>Tax</span><b id="tipTaxOut">$0.00</b></div><div class="tip-result-row"><span>Tip</span><b id="tipAmountOut">$0.00</b></div><div class="tip-result-row"><span>Each person</span><b id="tipEachOut">$0.00</b></div></section><button type="button" class="tip-reset secondary" id="tipReset">Reset Calculator</button></form></div></div></div><div class="modal" id="monthlyReportModal"><div class="sheet report-sheet"><div class="handle"></div><div class="row"><div><h2>Monthly Report</h2><div class="sub">Create a PDF summary for any month</div></div><button class="modal-close" data-close="monthlyReportModal">×</button></div><div class="report-modal-body"><div class="report-field"><label for="reportMonth">Month</label><div class="report-select-wrap"><select id="reportMonth" class="report-month" aria-label="Report month"></select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg></div></div><button type="button" class="report-download" id="downloadMonthlyReport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Download PDF</span></button><div class="report-status" id="reportStatus" aria-live="polite"></div></div></div></div>
+<div class="modal" id="tipModal"><div class="sheet receipt-sheet tip-sheet tip-receipt-sheet"><div class="handle"></div><div class="tx-top"><div class="tx-recipient"><div class="tx-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M5.6 18.4 7 17M12 19v2M17 17l1.4 1.4M19 12h2M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4.5"/><path d="M12 9.5v5M10.5 11h3"/></svg></div><div class="tx-to"><b>Tip Calculator</b></div></div><button class="modal-close" data-close="tipModal" aria-label="Close tip calculator">×</button></div><form id="tipForm"><div class="tip-amount-wrap"><label for="tipBill">Bill Amount</label><div class="tip-input-wrap"><span>$</span><input id="tipBill" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0.00" autocomplete="off"></div></div><div class="tip-grid"><div class="meta-field"><label for="tipTax">Tax % <span>(optional)</span></label><input id="tipTax" inputmode="decimal" type="number" min="0" max="100" step="0.01" placeholder="0"></div><div class="meta-field"><label for="tipPeople">People</label><input id="tipPeople" inputmode="numeric" type="number" min="1" max="1000" step="1" value="1"></div></div><div class="tip-section"><div class="tip-section-head"><label>Tip</label><span id="tipRateLabel">18%</span></div><div class="tip-presets" id="tipPresets"><button type="button" class="tip-preset" data-tip-rate="10">10%</button><button type="button" class="tip-preset" data-tip-rate="15">15%</button><button type="button" class="tip-preset active" data-tip-rate="18">18%</button><button type="button" class="tip-preset" data-tip-rate="20">20%</button><button type="button" class="tip-preset" data-tip-rate="25">25%</button></div><div class="tip-custom-row"><label for="tipRate">Custom</label><div class="tip-custom-input"><input id="tipRate" inputmode="decimal" type="number" min="0" max="100" step="0.1" value="18"><span>%</span></div></div><label class="tip-check"><input type="checkbox" id="tipOnTax"><span>Calculate tip on tax too</span></label></div><div class="tip-section"><div class="tip-section-head"><label>Rounding</label></div><div class="tip-round-grid"><button type="button" class="tip-round active" data-round="none">No rounding</button><button type="button" class="tip-round" data-round="up">Round total up</button><button type="button" class="tip-round" data-round="person">Round / person</button></div></div><section class="tip-results" aria-live="polite"><div class="tip-result-main"><span>Total</span><strong id="tipTotal">$0.00</strong></div><div class="tip-result-row"><span>Bill</span><b id="tipBillOut">$0.00</b></div><div class="tip-result-row"><span>Tax</span><b id="tipTaxOut">$0.00</b></div><div class="tip-result-row"><span>Tip</span><b id="tipAmountOut">$0.00</b></div><div class="tip-result-row"><span>Each person</span><b id="tipEachOut">$0.00</b></div></section><button type="button" class="tip-reset secondary" id="tipReset">Reset Calculator</button></form></div></div></div><div class="modal" id="monthlyReportModal"><div class="sheet report-sheet"><div class="handle"></div><div class="row"><div><h2>Monthly Report</h2><div class="sub">Create a PDF summary for any month</div></div><button class="modal-close" data-close="monthlyReportModal">×</button></div><div class="report-modal-body"><div class="report-field"><label for="reportMonth">Month</label><div class="report-select-wrap"><select id="reportMonth" class="report-month" aria-label="Report month"></select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg></div></div><button type="button" class="report-download" id="downloadMonthlyReport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Download PDF</span></button><div class="report-status" id="reportStatus" aria-live="polite"></div></div></div></div>
 
 <style>
 /* v9 refinements */
@@ -831,7 +831,7 @@ function deleteEomItem(){const idv=document.getElementById('eomEditId').value;if
 function resetEomCalculator(){if(!confirm('Reset the End of Month Calculator? This will set the account balance to $0 and remove all payables.'))return;state.eom={balance:0,items:[]};save();render(false)}
 function frequentPage(){return `<button class="back" id="backTransactions">‹ Transactions</button><h1>Frequent Transactions</h1><div class="sub">Save common transactions and reuse them quickly</div><section class="card"><div class="cardhead"><h2>${state.frequent.length} Frequent</h2><button class="secondary" id="addFrequent">＋ New</button></div>${state.frequent.length?state.frequent.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-row" data-edit-frequent="${escAttr(r.id)}"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-info"><strong>${esc(r.desc)}</strong><small>${money(r.amount)} · ${esc(r.cat)}</small></div><button class="recurring-add" data-add-frequent="${escAttr(r.id)}">＋ Add</button></div>`}).join(''):'<div class="empty">No Frequent Transactions Yet.</div>'}</section>`}
 function splitwisePage(){if(splitwise.people.length===0)splitwise.people=[{id:swId(),name:'Me'}];if(splitwise.expenses.length===0)swAddExpense(false);return `<div class="splitwise-page"><button class="back sw-back" id="backTools">‹ Tools</button><section class="transactions-page-receipt splitwise-receipt"><div class="transactions-receipt-head splitwise-receipt-head"><div class="transactions-receipt-kicker">Shared Expense Ledger</div><div class="transactions-receipt-title">Splitwise</div><div class="transactions-receipt-sub">Split expenses with friends and see who owes whom.</div></div><div class="splitwise-receipt-body"><section class="sw-section splitwise-section"><div class="sw-section-head"><h3>People</h3><span id="swPeopleCount">0 people</span></div><div class="sw-add-row"><input class="sw-input" id="swPersonName" placeholder="Add a person" autocomplete="off" maxlength="40"><button type="button" class="sw-add" id="swAddPerson">＋ Add</button></div><div class="sw-people" id="swPeople"></div><div class="sw-status" id="swStatus" aria-live="polite"></div></section><div class="receipt-rule"></div><section class="sw-section splitwise-section"><div class="sw-section-head"><h3>Expenses</h3><span id="swExpenseCount">0 expenses</span></div><div id="swExpenses"></div><button type="button" class="sw-add-expense" id="swAddExpense">＋ Add Expense</button></section><div class="receipt-rule"></div><aside class="sw-summary splitwise-summary" aria-live="polite"><div class="sw-summary-total"><span>Total Expenses</span><strong id="swTotal">$0.00</strong></div><div id="swBalances"></div><div class="sw-settlements" id="swSettlements"></div><div class="sw-actions"><button type="button" class="sw-clear" id="swClear">Clear All</button><button type="button" class="send-btn" id="swClose" style="height:43px;margin:0;border-radius:13px;font-size:11px">Done</button></div></aside></div><div class="transactions-receipt-foot">— End of shared expense ledger —</div></section></div>`}
-function recurringPage(){const backLabel=recurringOrigin==='tools'?'‹ Tools':'‹ Transactions';const total=state.recurring.reduce((n,r)=>n+Math.abs(Number(r.amount)||0),0);return `<div class="recurring-page"><div class="recurring-topbar"><button class="back" id="backTransactions">${backLabel}</button><button type="button" class="secondary recurring-receipt-new" id="newRecurringPage">${iconSVG('plus')} New</button></div><section class="transactions-page-receipt recurring-receipt"><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Recurring Ledger</div><div class="transactions-receipt-title">Recurring Transactions</div><div class="transactions-receipt-sub">Scheduled transactions</div></div><div class="transactions-receipt-body recurring-receipt-body">${state.recurring.length?state.recurring.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-receipt-row" data-edit-recurring="${escAttr(r.id)}" role="button" tabindex="0"><div class="recurring-receipt-main"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-receipt-info"><strong>${esc(r.desc)}</strong><small>${esc(r.cat)} · ${frequencyLabel(r.frequency)}</small><small>Starts ${formatDate(r.startDate)}</small></div></div><div class="recurring-receipt-amount">${money(r.amount)}</div></div>`}).join(''):'<div class="transactions-receipt-empty">No Recurring Transactions Yet.</div>'}</div><div class="transactions-receipt-total"><div class="transactions-receipt-total-label">Scheduled Total</div><div class="transactions-receipt-total-amount">${money(total)}</div><div class="transactions-receipt-total-count">${state.recurring.length} recurring transaction${state.recurring.length===1?'':'s'}</div></div><div class="transactions-receipt-foot">— End of recurring ledger —</div></section></div>`}
+function recurringPage(){const backLabel=recurringOrigin==='tools'?'‹ Tools':'‹ Transactions';const total=state.recurring.reduce((n,r)=>n+Math.abs(Number(r.amount)||0),0);return `<div class="recurring-page"><div class="recurring-topbar"><button class="back" id="backTransactions">${backLabel}</button></div><section class="transactions-page-receipt recurring-receipt"><button type="button" class="secondary recurring-receipt-new" id="newRecurringPage">${iconSVG('plus')} New</button><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Recurring Ledger</div><div class="transactions-receipt-title">Recurring Transactions</div><div class="transactions-receipt-sub">Scheduled transactions</div></div><div class="transactions-receipt-body recurring-receipt-body">${state.recurring.length?state.recurring.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-receipt-row" data-edit-recurring="${escAttr(r.id)}" role="button" tabindex="0"><div class="recurring-receipt-main"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-receipt-info"><strong>${esc(r.desc)}</strong><small>${esc(r.cat)} · ${frequencyLabel(r.frequency)}</small><small>Starts ${formatDate(r.startDate)}</small></div></div><div class="recurring-receipt-amount">${money(r.amount)}</div></div>`}).join(''):'<div class="transactions-receipt-empty">No Recurring Transactions Yet.</div>'}</div><div class="transactions-receipt-total"><div class="transactions-receipt-total-label">Scheduled Total</div><div class="transactions-receipt-total-amount">${money(total)}</div><div class="transactions-receipt-total-count">${state.recurring.length} recurring transaction${state.recurring.length===1?'':'s'}</div></div><div class="transactions-receipt-foot">— End of recurring ledger —</div></section></div>`}
 function archivePage(){const arr=[...state.archive].sort((a,b)=>b.date.localeCompare(a.date));const backLabel=archiveOrigin==='tools'?'‹ Tools':'‹ Transactions';return `<button class="back" id="backTransactions">${backLabel}</button><section class="transactions-page-receipt archive-receipt"><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Transaction Archive</div><div class="transactions-receipt-title">Archived Transactions</div><div class="transactions-receipt-sub">Grouped by month and date</div></div><div class="transactions-receipt-body">${arr.length?groupArchiveByMonth(arr):'<div class="transactions-receipt-empty">No Archived Transactions.</div>'}</div><div class="transactions-receipt-foot">— End of archived ledger —</div></section>`}
 function formatDate(date){return new Date(date+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function escAttr(s){return esc(s)}
@@ -2036,6 +2036,119 @@ html,body{background:#f7f7f5;color:#111}
 /* Frequent Transactions: use the exact same width behavior as the View Transaction receipt */
 .frequent-receipt-sheet{width:min(400px,calc(100% - 24px))!important;max-width:none!important;box-sizing:border-box!important;margin:auto!important}
 
+
+<style>
+/* Final modal consistency pass */
+.modal#monthlyReportModal{
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  transform:none!important;
+}
+.modal#monthlyReportModal .report-sheet{
+  width:min(430px,100%)!important;
+  max-width:430px!important;
+  max-height:min(90dvh,720px)!important;
+  margin:0 auto!important;
+  border-radius:28px 28px 0 0!important;
+  padding:18px 20px calc(28px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+  transform:translateY(105%)!important;
+  transition:transform .32s cubic-bezier(.22,.8,.28,1)!important;
+  overflow:auto!important;
+}
+.modal#monthlyReportModal.open .report-sheet{
+  transform:translateY(0)!important;
+}
+.modal#monthlyReportModal.closing .report-sheet{
+  transform:translateY(105%)!important;
+}
+
+/* Receipt-style Pending Transactions */
+.modal#pendingTransactionsModal{
+  align-items:flex-end!important;
+  padding:0!important;
+}
+.modal#pendingTransactionsModal .pending-receipt-sheet{
+  width:min(430px,100%)!important;
+  max-width:430px!important;
+  max-height:min(90dvh,720px)!important;
+  margin:0 auto!important;
+  border-radius:28px 28px 0 0!important;
+  padding:18px 20px calc(28px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+  overflow:auto!important;
+  transform:translateY(105%)!important;
+  transition:transform .32s cubic-bezier(.22,.8,.28,1)!important;
+}
+.modal#pendingTransactionsModal.open .pending-receipt-sheet{
+  transform:translateY(0)!important;
+}
+.modal#pendingTransactionsModal.closing .pending-receipt-sheet{
+  transform:translateY(105%)!important;
+}
+.pending-receipt-sheet .receipt-head{
+  padding-bottom:14px;
+}
+.pending-receipt-sheet .receipt-title{
+  font-size:20px;
+}
+.pending-receipt-sheet .pending-receipt-body{
+  padding-top:4px;
+}
+.pending-receipt-sheet .pending-list-empty{
+  padding:24px 0;
+}
+.pending-receipt-sheet .tx{
+  padding:12px 0;
+  border-bottom:1px dotted #d5d8d3;
+}
+.pending-receipt-sheet .tx:last-child{
+  border-bottom:0;
+}
+.pending-receipt-sheet .receipt-divider{
+  margin-top:12px;
+}
+.pending-receipt-sheet .receipt-foot{
+  margin-top:14px;
+  padding-top:0;
+  text-align:center;
+  color:#9a9c98;
+  font-size:9px;
+  line-height:1.2;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+/* Recurring page: New action belongs inside the receipt header. */
+.recurring-topbar{
+  margin-bottom:18px;
+}
+.recurring-receipt{
+  position:relative;
+}
+.recurring-receipt .recurring-receipt-new{
+  position:absolute!important;
+  top:18px!important;
+  right:16px!important;
+  z-index:3!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:0 11px!important;
+}
+.recurring-receipt .transactions-receipt-head{
+  position:relative;
+  padding-right:72px;
+}
+.recurring-receipt .transactions-receipt-kicker{
+  padding-right:0!important;
+}
+</style>
+
 <style>
 /* Keep EOM Account Balance Edit compact, matching Add Item */
 .eom-receipt .receipt-balance .receipt-edit{
@@ -2061,3 +2174,91 @@ html,body{background:#f7f7f5;color:#111}
 </style>
 
 
+
+
+<style>
+/* Splitwise people section spacing fix */
+.splitwise-receipt .splitwise-section:first-child{
+  margin-bottom:0!important;
+}
+.splitwise-receipt .splitwise-section:first-child .sw-people{
+  margin-bottom:0!important;
+}
+.splitwise-receipt .splitwise-section:first-child .sw-status:empty{
+  display:none!important;
+}
+.splitwise-receipt .splitwise-section:first-child + .receipt-rule{
+  margin-top:16px!important;
+  margin-bottom:16px!important;
+}
+@media(max-width:560px){
+  .splitwise-receipt .splitwise-section:first-child + .receipt-rule{
+    margin-top:14px!important;
+    margin-bottom:14px!important;
+  }
+}
+</style>
+
+
+<style>
+/* Splitwise People heading: restore breathing room below the receipt header */
+.splitwise-receipt .splitwise-receipt-body{
+  padding-top:16px!important;
+}
+@media(max-width:560px){
+  .splitwise-receipt .splitwise-receipt-body{
+    padding-top:15px!important;
+  }
+}
+</style>
+
+
+<style>
+/* Monthly Report: match the standard slide-in modal container exactly */
+.modal#monthlyReportModal{
+  position:fixed!important;
+  inset:0!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  width:auto!important;
+  transform:none!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+  opacity:1!important;
+  transition:none!important;
+}
+.modal#monthlyReportModal.open{
+  display:flex!important;
+  opacity:1!important;
+}
+.modal#monthlyReportModal.closing{
+  display:flex!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  transition:none!important;
+}
+.modal#monthlyReportModal .report-sheet{
+  width:min(430px,100%)!important;
+  max-width:430px!important;
+  max-height:92vh!important;
+  margin:0 auto!important;
+  overflow:auto!important;
+  border-radius:28px 28px 0 0!important;
+  transform:translateY(105%)!important;
+  transition:transform .28s cubic-bezier(.22,.8,.28,1)!important;
+}
+.modal#monthlyReportModal.open .report-sheet{
+  transform:translateY(0)!important;
+}
+.modal#monthlyReportModal.closing .report-sheet{
+  transform:translateY(105%)!important;
+}
+@media(max-width:560px){
+  .modal#monthlyReportModal .report-sheet{
+    max-height:92dvh!important;
+  }
+}
+</style>
