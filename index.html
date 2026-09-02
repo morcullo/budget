@@ -592,7 +592,7 @@ html,body{overscroll-behavior-y:contain}
 <div class="modal" id="transactionViewModal"><div class="sheet receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="transactionViewModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Transaction Receipt</div><div class="receipt-title" id="viewTxTitle">Transaction</div><div class="receipt-date" id="viewTxDate"></div></div><div class="receipt-amount" id="viewTxAmount"></div><div class="receipt-divider"></div><div class="receipt-row"><span>Category</span><b id="viewTxCategory"></b></div><div class="receipt-row"><span>Description</span><b id="viewTxDescription"></b></div><div class="receipt-row" id="viewTxStatusRow"><span>Status</span><b id="viewTxStatus"></b></div></div></div><div class="modal" id="categoryTransactionsModal"><div class="sheet tx-list-modal"><div class="handle"></div><div class="row"><h2 id="categoryTransactionsTitle">Category Transactions</h2><button class="modal-close" data-close="categoryTransactionsModal">×</button></div><div id="categoryTransactionsList"></div></div></div><div class="modal" id="pendingTransactionsModal"><div class="sheet receipt-sheet pending-list-sheet pending-receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="pendingTransactionsModal">×</button></div><div class="receipt-head"><div class="receipt-brand">Upcoming Ledger</div><div class="receipt-title">Pending Transactions</div><div class="receipt-date">Upcoming recurring transactions</div></div><div class="pending-receipt-body" id="pendingTransactionsList"></div><div class="receipt-divider"></div><div class="receipt-foot">— End of pending transactions —</div></div></div>
 <div class="modal" id="eomItemModal"><div class="sheet eom-item-sheet"><div class="handle"></div><div class="row"><h2 id="eomItemTitle">Add Payable</h2><button class="modal-close" data-close="eomItemModal">×</button></div><form class="form" id="eomItemForm"><input type="hidden" id="eomEditId"><label>Name</label><input id="eomItemName" placeholder="e.g. Rent" required><label>Amount</label><input id="eomItemAmount" type="number" min="0.01" step="0.01" placeholder="1200.00" required><label>Due date</label><input id="eomItemDueDate" type="date" required><label>Icon</label><div class="icon-picker" id="eomItemIconPicker"></div><button class="primary">Save Payable</button><button type="button" id="eomItemDelete" class="danger" style="display:none;margin-top:10px;width:100%">Delete Payable</button></form></div></div>
 <div class="modal" id="eomBalanceModal"><div class="sheet eom-balance-sheet"><div class="handle"></div><div class="row"><h2>Account Balance</h2><button class="modal-close" data-close="eomBalanceModal">×</button></div><form class="form" id="eomBalanceForm"><label>Current account balance</label><input id="eomBalanceInput" type="number" min="0" step="0.01" placeholder="2350.00" required><button class="primary">Save Balance</button></form></div></div>
-<div class="modal" id="tipModal"><div class="sheet receipt-sheet tip-sheet tip-receipt-sheet"><div class="handle"></div><div class="tx-top"><div class="tx-recipient"><div class="tx-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M5.6 18.4 7 17M12 19v2M17 17l1.4 1.4M19 12h2M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4.5"/><path d="M12 9.5v5M10.5 11h3"/></svg></div><div class="tx-to"><b>Tip Calculator</b></div></div><button class="modal-close" data-close="tipModal" aria-label="Close tip calculator">×</button></div><form id="tipForm"><div class="tip-amount-wrap"><label for="tipBill">Bill Amount</label><div class="tip-input-wrap"><span>$</span><input id="tipBill" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0.00" autocomplete="off"></div></div><div class="tip-grid"><div class="meta-field"><label for="tipTax">Tax % <span>(optional)</span></label><input id="tipTax" inputmode="decimal" type="number" min="0" max="100" step="0.01" placeholder="0"></div><div class="meta-field"><label for="tipPeople">People</label><input id="tipPeople" inputmode="numeric" type="number" min="1" max="1000" step="1" value="1"></div></div><div class="tip-section"><div class="tip-section-head"><label>Tip</label><span id="tipRateLabel">18%</span></div><div class="tip-presets" id="tipPresets"><button type="button" class="tip-preset" data-tip-rate="10">10%</button><button type="button" class="tip-preset" data-tip-rate="15">15%</button><button type="button" class="tip-preset active" data-tip-rate="18">18%</button><button type="button" class="tip-preset" data-tip-rate="20">20%</button><button type="button" class="tip-preset" data-tip-rate="25">25%</button></div><div class="tip-custom-row"><label for="tipRate">Custom</label><div class="tip-custom-input"><input id="tipRate" inputmode="decimal" type="number" min="0" max="100" step="0.1" value="18"><span>%</span></div></div><label class="tip-check"><input type="checkbox" id="tipOnTax"><span>Calculate tip on tax too</span></label></div><div class="tip-section"><div class="tip-section-head"><label>Rounding</label></div><div class="tip-round-grid"><button type="button" class="tip-round active" data-round="none">No rounding</button><button type="button" class="tip-round" data-round="up">Round total up</button><button type="button" class="tip-round" data-round="person">Round / person</button></div></div><section class="tip-results" aria-live="polite"><div class="tip-result-main"><span>Total</span><strong id="tipTotal">$0.00</strong></div><div class="tip-result-row"><span>Bill</span><b id="tipBillOut">$0.00</b></div><div class="tip-result-row"><span>Tax</span><b id="tipTaxOut">$0.00</b></div><div class="tip-result-row"><span>Tip</span><b id="tipAmountOut">$0.00</b></div><div class="tip-result-row"><span>Each person</span><b id="tipEachOut">$0.00</b></div></section><button type="button" class="tip-reset secondary" id="tipReset">Reset Calculator</button></form></div></div></div><div class="modal" id="monthlyReportModal"><div class="sheet report-sheet"><div class="handle"></div><div class="row"><div><h2>Monthly Report</h2><div class="sub">Create a PDF summary for any month</div></div><button class="modal-close" data-close="monthlyReportModal">×</button></div><div class="report-modal-body"><div class="report-field"><label for="reportMonth">Month</label><div class="report-select-wrap"><select id="reportMonth" class="report-month" aria-label="Report month"></select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg></div></div><button type="button" class="report-download" id="downloadMonthlyReport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Download PDF</span></button><div class="report-status" id="reportStatus" aria-live="polite"></div></div></div></div>
+<div class="modal" id="tipModal"><div class="sheet receipt-sheet tip-sheet tip-receipt-sheet"><div class="row"><span></span><button class="modal-close" data-close="tipModal" aria-label="Close tip calculator">×</button></div><div class="receipt-head"><div class="receipt-brand">Bill Receipt</div><div class="receipt-title">Tip Calculator</div><div class="receipt-date">Calculate tip, tax, rounding &amp; split</div></div><form id="tipForm"><div class="tip-amount-wrap"><label for="tipBill">Bill Amount</label><div class="tip-input-wrap"><span>$</span><input id="tipBill" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0.00" autocomplete="off"></div></div><div class="tip-grid"><div class="meta-field"><label for="tipTax">Tax % <span>(optional)</span></label><input id="tipTax" inputmode="decimal" type="number" min="0" max="100" step="0.01" placeholder="0"></div><div class="meta-field"><label for="tipPeople">People</label><input id="tipPeople" inputmode="numeric" type="number" min="1" max="1000" step="1" value="1"></div></div><div class="tip-section"><div class="tip-section-head"><label>Tip</label><span id="tipRateLabel">18%</span></div><div class="tip-presets" id="tipPresets"><button type="button" class="tip-preset" data-tip-rate="10">10%</button><button type="button" class="tip-preset" data-tip-rate="15">15%</button><button type="button" class="tip-preset active" data-tip-rate="18">18%</button><button type="button" class="tip-preset" data-tip-rate="20">20%</button><button type="button" class="tip-preset" data-tip-rate="25">25%</button></div><div class="tip-custom-row"><label for="tipRate">Custom</label><div class="tip-custom-input"><input id="tipRate" inputmode="decimal" type="number" min="0" max="100" step="0.1" value="18"><span>%</span></div></div><label class="tip-check"><input type="checkbox" id="tipOnTax"><span>Calculate tip on tax too</span></label></div><div class="tip-section"><div class="tip-section-head"><label>Rounding</label></div><div class="tip-round-grid"><button type="button" class="tip-round active" data-round="none">No rounding</button><button type="button" class="tip-round" data-round="up">Round total up</button><button type="button" class="tip-round" data-round="person">Round / person</button></div></div><section class="tip-results" aria-live="polite"><div class="tip-result-main"><span>Total</span><strong id="tipTotal">$0.00</strong></div><div class="tip-result-row"><span>Bill</span><b id="tipBillOut">$0.00</b></div><div class="tip-result-row"><span>Tax</span><b id="tipTaxOut">$0.00</b></div><div class="tip-result-row"><span>Tip</span><b id="tipAmountOut">$0.00</b></div><div class="tip-result-row"><span>Each person</span><b id="tipEachOut">$0.00</b></div></section><button type="button" class="tip-reset secondary" id="tipReset">Reset Calculator</button></form></div></div></div><div class="modal" id="monthlyReportModal"><div class="sheet report-sheet"><div class="handle"></div><div class="row"><div><h2>Monthly Report</h2><div class="sub">Create a PDF summary for any month</div></div><button class="modal-close" data-close="monthlyReportModal">×</button></div><div class="report-modal-body"><div class="report-field"><label for="reportMonth">Month</label><div class="report-select-wrap"><select id="reportMonth" class="report-month" aria-label="Report month"></select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg></div></div><button type="button" class="report-download" id="downloadMonthlyReport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Download PDF</span></button><div class="report-status" id="reportStatus" aria-live="polite"></div></div></div></div>
 
 <style>
 /* v9 refinements */
@@ -2258,6 +2258,126 @@ html,body{background:#f7f7f5;color:#111}
 }
 @media(max-width:560px){
   .modal#monthlyReportModal .report-sheet{
+    max-height:92dvh!important;
+  }
+}
+</style>
+
+
+<style>
+/* Tip Calculator — full-width receipt sheet */
+.modal#tipModal{
+  position:fixed!important;
+  inset:0!important;
+  width:auto!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  transform:none!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+}
+.modal#tipModal .tip-receipt-sheet{
+  width:100%!important;
+  max-width:430px!important;
+  margin:0 auto!important;
+  max-height:92vh!important;
+  box-sizing:border-box!important;
+  border-radius:4px 4px 0 0!important;
+  padding:18px 20px calc(30px + env(safe-area-inset-bottom))!important;
+  background:#fffdf8!important;
+  overflow:auto!important;
+  transform:translateY(105%)!important;
+  transition:transform .28s cubic-bezier(.22,.8,.28,1)!important;
+}
+.modal#tipModal.open .tip-receipt-sheet{
+  transform:translateY(0)!important;
+}
+.modal#tipModal.closing .tip-receipt-sheet{
+  transform:translateY(105%)!important;
+}
+@media(max-width:430px){
+  .modal#tipModal .tip-receipt-sheet{
+    max-width:none!important;
+    width:100%!important;
+  }
+}
+</style>
+
+
+<style>
+/* Tip Calculator — hybrid slide-in + receipt styling */
+.modal#tipModal{
+  position:fixed!important;
+  inset:0!important;
+  width:auto!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  transform:none!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  padding:0!important;
+}
+.modal#tipModal .tip-receipt-sheet{
+  width:100%!important;
+  max-width:430px!important;
+  max-height:92vh!important;
+  margin:0 auto!important;
+  box-sizing:border-box!important;
+  overflow:auto!important;
+
+  /* Standard slide-in sheet geometry */
+  border-radius:28px 28px 0 0!important;
+  border:1px solid var(--line)!important;
+  border-bottom:0!important;
+  padding:16px 18px calc(28px + env(safe-area-inset-bottom))!important;
+
+  /* Receipt appearance */
+  background:#fffdf8!important;
+  box-shadow:0 -20px 70px rgba(25,35,29,.16)!important;
+
+  transform:translateY(105%)!important;
+  transition:transform .28s cubic-bezier(.22,.8,.28,1)!important;
+}
+
+/* The normal slide-in handle stays visible, while receipt styling remains below it. */
+.modal#tipModal .tip-receipt-sheet .handle{
+  display:block!important;
+  width:42px!important;
+  height:4px!important;
+  margin:0 auto 18px!important;
+  border-radius:8px!important;
+  background:#d6dbd6!important;
+}
+
+/* Keep the receipt header treatment */
+.modal#tipModal .tip-receipt-sheet .receipt-head{
+  margin:0!important;
+  padding:4px 0 16px!important;
+  border-bottom:1px dashed #bfc3bd!important;
+  text-align:center!important;
+}
+
+/* Keep the calculator comfortable inside the slide-in sheet */
+.modal#tipModal .tip-receipt-sheet #tipForm{
+  width:100%!important;
+}
+
+.modal#tipModal.open .tip-receipt-sheet{
+  transform:translateY(0)!important;
+}
+.modal#tipModal.closing .tip-receipt-sheet{
+  transform:translateY(105%)!important;
+}
+
+@media(max-width:430px){
+  .modal#tipModal .tip-receipt-sheet{
+    width:100%!important;
+    max-width:none!important;
     max-height:92dvh!important;
   }
 }
