@@ -86,6 +86,18 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 .budget-card .catnum{padding-left:30px}.budget-card .swipe-content{padding-right:8px} .budget-card .swipe-wrap.open .swipe-content{transform:translateX(-152px)}
 /* Budget page: Cash App-inspired category cards */
 .budget-page-header{display:block;margin-top:2px}.budget-page-header h1{margin:0;font-size:30px;line-height:1.1;letter-spacing:-.8px}.budget-page-header .sub{margin-top:5px}.budget-page-add{width:34px;height:34px;border:0;border-radius:11px;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 5px 12px rgba(37,138,96,.18)}.budget-page-add svg{width:18px;height:18px}.budget-total-card{margin-top:16px;background:var(--accent);border:0;color:#fff;border-radius:22px;padding:18px;box-shadow:0 12px 28px rgba(37,138,96,.16)}.budget-total-card .label{font-size:11px;opacity:.82}.budget-total-card .amount{font-size:34px;font-weight:780;letter-spacing:-1.4px;margin:3px 0 13px}.budget-total-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.budget-total-stats div{border-left:1px solid rgba(255,255,255,.2);padding-left:9px}.budget-total-stats div:first-child{border-left:0;padding-left:0}.budget-total-stats b,.budget-total-stats span{display:block}.budget-total-stats b{font-size:12px}.budget-total-stats span{font-size:8px;opacity:.72;margin-top:2px}.budget-section-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 1px 9px}.budget-section-label .section-title{font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--text)}.budget-categories{margin-top:0;display:grid;gap:8px}.budget-category-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:5px 8px;box-shadow:0 2px 8px rgba(31,44,35,.025)}.budget-category-card .swipe-wrap{margin:-5px -8px;border-radius:14px}.budget-category-card .swipe-content{padding:5px 8px}.budget-category-card .category{margin:0;gap:9px}.budget-category-card .catmain strong{font-size:11px;line-height:1.15}.budget-category-card .catmain small{font-size:8px;line-height:1.1}.budget-category-card .catnum b{font-size:10px}.budget-category-card .catnum small{font-size:7px}.budget-category-card .caticon{width:28px;height:28px;flex-basis:28px;border-radius:8px}.budget-category-card .caticon svg{width:14px;height:14px}.budget-category-card .catbar{height:4px;margin-top:3px}.budget-empty{margin-top:10px}
+
+/* Budget receipt spacing + category swipe behavior */
+.budget-receipt{margin-top:20px;}
+.budget-receipt .swipe-wrap{position:relative;overflow:hidden;}
+.budget-receipt .swipe-content{position:relative;z-index:1;transition:transform .22s ease;touch-action:pan-y;background:#fffdf8;}
+.budget-receipt .swipe-wrap.open .swipe-content{transform:translateX(-152px);}
+.budget-receipt .swipe-actions{position:absolute;right:0;top:0;bottom:0;width:152px;display:grid;grid-template-columns:76px 76px;z-index:0;}
+.budget-receipt .swipe-actions .swipe-edit,.budget-receipt .swipe-actions .swipe-delete{width:76px;height:100%;border:0;color:#fff;display:grid;place-items:center;}
+.budget-receipt .swipe-actions .swipe-edit{background:#8a938d;}
+.budget-receipt .swipe-actions .swipe-delete{background:#d95353;}
+.budget-receipt .swipe-actions svg{width:18px;height:18px;}
+
 /* Category transaction sheet: anchored to the bottom with slide-in/out animation. */
 .modal#categoryTransactionsModal{display:flex;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .28s ease,visibility 0s linear .28s}
 .modal#categoryTransactionsModal.open{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .28s ease,visibility 0s linear 0s}
@@ -401,6 +413,34 @@ html,body{overscroll-behavior-y:contain}
   .dashboard-bars .bar-label{max-width:55px;font-size:8px;min-height:32px;}
 }
 </style>
+
+<style>
+/* v36 — Compact budget receipt; remove decorative torn edges */
+.budget-receipt:before,.budget-receipt:after{display:none!important}
+.budget-receipt{padding:18px 15px 22px!important;box-shadow:0 9px 24px rgba(0,0,0,.055)!important}
+.budget-receipt .transactions-receipt-head{padding-bottom:11px!important}
+.budget-receipt .transactions-receipt-kicker{font-size:9px!important;letter-spacing:1.9px!important}
+.budget-receipt .transactions-receipt-title{font-size:24px!important;letter-spacing:-.8px!important;margin-top:3px!important}
+.budget-receipt .transactions-receipt-sub{font-size:10px!important;margin-top:3px!important}
+.budget-receipt-body{padding-top:0!important}
+.budget-category-card .swipe-content{padding:10px 1px!important}
+.budget-category-content{grid-template-columns:34px minmax(0,1fr)!important;column-gap:9px!important}
+.budget-category-icon{width:34px!important;height:34px!important;border-radius:9px!important}
+.budget-category-icon svg{width:17px!important;height:17px!important}
+.budget-category-top{gap:8px!important}
+.budget-category-top>strong{font-size:13px!important;line-height:16px!important}
+.budget-category-amount{gap:3px!important}
+.budget-category-amount b{font-size:13px!important;line-height:16px!important}
+.budget-category-amount span{font-size:10px!important;line-height:14px!important}
+.budget-category-progress{height:8px!important;margin-top:6px!important}
+.budget-category-percent{font-size:8px!important;line-height:11px!important;margin-top:4px!important}
+.budget-receipt-total{margin-top:2px!important;padding-top:12px!important}
+.budget-receipt .transactions-receipt-total-label{font-size:9px!important}
+.budget-receipt .transactions-receipt-total-amount{font-size:30px!important;letter-spacing:-1px!important}
+.budget-receipt .transactions-receipt-total-count{font-size:10px!important}
+.budget-receipt .transactions-receipt-foot{margin-top:10px!important;padding-top:11px!important;font-size:8px!important}
+@media(max-width:430px){.budget-receipt{padding-left:13px!important;padding-right:13px!important}.budget-category-content{grid-template-columns:32px minmax(0,1fr)!important;column-gap:8px!important}.budget-category-icon{width:32px!important;height:32px!important}.budget-category-icon svg{width:16px!important;height:16px!important}.budget-category-top>strong{font-size:12px!important;line-height:15px!important}.budget-category-amount b{font-size:12px!important;line-height:15px!important}.budget-category-amount span{font-size:9px!important}.budget-category-progress{height:8px!important;margin-top:5px!important}.budget-category-percent{font-size:8px!important;line-height:10px!important;margin-top:3px!important}}
+</style>
 </head>
 <body>
 <div id="initialLoading" class="initial-loading" role="status" aria-live="polite" aria-label="Loading budget data">
@@ -619,7 +659,7 @@ function topCategoryBars(){const arr=categoriesWithSpent().sort((a,b)=>b.spent-a
 function greetingForHour(hour){return hour<12?'Good morning':hour<17?'Good afternoon':'Good evening'}
 function currentMonthLabel(){return new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}
 function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);const latest=sortTransactions([...state.transactions]).slice(0,3);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard dashboard-balance-hero"><div class="label">Remaining</div><div class="amount">${money(remaining)}</div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="transactions-page-receipt dashboard-latest-receipt"><button class="dashboard-receipt-link" data-go="transactions">View All ›</button><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Transaction Ledger</div><div class="transactions-receipt-title">Latest Transactions</div><div class="transactions-receipt-sub">Recent activity</div></div><div class="transactions-receipt-body">${latest.length?groupTransactions(latest):'<div class="transactions-receipt-empty">No Transactions Yet.</div>'}</div><div class="transactions-receipt-foot">— End of latest transactions —</div></section>`}
-function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="budget-category-content category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="budget-category-icon">${iconSVG(c.icon||'home')}</div><div class="budget-category-main"><div class="budget-category-top"><strong>${esc(c.name)}</strong><div class="budget-category-amount"><b>${money(c.spent)}</b><span>/ ${money(c.budget)}</span></div></div><div class="budget-category-progress" aria-label="${p}% used"><div class="budget-progress-segments" aria-hidden="true">${Array.from({length:60},()=>'<span></span>').join('')}</div><span class="budget-progress-fill ${cls}" style="width:${w}%"></span></div><div class="budget-category-percent">${p}% of your monthly limit</div></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
+function budget(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>${money(spent)}</b><span>Spent</span></div></div></section><section class="transactions-page-receipt budget-receipt"><div class="transactions-receipt-head budget-receipt-head"><div class="budget-receipt-add"><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><div class="transactions-receipt-kicker">Budget Ledger</div><div class="transactions-receipt-title">Budget Categories</div><div class="transactions-receipt-sub">Current month · ${formatDate(today())}</div></div><div class="budget-receipt-body">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="budget-category-content category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="budget-category-icon">${iconSVG(c.icon||'home')}</div><div class="budget-category-main"><div class="budget-category-top"><strong>${esc(c.name)}</strong><div class="budget-category-amount"><b>${money(c.spent)}</b><span>/ ${money(c.budget)}</span></div></div><div class="budget-category-progress" aria-label="${p}% used"><span class="budget-progress-fill ${cls}" style="width:${w}%"></span></div><div class="budget-category-percent">${p}% of your monthly limit</div></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="transactions-receipt-empty">No Budget Categories Yet.</div>'}</div><div class="transactions-receipt-total budget-receipt-total"><div class="transactions-receipt-total-label">Remaining Budget</div><div class="transactions-receipt-total-amount">${money(remaining)}</div><div class="transactions-receipt-total-count">${money(spent)} spent of ${money(budget)}</div></div><div class="transactions-receipt-foot">— End of monthly budget ledger —</div></section>`}
 
 function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6,total=endPct-startPct;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];if(total>=99.999){return `M 86 ${86-outer} A ${outer} ${outer} 0 1 1 85.999 ${86+outer} A ${outer} ${outer} 0 1 1 86 ${86-outer} M 86 ${86-inner} A ${inner} ${inner} 0 1 0 86.001 ${86+inner} A ${inner} ${inner} 0 1 0 86 ${86-inner} Z`;}const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=total>50?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
 function reportMonths(){const keys=new Set([currentYM(),...state.transactions.map(t=>ym(t.date)),...state.archive.map(t=>ym(t.date))]);return [...keys].filter(Boolean).sort((a,b)=>b.localeCompare(a));}
@@ -1855,4 +1895,45 @@ html,body{background:#f7f7f5;color:#111}
 .categories-page .legend>div{border-color:#eef0ed!important;color:var(--text)!important}
 .categories-page .donut:after{background:#fff!important}
 .categories-page .donut b{color:var(--text)!important}
+
+/* v35 — Budget categories receipt redesign + continuous progress bars */
+.budget-receipt{margin-top:0!important;background:#fffdf8!important;border-color:#deded9!important;border-radius:4px!important;padding:22px 18px 28px!important;box-shadow:0 12px 30px rgba(0,0,0,.07)!important;overflow:visible!important;position:relative!important}
+.budget-receipt:before,.budget-receipt:after{content:"";position:absolute;left:0;right:0;height:8px;background:linear-gradient(135deg,transparent 5px,#fffdf8 5px,#fffdf8 10px,transparent 10px) repeat-x;background-size:20px 8px;pointer-events:none}
+.budget-receipt:before{top:-7px}.budget-receipt:after{bottom:-7px;transform:rotate(180deg)}
+.budget-receipt .transactions-receipt-head{padding-bottom:15px}
+.budget-receipt .transactions-receipt-kicker{color:#087b31}
+.budget-receipt-body{padding-top:3px}
+.budget-category-card{height:auto!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.budget-category-card .swipe-wrap,.budget-category-card .swipe-content{height:auto!important;min-height:0!important}
+.budget-category-card .swipe-wrap{margin:0!important;border-radius:0!important;border-bottom:1px dotted #d5d8d3!important}
+.budget-category-card:last-child .swipe-wrap{border-bottom:0!important}
+.budget-category-card .swipe-content{padding:13px 2px!important;background:#fffdf8!important}
+.budget-category-content{width:100%!important;height:auto!important;display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;column-gap:11px!important;align-items:center!important}
+.budget-category-icon{width:38px!important;height:38px!important;border-radius:10px!important;background:#eef7f1!important;color:#087b31!important;display:grid!important;place-items:center!important}
+.budget-category-icon svg{width:19px!important;height:19px!important}
+.budget-category-main{min-width:0!important;width:100%!important}
+.budget-category-top{display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:10px!important;width:100%!important}
+.budget-category-top>strong{min-width:0!important;overflow:visible!important;text-overflow:clip!important;white-space:normal!important;font-size:14px!important;line-height:17px!important;font-weight:650!important;letter-spacing:-.1px!important;color:#161916!important}
+.budget-category-amount{flex:0 0 auto!important;white-space:nowrap!important;display:flex!important;align-items:baseline!important;gap:4px!important}
+.budget-category-amount b{font-size:14px!important;line-height:17px!important;font-weight:750!important;color:#161916!important}
+.budget-category-amount span{font-size:11px!important;line-height:15px!important;color:#858581!important}
+.budget-category-progress{position:relative!important;display:block!important;width:100%!important;height:9px!important;margin-top:7px!important;overflow:hidden!important;background:#eceeeb!important;border-radius:999px!important}
+.budget-progress-fill{position:absolute!important;left:0!important;top:0!important;bottom:0!important;z-index:1!important;display:block!important;height:100%!important;min-width:0!important;border-radius:999px!important;background:#00d64f!important}
+.budget-progress-fill.orange,.budget-progress-fill.warn{background:#f08a45!important}.budget-progress-fill.red{background:#df5757!important}
+.budget-category-percent{display:block!important;width:100%!important;height:auto!important;min-height:0!important;margin-top:5px!important;padding:0!important;font-size:9px!important;line-height:12px!important;font-weight:500!important;color:#858581!important}
+.budget-receipt-total{margin-top:4px!important;padding-top:15px!important}
+@media(max-width:430px){.budget-receipt{padding-left:15px!important;padding-right:15px!important}.budget-category-content{grid-template-columns:36px minmax(0,1fr)!important;column-gap:10px!important}.budget-category-icon{width:36px!important;height:36px!important}.budget-category-icon svg{width:18px!important;height:18px!important}.budget-category-top{align-items:flex-start!important}.budget-category-top>strong{font-size:13px!important;line-height:16px!important}.budget-category-amount b{font-size:13px!important}.budget-category-amount span{font-size:10px!important}.budget-category-progress{height:9px!important;margin-top:6px!important}.budget-category-percent{font-size:9px!important;line-height:12px!important;margin-top:4px!important}}
+</style>
+
+<style>
+/* Budget categories: compact receipt header + add action */
+.budget-receipt-head{position:relative!important;}
+.budget-receipt-head .budget-receipt-add{position:absolute!important;top:0!important;right:0!important;z-index:3!important;}
+.budget-receipt-head .budget-page-add{width:32px!important;height:32px!important;border:0!important;border-radius:10px!important;background:#00d64f!important;color:#fff!important;display:grid!important;place-items:center!important;padding:0!important;box-shadow:none!important;}
+.budget-receipt-head .budget-page-add svg{width:17px!important;height:17px!important;stroke:#fff!important;}
+.budget-receipt-head .transactions-receipt-kicker,.budget-receipt-head .transactions-receipt-title,.budget-receipt-head .transactions-receipt-sub{padding-right:42px!important;}
+</style>
+<style>
+/* Final budget categories spacing */
+.budget-receipt{margin-top:18px!important;}
 </style>
