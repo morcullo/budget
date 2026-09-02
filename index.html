@@ -242,7 +242,107 @@ html,body{overscroll-behavior-y:contain}
 .sw-summary{margin-top:15px;background:linear-gradient(145deg,#e9f5ef,#f6faf7);border:1px solid #cfe6da;border-radius:18px;padding:13px}.sw-summary-total{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;margin-bottom:7px;border-bottom:1px solid #d7e9df}.sw-summary-total span{font-size:11px;color:#587164}.sw-summary-total strong{font-size:25px;color:#173d2d}.sw-balance{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;font-size:10px}.sw-balance strong{font-size:11px}.sw-balance.positive strong{color:#258a60}.sw-balance.negative strong{color:#c04444}.sw-settlements{margin-top:10px;padding-top:9px;border-top:1px solid #d7e9df}.sw-settlements h4{margin:0 0 6px;font-size:10px}.sw-settlement{font-size:9px;padding:4px 0;color:#5d665f}.sw-settlement b{color:var(--text)}.sw-status{min-height:16px;color:#b44f4b;font-size:9px;margin-top:7px}.sw-validation{display:none;margin-top:8px;padding:8px 10px;border:1px solid #edc4c4;background:#fff7f7;border-radius:10px;color:#b44a4a;font-size:9px;line-height:1.35}.sw-validation.show{display:block}.sw-expense-invalid{border-color:#e3aaaa}.sw-settlement-error{color:#b44a4a}.sw-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.sw-actions button{min-width:0}.sw-actions button{height:43px;border-radius:13px;font-size:10px;font-weight:700}.sw-clear{border:1px solid #ead0d0;background:#fff8f8;color:#b24a4a}.sw-add-expense{border:1px solid #b9ddc9;background:#e5f5ec;color:#176b48}.sw-sheet input[type=number]::-webkit-inner-spin-button,.sw-sheet input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 @media(max-width:350px){.sw-exp-controls{grid-template-columns:1fr}.sw-methods{grid-template-columns:1fr 1fr}.sw-add-row{grid-template-columns:1fr auto}}
 
-</style></head>
+</style>
+<style>
+/* v20 — compact 60-segment budget bars + guaranteed percentage */
+.budget-category-card{
+  min-height:88px!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+.budget-category-card .swipe-wrap{
+  height:auto!important;
+  min-height:88px!important;
+  overflow:visible!important;
+}
+.budget-category-card .swipe-content{
+  min-height:88px!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+  padding:11px 14px 9px!important;
+  display:block!important;
+  overflow:visible!important;
+}
+.budget-category-content{
+  display:block!important;
+  width:100%!important;
+  overflow:visible!important;
+}
+.budget-category-progress{
+  display:flex!important;
+  width:100%!important;
+  height:10px!important;
+  gap:1px!important;
+  margin-top:8px!important;
+  overflow:visible!important;
+}
+.budget-segment{
+  flex:1 1 0!important;
+  width:auto!important;
+  min-width:0!important;
+  height:10px!important;
+  border-radius:1px!important;
+}
+.budget-category-percent{
+  display:block!important;
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:12px!important;
+  visibility:visible!important;
+  opacity:1!important;
+  margin-top:5px!important;
+  font-size:10px!important;
+  line-height:12px!important;
+  font-weight:400!important;
+  color:#858a86!important;
+}
+@media(max-width:430px){
+  .budget-category-card{min-height:86px!important}
+  .budget-category-card .swipe-wrap{min-height:86px!important}
+  .budget-category-card .swipe-content{min-height:86px!important;padding:10px 13px 8px!important}
+  .budget-category-progress{height:10px!important;gap:1px!important;margin-top:7px!important}
+  .budget-segment{height:10px!important;border-radius:1px!important}
+  .budget-category-percent{font-size:10px!important;line-height:12px!important;margin-top:4px!important}
+}
+</style>
+
+<style>
+/* v26 — compact category cards with icon + refined progress */
+.budget-category-card{height:86px!important;min-height:86px!important}
+.budget-category-card .swipe-wrap,.budget-category-card .swipe-content{height:86px!important;min-height:86px!important}
+.budget-category-card .swipe-content{padding:9px 12px!important;box-sizing:border-box!important}
+.budget-category-content{display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;align-items:center!important;column-gap:10px!important;width:100%!important;height:100%!important}
+.budget-category-icon{width:34px!important;height:34px!important;border-radius:10px!important;background:#f0f2f0!important;color:#202421!important;display:grid!important;place-items:center!important;flex:0 0 34px!important}
+.budget-category-icon svg{width:17px!important;height:17px!important}
+.budget-category-main{min-width:0!important;width:100%!important}
+.budget-category-top{display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:8px!important;width:100%!important}
+.budget-category-top>strong{font-size:14px!important;line-height:17px!important;font-weight:500!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.budget-category-amount{white-space:nowrap!important;display:flex!important;align-items:baseline!important;gap:4px!important;flex:0 0 auto!important}
+.budget-category-amount b{font-size:14px!important;font-weight:600!important;line-height:17px!important}
+.budget-category-amount span{font-size:11px!important;font-weight:400!important;line-height:15px!important;color:#858a86!important}
+.budget-category-progress{position:relative!important;display:block!important;width:100%!important;height:11px!important;margin-top:7px!important;overflow:hidden!important;background:transparent!important;border-radius:1px!important}
+.budget-progress-segments{position:absolute!important;inset:0!important;z-index:1!important;display:grid!important;grid-template-columns:repeat(60,2.2px)!important;justify-content:space-between!important;align-items:stretch!important;width:100%!important;height:100%!important}
+.budget-progress-segments span{display:block!important;width:3px!important;min-width:3px!important;height:100%!important;background:#eceeeb!important;border-radius:1px!important}
+.budget-progress-fill{position:absolute!important;left:0!important;top:0!important;bottom:0!important;z-index:2!important;display:block!important;height:100%!important;min-width:0!important;border-radius:1px!important;transition:width .25s ease!important}
+.budget-category-percent{display:block!important;width:100%!important;height:12px!important;min-height:12px!important;margin-top:4px!important;padding:0!important;font-size:10px!important;line-height:12px!important;font-weight:400!important;color:#858a86!important;visibility:visible!important;opacity:1!important}
+@media(max-width:430px){
+ .budget-category-card,.budget-category-card .swipe-wrap,.budget-category-card .swipe-content{height:84px!important;min-height:84px!important}
+ .budget-category-card .swipe-content{padding:8px 10px!important}
+ .budget-category-content{grid-template-columns:29px minmax(0,1fr)!important;column-gap:9px!important}
+ .budget-category-icon{width:29px!important;height:29px!important;flex-basis:29px!important}
+ .budget-category-icon svg{width:15px!important;height:15px!important}
+ .budget-category-top>strong{font-size:13px!important}
+ .budget-category-amount b{font-size:13px!important}
+ .budget-category-amount span{font-size:10px!important}
+ .budget-category-progress{height:10px!important;margin-top:6px!important}
+ .budget-progress-segments{grid-template-columns:repeat(60,1.9px)!important}
+ .budget-progress-segments span{width:2.5px!important;min-width:2.5px!important}
+ .budget-category-percent{font-size:9px!important;line-height:11px!important;height:11px!important;min-height:11px!important;margin-top:4px!important}
+}
+</style>
+</head>
 <body>
 <div id="initialLoading" class="initial-loading" role="status" aria-live="polite" aria-label="Loading budget data">
   <div class="initial-loading-inner">
@@ -385,8 +485,8 @@ function catRows({swipe=false}={}){let arr=categoriesWithSpent().sort((a,b)=>sor
 function topCategoryBars(){const arr=categoriesWithSpent().sort((a,b)=>b.spent-a.spent).slice(0,6);if(!arr.length)return '<div class="empty">No Categories Yet.</div>';const selected=arr.find(c=>c.name===selectedTopCategory)||arr[0];const selectedPct=selected.budget?Math.round(selected.spent/selected.budget*100):0;const maxPct=Math.max(1,...arr.map(c=>c.budget?c.spent/c.budget*100:0));return `<div class="dashboard-bars">${arr.map(c=>{const pct=c.budget?Math.round(c.spent/c.budget*100):0;const h=Math.max(4,Math.min(100,pct/maxPct*100));const cls=catColor(pct);return `<button type="button" class="bar-item ${c.name===selected.name?'selected':''}" data-top-cat="${escAttr(c.name)}"><div class="bar-track"><i class="bar-fill ${cls}" style="height:${h}%"></i></div><div class="bar-label">${esc(c.name)}<small>${pct}%</small></div></button>`}).join('')}</div><div class="bar-detail"><div><small>${esc(selected.name)}</small><b>${money(selected.spent)} Total Spend</b></div><div class="usage"><b>${selectedPct}%</b><small>Usage</small></div></div>`}
 function greetingForHour(hour){return hour<12?'Good morning':hour<17?'Good afternoon':'Good evening'}
 function currentMonthLabel(){return new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}
-function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard"><div class="spark"></div><div class="hero-top"><div class="label">Remaining</div><div class="month-pill">${currentMonthLabel()}</div></div><div class="amount">${money(remaining)}</div><div class="hero-chart"><span></span><span></span><span></span><span></span><span></span></div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
-function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,filled=Math.min(24,Math.ceil(p/100*24)),cls=catColor(p);const segments=Array.from({length:24},(_,i)=>`<i class="cat-segment ${i<filled?'filled '+cls:''}"></i>`).join('');const content=`<div class="category category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="caticon">${iconSVG(c.icon)}</div><div class="catmain"><strong>${esc(c.name)}</strong><small>${money(Math.max(0,c.budget-c.spent))} remaining</small><div class="catbar" aria-label="${p}% used">${segments}</div></div><div class="catnum"><b>${money(c.spent)}</b><small>${p}% used</small></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
+function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard dashboard-balance-hero"><div class="label">Remaining</div><div class="amount">${money(remaining)}</div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
+function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="budget-category-content category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="budget-category-icon">${iconSVG(c.icon||'home')}</div><div class="budget-category-main"><div class="budget-category-top"><strong>${esc(c.name)}</strong><div class="budget-category-amount"><b>${money(c.spent)}</b><span>/ ${money(c.budget)}</span></div></div><div class="budget-category-progress" aria-label="${p}% used"><div class="budget-progress-segments" aria-hidden="true">${Array.from({length:60},()=>'<span></span>').join('')}</div><span class="budget-progress-fill ${cls}" style="width:${w}%"></span></div><div class="budget-category-percent">${p}% of your monthly limit</div></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
 
 function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6,total=endPct-startPct;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];if(total>=99.999){return `M 86 ${86-outer} A ${outer} ${outer} 0 1 1 85.999 ${86+outer} A ${outer} ${outer} 0 1 1 86 ${86-outer} M 86 ${86-inner} A ${inner} ${inner} 0 1 0 86.001 ${86+inner} A ${inner} ${inner} 0 1 0 86 ${86-inner} Z`;}const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=total>50?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
 function reportMonths(){const keys=new Set([currentYM(),...state.transactions.map(t=>ym(t.date)),...state.archive.map(t=>ym(t.date))]);return [...keys].filter(Boolean).sort((a,b)=>b.localeCompare(a));}
@@ -438,7 +538,7 @@ function deleteEomItem(){const idv=document.getElementById('eomEditId').value;if
 function resetEomCalculator(){if(!confirm('Reset the End of Month Calculator? This will set the account balance to $0 and remove all payables.'))return;state.eom={balance:0,items:[]};save();render(false)}
 function frequentPage(){return `<button class="back" id="backTransactions">‹ Transactions</button><h1>Frequent Transactions</h1><div class="sub">Save common transactions and reuse them quickly</div><section class="card"><div class="cardhead"><h2>${state.frequent.length} Frequent</h2><button class="secondary" id="addFrequent">＋ New</button></div>${state.frequent.length?state.frequent.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-row" data-edit-frequent="${escAttr(r.id)}"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-info"><strong>${esc(r.desc)}</strong><small>${money(r.amount)} · ${esc(r.cat)}</small></div><button class="recurring-add" data-add-frequent="${escAttr(r.id)}">＋ Add</button></div>`}).join(''):'<div class="empty">No Frequent Transactions Yet.</div>'}</section>`}
 function splitwisePage(){if(splitwise.people.length===0)splitwise.people=[{id:swId(),name:'Me'}];if(splitwise.expenses.length===0)swAddExpense(false);return `<div class="splitwise-page"><button class="back sw-back" id="backTools">‹ Tools</button><div class="sw-header"><div class="sw-header-main"><h1>Splitwise</h1><div class="sub">Split expenses with friends and see who owes whom.</div></div></div><div class="sw-layout"><div><section class="sw-panel"><div class="sw-section"><div class="sw-section-head"><h3>People</h3><span id="swPeopleCount">0 people</span></div><div class="sw-add-row"><input class="sw-input" id="swPersonName" placeholder="Add a person" autocomplete="off" maxlength="40"><button type="button" class="sw-add" id="swAddPerson">＋ Add</button></div><div class="sw-people" id="swPeople"></div><div class="sw-status" id="swStatus" aria-live="polite"></div></div></section><section class="sw-panel"><div class="sw-section"><div class="sw-section-head"><h3>Expenses</h3><span id="swExpenseCount">0 expenses</span></div><div id="swExpenses"></div><button type="button" class="sw-add-expense" id="swAddExpense">＋ Add Expense</button></div></section></div><aside class="sw-panel sw-summary" aria-live="polite"><div class="sw-summary-total"><span>Total Expenses</span><strong id="swTotal">$0.00</strong></div><div id="swBalances"></div><div class="sw-settlements" id="swSettlements"></div><div class="sw-actions"><button type="button" class="sw-clear" id="swClear">Clear All</button><button type="button" class="send-btn" id="swClose" style="height:43px;margin:0;border-radius:13px;font-size:11px">Done</button></div></aside></div></div>`}
-function recurringPage(){const backLabel=recurringOrigin==='tools'?'‹ Tools':'‹ Transactions';return `<div class="recurring-page"><button class="back" id="backTransactions">${backLabel}</button><div class="recurring-header"><div class="recurring-header-main"><h1>Recurring Transactions</h1><div class="sub">Automatically add transactions on their schedule</div></div></div><section class="card"><div class="cardhead"><h2>${state.recurring.length} Recurring</h2><button type="button" class="recurring-new" id="newRecurringPage">＋ New</button></div>${state.recurring.length?state.recurring.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-row" data-edit-recurring="${escAttr(r.id)}" role="button" tabindex="0"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-info"><strong>${esc(r.desc)}</strong><small>${money(r.amount)} · ${esc(r.cat)} · ${frequencyLabel(r.frequency)} · Starts ${formatDate(r.startDate)}</small></div></div>`}).join(''):'<div class="empty">No Recurring Transactions Yet.</div>'}</section></div>`}
+function recurringPage(){const backLabel=recurringOrigin==='tools'?'‹ Tools':'‹ Transactions';const total=state.recurring.reduce((n,r)=>n+Math.abs(Number(r.amount)||0),0);return `<div class="recurring-page"><div class="recurring-topbar"><button class="back" id="backTransactions">${backLabel}</button><button type="button" class="secondary recurring-receipt-new" id="newRecurringPage">${iconSVG('plus')} New</button></div><section class="transactions-page-receipt recurring-receipt"><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Recurring Ledger</div><div class="transactions-receipt-title">Recurring Transactions</div><div class="transactions-receipt-sub">Scheduled transactions</div></div><div class="transactions-receipt-body recurring-receipt-body">${state.recurring.length?state.recurring.map(r=>{const c=state.categories.find(x=>x.name===r.cat);return `<div class="recurring-receipt-row" data-edit-recurring="${escAttr(r.id)}" role="button" tabindex="0"><div class="recurring-receipt-main"><div class="caticon">${iconSVG(c?.icon||'home')}</div><div class="recurring-receipt-info"><strong>${esc(r.desc)}</strong><small>${esc(r.cat)} · ${frequencyLabel(r.frequency)}</small><small>Starts ${formatDate(r.startDate)}</small></div></div><div class="recurring-receipt-amount">${money(r.amount)}</div></div>`}).join(''):'<div class="transactions-receipt-empty">No Recurring Transactions Yet.</div>'}</div><div class="transactions-receipt-total"><div class="transactions-receipt-total-label">Scheduled Total</div><div class="transactions-receipt-total-amount">${money(total)}</div><div class="transactions-receipt-total-count">${state.recurring.length} recurring transaction${state.recurring.length===1?'':'s'}</div></div><div class="transactions-receipt-foot">— End of recurring ledger —</div></section></div>`}
 function archivePage(){const arr=[...state.archive].sort((a,b)=>b.date.localeCompare(a.date));const backLabel=archiveOrigin==='tools'?'‹ Tools':'‹ Transactions';return `<button class="back" id="backTransactions">${backLabel}</button><section class="transactions-page-receipt archive-receipt"><div class="transactions-receipt-head"><div class="transactions-receipt-kicker">Transaction Archive</div><div class="transactions-receipt-title">Archived Transactions</div><div class="transactions-receipt-sub">Grouped by month and date</div></div><div class="transactions-receipt-body">${arr.length?groupArchiveByMonth(arr):'<div class="transactions-receipt-empty">No Archived Transactions.</div>'}</div><div class="transactions-receipt-foot">— End of archived ledger —</div></section>`}
 function formatDate(date){return new Date(date+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function escAttr(s){return esc(s)}
@@ -963,4 +1063,651 @@ html,body{background:#f7f7f5;color:#111}
 .archive-page-header h1{margin-top:0}
 @media(max-width:360px){.budget-category-card .category{grid-template-columns:28px minmax(0,1fr) auto;gap:7px}.budget-category-card .caticon{width:28px;height:28px;flex-basis:28px}.budget-category-card .catnum{min-width:57px}.budget-category-card .catbar{gap:1.5px}}
 </style>
+
+<style>
+/* v15 dashboard + recurring receipt redesign */
+.dashboard-balance-hero .label{color:#a7a7a2}
+.dashboard-balance-hero .amount{margin-bottom:20px}
+.dashboard-balance-hero .stats{margin-top:0}
+.dashboard-balance-hero .month-pill,.dashboard-balance-hero .hero-chart,.dashboard-balance-hero .spark{display:none!important}
+.recurring-receipt-tools{display:flex;justify-content:flex-end;margin:10px 0 14px}
+.recurring-receipt-new{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px!important;padding:7px 13px!important;border-radius:999px!important;font-size:10px!important;font-weight:700!important}
+.recurring-receipt-new svg{width:13px;height:13px}
+.recurring-receipt{margin-top:0}
+.recurring-receipt-body{padding-top:3px}
+.recurring-receipt-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 2px;border-bottom:1px dotted #d5d8d3;cursor:pointer}
+.recurring-receipt-row:last-child{border-bottom:0}
+.recurring-receipt-main{display:flex;align-items:center;gap:11px;min-width:0}
+.recurring-receipt-info{min-width:0}
+.recurring-receipt-info strong,.recurring-receipt-info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.recurring-receipt-info strong{font-size:12px;font-weight:750;color:#161916}
+.recurring-receipt-info small{font-size:9px;color:#858581;margin-top:2px}
+.recurring-receipt-amount{font-size:12px;font-weight:800;color:#111;white-space:nowrap}
+@media(max-width:430px){.recurring-receipt-row{padding-left:0;padding-right:0}.recurring-receipt-amount{font-size:11px}}
+
+/* v16 visual refinements */
+.budget-category-card{padding:0;overflow:hidden;border-radius:18px}
+.budget-category-card .swipe-wrap{margin:0;border-radius:18px}
+.budget-category-card .swipe-content{padding:14px 15px 12px}
+.budget-category-content{display:block;width:100%}
+.budget-category-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-width:0}
+.budget-category-top>strong{font-size:15px;line-height:1.2;letter-spacing:-.25px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.budget-category-amount{display:flex;align-items:baseline;gap:3px;white-space:nowrap;flex:0 0 auto}
+.budget-category-amount b{font-size:15px;font-weight:800;color:var(--text)}
+.budget-category-amount span{font-size:11px;color:#888d89}
+.budget-category-progress{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px;height:10px;margin-top:10px;align-items:stretch}
+.budget-segment{display:block;height:10px;border-radius:3px;background:#eceeeb}
+.budget-segment.filled{background:#00d64f}
+.budget-segment.filled.orange{background:#f28a43}
+.budget-segment.filled.warn{background:#e9ad42}
+.budget-segment.filled.red{background:#df5757}
+.budget-category-percent{font-size:10px;color:#858a86;margin-top:6px}
+.recurring-page{padding-bottom:32px}
+.recurring-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.recurring-topbar .back{margin:0}
+.recurring-topbar .recurring-receipt-new{margin:0}
+.recurring-receipt{margin-top:0}
+/* Dashboard hero: keep the balance-focused presentation with no date/chart decoration. */
+.dashboard-balance-hero .hero-top,.dashboard-balance-hero .month-pill,.dashboard-balance-hero .hero-chart{display:none!important}
+.dashboard-balance-hero:before,.dashboard-balance-hero:after,.dashboard-balance-hero .spark{display:none!important}
+</style>
+
+<style>
+/* v17 — cleaner Cash-style budget category cards */
+.budget-category-card{
+  padding:0!important;
+  border-radius:16px!important;
+  box-shadow:0 1px 5px rgba(31,44,35,.025)!important;
+}
+.budget-category-card .swipe-wrap{margin:0!important;border-radius:16px!important}
+.budget-category-card .swipe-content{padding:13px 14px 11px!important}
+.budget-category-content{width:100%;display:block}
+.budget-category-top{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+.budget-category-top>strong{
+  font-size:16px!important;
+  line-height:1.15!important;
+  font-weight:700!important;
+  letter-spacing:-.3px!important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.budget-category-amount{
+  display:flex!important;
+  align-items:baseline!important;
+  gap:4px!important;
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+.budget-category-amount b{
+  font-size:15px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  color:#111!important;
+}
+.budget-category-amount span{
+  font-size:13px!important;
+  line-height:1!important;
+  color:#8a8f8b!important;
+}
+.budget-category-progress{
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  width:100%!important;
+  height:11px!important;
+  gap:3px!important;
+  margin-top:10px!important;
+  overflow:hidden!important;
+}
+.budget-segment{
+  flex:1 1 0!important;
+  min-width:0!important;
+  height:11px!important;
+  display:block!important;
+  background:#eceeeb!important;
+  border-radius:1px!important;
+}
+.budget-segment.filled{
+  background:#00d64f!important;
+  border-radius:1px!important;
+}
+.budget-segment.filled.orange{background:#f28a43!important}
+.budget-segment.filled.warn{background:#e9ad42!important}
+.budget-segment.filled.red{background:#df5757!important}
+.budget-category-percent{
+  font-size:11px!important;
+  line-height:1.1!important;
+  color:#858a86!important;
+  margin-top:7px!important;
+}
+.budget-categories{gap:9px!important}
+@media(max-width:430px){
+  .budget-category-card .swipe-content{padding:12px 13px 10px!important}
+  .budget-category-top>strong{font-size:15px!important}
+  .budget-category-amount b{font-size:14px!important}
+  .budget-category-amount span{font-size:12px!important}
+  .budget-category-progress{height:10px!important;gap:2px!important;margin-top:9px!important}
+  .budget-segment{height:10px!important}
+  .budget-category-percent{font-size:10px!important;margin-top:6px!important}
+}
+</style>
+<style>
+/* v18 — refined budget category proportions */
+.budget-category-card{
+  min-height:104px!important;
+  padding:0!important;
+  border-radius:16px!important;
+}
+.budget-category-card .swipe-wrap{border-radius:16px!important}
+.budget-category-card .swipe-content{
+  min-height:104px!important;
+  box-sizing:border-box!important;
+  padding:15px 16px 13px!important;
+  display:flex!important;
+  align-items:center!important;
+}
+.budget-category-content{width:100%!important}
+.budget-category-top>strong{
+  font-size:15px!important;
+  font-weight:400!important;
+  letter-spacing:-.15px!important;
+}
+.budget-category-amount b{
+  font-size:15px!important;
+  font-weight:650!important;
+  letter-spacing:-.2px!important;
+}
+.budget-category-amount span{
+  font-size:13px!important;
+  font-weight:400!important;
+}
+.budget-category-progress{
+  height:20px!important;
+  margin-top:12px!important;
+  gap:5px!important;
+  align-items:stretch!important;
+  overflow:visible!important;
+}
+.budget-segment{
+  flex:0 0 4px!important;
+  width:4px!important;
+  min-width:4px!important;
+  height:20px!important;
+  border-radius:0!important;
+  background:#eceeeb!important;
+}
+.budget-segment.filled,
+.budget-segment.filled.orange,
+.budget-segment.filled.warn,
+.budget-segment.filled.red{
+  border-radius:0!important;
+}
+.budget-category-percent{
+  font-size:11px!important;
+  font-weight:400!important;
+  margin-top:7px!important;
+  color:#858a86!important;
+}
+@media(max-width:430px){
+  .budget-category-card{min-height:102px!important}
+  .budget-category-card .swipe-content{min-height:102px!important;padding:14px 15px 12px!important}
+  .budget-category-top>strong{font-size:14px!important}
+  .budget-category-amount b{font-size:14px!important;font-weight:650!important}
+  .budget-category-amount span{font-size:12px!important}
+  .budget-category-progress{height:20px!important;gap:4px!important;margin-top:11px!important}
+  .budget-segment{flex-basis:4px!important;width:4px!important;height:20px!important}
+}
+</style>
+<style>
+/* v19 — finer 60-segment budget progress */
+.budget-category-progress{
+  display:flex!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  width:100%!important;
+  height:16px!important;
+  gap:2px!important;
+  margin-top:11px!important;
+  overflow:hidden!important;
+}
+.budget-segment{
+  flex:1 1 0!important;
+  width:auto!important;
+  min-width:0!important;
+  height:16px!important;
+  display:block!important;
+  border-radius:0!important;
+  background:#eceeeb!important;
+}
+.budget-segment.filled,
+.budget-segment.filled.orange,
+.budget-segment.filled.warn,
+.budget-segment.filled.red{
+  border-radius:0!important;
+}
+.budget-category-percent{
+  display:block!important;
+  position:relative!important;
+  z-index:2!important;
+  visibility:visible!important;
+  opacity:1!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+  font-weight:400!important;
+  margin-top:7px!important;
+  color:#858a86!important;
+}
+.budget-category-card .swipe-content{
+  min-height:108px!important;
+}
+@media(max-width:430px){
+  .budget-category-progress{height:16px!important;gap:2px!important;margin-top:10px!important}
+  .budget-segment{height:16px!important}
+  .budget-category-percent{display:block!important;font-size:10px!important;margin-top:6px!important}
+}
+</style>
+
+
+<style>
+/* v24 — 60-segment track with continuous filled portion */
+.budget-category-progress{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:12px!important;
+  margin-top:8px!important;
+  overflow:hidden!important;
+  border-radius:1px!important;
+  background:transparent!important;
+}
+.budget-progress-segments{
+  position:absolute!important;
+  inset:0!important;
+  display:grid!important;
+  grid-template-columns:repeat(60,minmax(0,1fr))!important;
+  gap:1px!important;
+}
+.budget-progress-segments span{
+  display:block!important;
+  min-width:0!important;
+  height:100%!important;
+  background:#eceeeb!important;
+  border-radius:1px!important;
+}
+.budget-progress-fill{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  bottom:0!important;
+  z-index:2!important;
+  display:block!important;
+  border-radius:1px!important;
+  transition:width .25s ease!important;
+}
+.budget-progress-fill.green{background:#00d64f!important}
+.budget-progress-fill.orange{background:#f28a43!important}
+.budget-progress-fill.warn{background:#e9ad42!important}
+.budget-progress-fill.red{background:#df5757!important}
+.budget-category-percent{display:block!important;visibility:visible!important;opacity:1!important}
+@media(max-width:430px){
+  .budget-category-progress{height:11px!important;margin-top:7px!important}
+}
+</style>
+
 </body></html>
+<style>
+/* v21 — finer dense budget progress + visible percentage */
+.budget-category-card{
+  min-height:82px!important;
+  height:82px!important;
+  padding:0!important;
+  border-radius:14px!important;
+  overflow:hidden!important;
+}
+.budget-category-card .swipe-wrap{
+  min-height:82px!important;
+  height:82px!important;
+  border-radius:14px!important;
+  overflow:hidden!important;
+}
+.budget-category-card .swipe-content{
+  min-height:82px!important;
+  height:82px!important;
+  box-sizing:border-box!important;
+  padding:10px 13px 8px!important;
+  display:block!important;
+  overflow:hidden!important;
+}
+.budget-category-content{width:100%!important;display:block!important}
+.budget-category-top{display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:10px!important;width:100%!important}
+.budget-category-top>strong{font-size:14px!important;font-weight:400!important;line-height:17px!important;letter-spacing:-.1px!important}
+.budget-category-amount{white-space:nowrap!important;display:flex!important;align-items:baseline!important;gap:4px!important}
+.budget-category-amount b{font-size:14px!important;font-weight:600!important;line-height:17px!important;letter-spacing:-.15px!important}
+.budget-category-amount span{font-size:11px!important;font-weight:400!important;line-height:15px!important;color:#858a86!important}
+.budget-category-progress{
+  display:flex!important;
+  align-items:stretch!important;
+  width:100%!important;
+  height:11px!important;
+  gap:1px!important;
+  margin-top:7px!important;
+  overflow:hidden!important;
+}
+.budget-segment{
+  flex:1 1 0!important;
+  width:auto!important;
+  min-width:0!important;
+  height:11px!important;
+  display:block!important;
+  border-radius:1px!important;
+  background:#eceeeb!important;
+}
+.budget-segment.filled,
+.budget-segment.filled.orange,
+.budget-segment.filled.warn,
+.budget-segment.filled.red{
+  border-radius:1px!important;
+}
+.budget-category-percent{
+  display:block!important;
+  position:relative!important;
+  z-index:3!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:12px!important;
+  min-height:12px!important;
+  margin-top:4px!important;
+  padding:0!important;
+  font-size:10px!important;
+  line-height:12px!important;
+  font-weight:400!important;
+  color:#858a86!important;
+}
+@media(max-width:430px){
+  .budget-category-card,.budget-category-card .swipe-wrap,.budget-category-card .swipe-content{height:80px!important;min-height:80px!important}
+  .budget-category-card .swipe-content{padding:9px 12px 7px!important}
+  .budget-category-top>strong{font-size:13px!important}
+  .budget-category-amount b{font-size:13px!important}
+  .budget-category-amount span{font-size:10px!important}
+  .budget-category-progress{height:10px!important;margin-top:6px!important;gap:1px!important}
+  .budget-segment{height:10px!important;border-radius:1px!important}
+  .budget-category-percent{font-size:9px!important;line-height:11px!important;height:11px!important;min-height:11px!important;margin-top:4px!important}
+}
+</style>
+
+<style>
+/* v23 — connected filled budget progress with segmented remainder */
+.budget-category-progress{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:10px!important;
+  margin-top:7px!important;
+  overflow:hidden!important;
+  background-color:#eceeeb!important;
+  background-image:repeating-linear-gradient(to right, #eceeeb 0, #eceeeb calc((100% - 59px)/60), transparent calc((100% - 59px)/60), transparent calc((100% - 59px)/60 + 1px))!important;
+}
+.budget-progress-fill{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  bottom:0!important;
+  display:block!important;
+  min-width:0!important;
+  height:100%!important;
+  background:var(--accent)!important;
+  border-radius:1px 0 0 1px!important;
+  z-index:2!important;
+}
+.budget-progress-fill.green{background:#00d64f!important}
+.budget-progress-fill.orange,.budget-progress-fill.warn,.budget-progress-fill.red{background:#f08a45!important}
+.budget-category-top>strong{font-weight:500!important}
+@media(max-width:430px){
+  .budget-category-progress{height:9px!important;margin-top:6px!important;background-image:repeating-linear-gradient(to right, #eceeeb 0, #eceeeb calc((100% - 59px)/60), transparent calc((100% - 59px)/60), transparent calc((100% - 59px)/60 + 1px))!important}
+}
+</style>
+<style>
+/* v25 — reliable 60-segment remainder with continuous filled section */
+.budget-category-progress{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:10px!important;
+  margin-top:7px!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  border-radius:1px!important;
+}
+.budget-progress-segments{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:grid!important;
+  grid-template-columns:repeat(60,4px)!important;
+  justify-content:space-between!important;
+  align-items:stretch!important;
+  width:100%!important;
+  height:100%!important;
+}
+.budget-progress-segments span{
+  display:block!important;
+  width:4px!important;
+  min-width:4px!important;
+  height:100%!important;
+  background:#eceeeb!important;
+  border-radius:1px!important;
+}
+.budget-progress-fill{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  bottom:0!important;
+  z-index:2!important;
+  display:block!important;
+  height:100%!important;
+  min-width:0!important;
+  border-radius:1px!important;
+  transition:width .25s ease!important;
+}
+.budget-progress-fill.green{background:#00d64f!important}
+.budget-progress-fill.orange{background:#f08a45!important}
+.budget-progress-fill.warn{background:#e9ad42!important}
+.budget-progress-fill.red{background:#df5757!important}
+.budget-category-percent{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:11px!important;
+  margin-top:4px!important;
+  padding:0!important;
+  font-size:10px!important;
+  line-height:11px!important;
+  font-weight:400!important;
+  color:#858a86!important;
+}
+@media(max-width:430px){
+  .budget-category-progress{height:9px!important;margin-top:6px!important}
+  .budget-progress-segments{grid-template-columns:repeat(60,3px)!important}
+  .budget-progress-segments span{width:3px!important;min-width:3px!important}
+  .budget-category-percent{font-size:9px!important;line-height:11px!important;margin-top:4px!important}
+}
+</style>
+<style>
+/* v27 — restore compact two-column budget category layout */
+.budget-category-card{
+  height:92px!important;
+  min-height:92px!important;
+  padding:0!important;
+  border-radius:14px!important;
+  overflow:hidden!important;
+}
+.budget-category-card .swipe-wrap,
+.budget-category-card .swipe-content{
+  height:92px!important;
+  min-height:92px!important;
+  box-sizing:border-box!important;
+}
+.budget-category-card .swipe-wrap{margin:0!important;border-radius:14px!important}
+.budget-category-card .swipe-content{
+  padding:10px 12px!important;
+  display:block!important;
+}
+.budget-category-content{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  column-gap:12px!important;
+  align-items:center!important;
+}
+.budget-category-icon{
+  width:42px!important;
+  height:42px!important;
+  border-radius:11px!important;
+  background:#f0f2ef!important;
+  display:grid!important;
+  place-items:center!important;
+  align-self:center!important;
+}
+.budget-category-icon svg{width:21px!important;height:21px!important}
+.budget-category-main{min-width:0!important;width:100%!important}
+.budget-category-top{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  width:100%!important;
+}
+.budget-category-top>strong{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:15px!important;
+  line-height:18px!important;
+  font-weight:500!important;
+  letter-spacing:-.1px!important;
+}
+.budget-category-amount{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+  display:flex!important;
+  align-items:baseline!important;
+  gap:4px!important;
+}
+.budget-category-amount b{
+  font-size:15px!important;
+  line-height:18px!important;
+  font-weight:600!important;
+  letter-spacing:-.15px!important;
+}
+.budget-category-amount span{
+  font-size:13px!important;
+  line-height:16px!important;
+  font-weight:400!important;
+  color:#858a86!important;
+}
+.budget-category-progress{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:12px!important;
+  margin-top:7px!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  border-radius:1px!important;
+}
+.budget-progress-segments{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:grid!important;
+  grid-template-columns:repeat(60,2.2px)!important;
+  justify-content:space-between!important;
+  align-items:stretch!important;
+  width:100%!important;
+  height:100%!important;
+}
+.budget-progress-segments span{
+  display:block!important;
+  width:3px!important;
+  min-width:3px!important;
+  height:100%!important;
+  background:#eceeeb!important;
+  border-radius:1px!important;
+}
+.budget-progress-fill{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  bottom:0!important;
+  z-index:2!important;
+  display:block!important;
+  height:100%!important;
+  min-width:0!important;
+  border-radius:1px!important;
+}
+.budget-category-percent{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:14px!important;
+  min-height:14px!important;
+  margin-top:5px!important;
+  padding:0!important;
+  font-size:11px!important;
+  line-height:14px!important;
+  font-weight:400!important;
+  color:#858a86!important;
+}
+@media(max-width:430px){
+  .budget-category-card,
+  .budget-category-card .swipe-wrap,
+  .budget-category-card .swipe-content{height:90px!important;min-height:90px!important}
+  .budget-category-card .swipe-content{padding:9px 10px!important}
+  .budget-category-content{grid-template-columns:40px minmax(0,1fr)!important;column-gap:10px!important}
+  .budget-category-icon{width:40px!important;height:40px!important;border-radius:10px!important}
+  .budget-category-icon svg{width:20px!important;height:20px!important}
+  .budget-category-top>strong{font-size:14px!important;line-height:17px!important}
+  .budget-category-amount b{font-size:14px!important;line-height:17px!important}
+  .budget-category-amount span{font-size:12px!important;line-height:15px!important}
+  .budget-category-progress{height:11px!important;margin-top:6px!important}
+  .budget-progress-segments{grid-template-columns:repeat(60,1.9px)!important}
+  .budget-progress-segments span{width:2.5px!important;min-width:2.5px!important}
+  .budget-category-percent{font-size:10px!important;line-height:13px!important;height:13px!important;min-height:13px!important;margin-top:4px!important}
+}
+</style>
+<style>
+/* Fix Category Spending page: keep it consistent with the light app theme. */
+.categories-page .categories-card{
+  background:#fff!important;
+  border:1px solid var(--line)!important;
+  box-shadow:0 5px 20px rgba(31,44,35,.035)!important;
+}
+.categories-page .categories-card:before,
+.categories-page .categories-card:after{display:none!important}
+.categories-page .categories-card .cardhead h2,
+.categories-page .categories-card .link,
+.categories-page .categories-card .receipt-title,
+.categories-page .categories-card b{color:var(--text)!important}
+.categories-page .categories-card .sub,
+.categories-page .categories-card small,
+.categories-page .categories-card span{color:var(--muted)!important}
+.categories-page .segmented{border-color:var(--line)!important;background:#fff!important}
+.categories-page .segmented .pill{color:var(--muted)!important;background:transparent!important}
+.categories-page .segmented .pill.active{background:var(--accent)!important;color:#fff!important}
+.categories-page .legend{border-color:var(--line)!important;background:#fff!important}
+.categories-page .legend>div{border-color:#eef0ed!important;color:var(--text)!important}
+.categories-page .donut:after{background:#fff!important}
+.categories-page .donut b{color:var(--text)!important}
+</style>
