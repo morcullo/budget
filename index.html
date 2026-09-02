@@ -656,9 +656,16 @@ html,body{overscroll-behavior-y:contain}
 .tool-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.4}
 @media(max-width:350px){.tools-grid{grid-template-columns:1fr}.tool-card{min-height:108px}}
 @media(min-width:700px){.modal#monthlyReportModal{bottom:24px}}
-/* End of Month Calculator */
-.eom-page h1{font-size:24px;margin:0 0 4px}.eom-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.receipt{position:relative;margin-top:18px;background:#fff;border:1px solid #e1e5e1;padding:24px 18px 22px;box-shadow:0 8px 24px rgba(31,44,35,.05);overflow:hidden}.receipt:before,.receipt:after{content:"";position:absolute;left:0;right:0;height:9px;background:radial-gradient(circle at 5px -1px,transparent 5px,#fff 5.5px) repeat-x;background-size:10px 10px}.receipt:before{top:-5px}.receipt:after{bottom:-5px;transform:rotate(180deg)}.receipt-balance{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.receipt-balance span,.eom-total span{display:block;color:var(--accent-strong);font-size:11px;font-weight:750;letter-spacing:.5px}.receipt-balance strong{display:block;font-size:36px;line-height:1.05;letter-spacing:-1.3px;margin-top:5px}.receipt-edit,.receipt-add{border:1px solid #b9dfcd;background:#f2faf6;color:var(--accent-strong);border-radius:13px;padding:10px 12px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;white-space:nowrap}.receipt-edit svg{width:16px;height:16px}.receipt-rule{height:1px;border-top:1px dashed #cfd5d0;margin:20px 0}.receipt-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.receipt-section-head h2{font-size:15px;color:var(--accent-strong);margin:0;letter-spacing:.5px}.receipt-add{padding:9px 11px}.receipt-columns{display:grid;grid-template-columns:minmax(0,1fr) 76px 34px;gap:8px;color:#7b837d;font-size:9px;margin:18px 0 7px}.receipt-columns span:nth-child(2),.receipt-columns span:nth-child(3){text-align:right}.eom-item{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;padding:10px 0;border-top:1px dashed #dfe3df}.eom-item-edit{min-width:0;width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 76px;gap:9px;align-items:center;padding:2px 0;border:0;background:transparent;text-align:left;color:var(--text)}.eom-item-icon{width:34px;height:34px;border-radius:50%;background:#e7f3ec;color:#2b7054;display:grid;place-items:center}.eom-item-icon svg{width:17px;height:17px}.eom-item-main{min-width:0}.eom-item-main strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.eom-item-main small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.eom-item-amount{text-align:right;font-size:13px;white-space:nowrap}.eom-check-wrap{width:28px;height:28px;display:grid;place-items:center;position:relative;cursor:pointer}.eom-check-wrap input{position:absolute;opacity:0;width:1px;height:1px}.eom-check{width:24px;height:24px;border:2px solid #9da69f;border-radius:6px;display:grid;place-items:center;color:#fff;font-size:16px;font-weight:800}.eom-check-wrap input:checked + .eom-check{background:var(--accent);border-color:var(--accent)}.eom-check-wrap input:focus-visible + .eom-check{box-shadow:0 0 0 3px #8bc6a922}.eom-item.paid .eom-item-main strong,.eom-item.paid .eom-item-amount{color:#8b938d;text-decoration:line-through}.eom-empty{text-align:center;padding:22px 8px;color:var(--muted);font-size:12px;border-top:1px dashed #dfe3df}.receipt-rule-bottom{margin:13px 0 18px}.eom-total{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.eom-total small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.eom-total strong{font-size:31px;color:var(--accent-strong);letter-spacing:-1px;white-space:nowrap}.eom-total strong.negative{color:#c04444}.eom-tip{display:flex;align-items:center;gap:12px;margin-top:14px;padding:15px 16px;border-radius:18px;background:#edf7f1;border:1px solid #deeee5}.eom-tip-icon{width:32px;height:32px;border-radius:50%;background:#d5eee1;color:var(--accent-strong);display:grid;place-items:center;font-weight:800;flex:0 0 32px}.eom-tip p{margin:0;color:#68736c;font-size:11px;line-height:1.45}.eom-reset{width:100%;margin-top:10px;border:1px solid #ead0d0;background:#fff8f8;color:#b24a4a;border-radius:14px;padding:11px 14px;font-size:11px;font-weight:700}.eom-item-sheet,.eom-balance-sheet{max-height:88dvh;margin:0 auto}
-
+/* End of Month Calculator — receipt style */
+.eom-page h1{font-size:24px;margin:0 0 4px}.eom-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.eom-receipt{position:relative;margin-top:18px;background:#fff;border:1px solid #dfe4df;border-radius:0;padding:0 18px 20px;box-shadow:0 8px 24px rgba(31,44,35,.05);overflow:hidden}
+.eom-receipt-head{text-align:center;padding:24px 8px 18px;border-bottom:1px dashed #cfd5d0}
+.eom-receipt-kicker{color:var(--accent-strong);font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:7px}
+.eom-receipt-title{font-size:28px;font-weight:850;letter-spacing:-1px;line-height:1.05}.eom-receipt-sub{color:var(--muted);font-size:11px;margin-top:7px;line-height:1.4}
+.eom-receipt-body{padding-top:18px}.receipt-balance{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:0 0 2px}.receipt-balance span,.eom-total span{display:block;color:var(--accent-strong);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}.receipt-balance strong{display:block;font-size:32px;line-height:1.05;letter-spacing:-1.1px;margin-top:5px}
+.receipt-edit,.receipt-add{border:1px solid #b9dfcd;background:#f2faf6;color:var(--accent-strong);border-radius:12px;padding:9px 11px;font-size:11px;font-weight:750;display:flex;align-items:center;gap:6px;white-space:nowrap}.receipt-edit svg{width:15px;height:15px}.receipt-rule{height:1px;border-top:1px dashed #cfd5d0;margin:18px 0}.receipt-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.receipt-section-head h2{font-size:14px;color:var(--text);margin:0;letter-spacing:.7px;text-transform:uppercase}.receipt-add{padding:8px 10px}.receipt-columns{display:grid;grid-template-columns:minmax(0,1fr) 76px 34px;gap:8px;color:#7b837d;font-size:8px;margin:15px 0 6px;text-transform:uppercase;letter-spacing:.5px}.receipt-columns span:nth-child(2),.receipt-columns span:nth-child(3){text-align:right}
+.eom-item{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;padding:10px 0;border-top:1px dashed #dfe3df}.eom-item-edit{min-width:0;width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 76px;gap:9px;align-items:center;padding:2px 0;border:0;background:transparent;text-align:left;color:var(--text)}.eom-item-icon{width:34px;height:34px;border-radius:50%;background:#e7f3ec;color:#2b7054;display:grid;place-items:center}.eom-item-icon svg{width:17px;height:17px}.eom-item-main{min-width:0}.eom-item-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.eom-item-main small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.eom-item-amount{text-align:right;font-size:12px;white-space:nowrap}.eom-check-wrap{width:28px;height:28px;display:grid;place-items:center;position:relative;cursor:pointer}.eom-check-wrap input{position:absolute;opacity:0;width:1px;height:1px}.eom-check{width:23px;height:23px;border:2px solid #9da69f;border-radius:6px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:800}.eom-check-wrap input:checked + .eom-check{background:var(--accent);border-color:var(--accent)}.eom-check-wrap input:focus-visible + .eom-check{box-shadow:0 0 0 3px #8bc6a922}.eom-item.paid .eom-item-main strong,.eom-item.paid .eom-item-amount{color:#8b938d;text-decoration:line-through}.eom-empty{text-align:center;padding:20px 8px;color:var(--muted);font-size:11px;border-top:1px dashed #dfe3df}
+.receipt-rule-bottom{margin:15px 0 17px}.eom-total{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:2px}.eom-total small{display:block;color:var(--muted);font-size:9px;margin-top:5px}.eom-total strong{font-size:29px;color:var(--accent-strong);letter-spacing:-1px;white-space:nowrap}.eom-total strong.negative{color:#c04444}.eom-receipt-foot{text-align:center;border-top:1px dashed #cfd5d0;margin-top:18px;padding-top:14px;color:#8b938d;font-size:9px;letter-spacing:.7px}.eom-tip{display:flex;align-items:center;gap:10px;margin-top:14px;padding:13px 14px;border-radius:15px;background:#edf7f1;border:1px solid #deeee5}.eom-tip-icon{width:30px;height:30px;border-radius:50%;background:#d5eee1;color:var(--accent-strong);display:grid;place-items:center;font-weight:800;flex:0 0 30px}.eom-tip p{margin:0;color:#68736c;font-size:10px;line-height:1.45}.eom-reset{width:100%;margin-top:10px;border:1px solid #ead0d0;background:#fff8f8;color:#b24a4a;border-radius:12px;padding:10px 14px;font-size:10px;font-weight:700}.eom-item-sheet,.eom-balance-sheet{max-height:88dvh;margin:0 auto}
 
 </style>
 
@@ -814,7 +821,7 @@ function transactions(){const actual=[...currentTransactions()].sort((a,b)=>b.da
 function eomTotalPayables(){return (state.eom?.items||[]).reduce((n,i)=>n+Number(i.amount||0),0)}
 function eomRemaining(){return Number(state.eom?.balance||0)-eomTotalPayables()}
 function eomMoney(n){const v=Number(n)||0;return (v<0?'-$':'$')+Math.abs(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
-function eomPage(){const items=[...(state.eom?.items||[])].sort((a,b)=>a.dueDate.localeCompare(b.dueDate));const totalPayables=eomTotalPayables(),remaining=eomRemaining(),balance=Number(state.eom?.balance||0);return `<div class="eom-page"><button class="back" id="backTools">‹ Tools</button><div class="eom-header"><div><h1>End of Month Calculator</h1><div class="sub">Track your payables and see how much you have left.</div></div></div><section class="receipt"><div class="receipt-edge"></div><div class="receipt-balance"><div><span>ACCOUNT BALANCE</span><strong>${money(balance)}</strong></div><button type="button" class="receipt-edit" id="editEomBalance">${iconSVG('money')} Edit</button></div><div class="receipt-rule"></div><div class="receipt-section-head"><h2>PAYABLES</h2><button type="button" class="receipt-add" id="addEomItem">＋ Add Item</button></div><div class="receipt-columns"><span>ITEM</span><span>AMOUNT</span><span>PAID</span></div><div class="eom-items">${items.length?items.map(i=>`<div class="eom-item ${i.paid?'paid':''}" data-eom-row="${escAttr(i.id)}"><button type="button" class="eom-item-edit" data-edit-eom="${escAttr(i.id)}"><span class="eom-item-icon">${iconSVG(i.icon||'money')}</span><span class="eom-item-main"><strong>${esc(i.name)}</strong><small>Due ${formatDateShort(i.dueDate)}</small></span><b class="eom-item-amount">${money(i.amount)}</b></button><label class="eom-check-wrap"><input type="checkbox" class="eom-paid-check" data-eom-paid="${escAttr(i.id)}" ${i.paid?'checked':''} aria-label="Mark ${escAttr(i.name)} as paid"><span class="eom-check">${i.paid?'✓':''}</span></label></div>`).join(''):'<div class="eom-empty">No payables added yet.</div>'}</div><div class="receipt-rule receipt-rule-bottom"></div><div class="eom-total"><div><span>REMAINING BALANCE</span><small>${totalPayables?money(totalPayables)+' in total payables':'No payables added'}</small></div><strong class="${remaining<0?'negative':''}">${eomMoney(remaining)}</strong></div></section><div class="eom-tip"><div class="eom-tip-icon">✓</div><p>Add all expected expenses for the month, then check items off as you pay them.</p></div><button type="button" class="eom-reset" id="resetEom">Reset Calculator</button></div>`}
+function eomPage(){const items=[...(state.eom?.items||[])].sort((a,b)=>a.dueDate.localeCompare(b.dueDate));const totalPayables=eomTotalPayables(),remaining=eomRemaining(),balance=Number(state.eom?.balance||0);return `<div class="eom-page"><button class="back" id="backTools">‹ Tools</button><section class="transactions-page-receipt eom-receipt"><div class="eom-receipt-head"><div class="eom-receipt-kicker">Monthly Ledger</div><div class="eom-receipt-title">End of Month</div><div class="eom-receipt-sub">Track upcoming payables and see what you'll have left.</div></div><div class="eom-receipt-body"><div class="receipt-balance"><div><span>Account Balance</span><strong>${money(balance)}</strong></div><button type="button" class="receipt-edit" id="editEomBalance">${iconSVG('money')} Edit</button></div><div class="receipt-rule"></div><div class="receipt-section-head"><h2>Payables</h2><button type="button" class="receipt-add" id="addEomItem">＋ Add Item</button></div><div class="receipt-columns"><span>Item</span><span>Amount</span><span>Paid</span></div><div class="eom-items">${items.length?items.map(i=>`<div class="eom-item ${i.paid?'paid':''}" data-eom-row="${escAttr(i.id)}"><button type="button" class="eom-item-edit" data-edit-eom="${escAttr(i.id)}"><span class="eom-item-icon">${iconSVG(i.icon||'money')}</span><span class="eom-item-main"><strong>${esc(i.name)}</strong><small>Due ${formatDateShort(i.dueDate)}</small></span><b class="eom-item-amount">${money(i.amount)}</b></button><label class="eom-check-wrap"><input type="checkbox" class="eom-paid-check" data-eom-paid="${escAttr(i.id)}" ${i.paid?'checked':''} aria-label="Mark ${escAttr(i.name)} as paid"><span class="eom-check">${i.paid?'✓':''}</span></label></div>`).join(''):'<div class="eom-empty">No payables added yet.</div>'}</div><div class="receipt-rule receipt-rule-bottom"></div><div class="eom-total"><div><span>Remaining Balance</span><small>${totalPayables?money(totalPayables)+' in total payables':'No payables added'}</small></div><strong class="${remaining<0?'negative':''}">${eomMoney(remaining)}</strong></div></div><div class="eom-receipt-foot">— End of monthly ledger —</div></section><div class="eom-tip"><div class="eom-tip-icon">✓</div><p>Add expected expenses for the month, then check items off as you pay them.</p></div><button type="button" class="eom-reset" id="resetEom">Reset Calculator</button></div>`}
 function formatDateShort(date){if(!date)return '';return new Date(date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'})}
 function openEomItemModal(id=null){const item=id?(state.eom?.items||[]).find(i=>i.id===id):null;document.getElementById('eomEditId').value=id||'';document.getElementById('eomItemTitle').textContent=item?'Edit Payable':'Add Payable';document.getElementById('eomItemName').value=item?.name||'';document.getElementById('eomItemAmount').value=item?.amount||'';document.getElementById('eomItemDueDate').value=item?.dueDate||today();document.getElementById('eomItemDelete').style.display=item?'block':'none';document.getElementById('eomItemIconPicker').innerHTML=ICONS.map(x=>`<button type="button" class="icon-choice ${x===(item?.icon||'money')?'selected':''}" data-eom-icon="${x}">${iconSVG(x)}</button>`).join('');const m=document.getElementById('eomItemModal');m.classList.remove('closing');m.classList.add('open')}
 function openEomBalanceModal(){document.getElementById('eomBalanceInput').value=Number(state.eom?.balance||0).toFixed(2);const m=document.getElementById('eomBalanceModal');m.classList.remove('closing');m.classList.add('open')}
@@ -1029,7 +1036,7 @@ document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.
 document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
 document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
-function hideInitialLoading(){const el=document.getElementById('initialLoading');if(el){el.classList.add('hidden');setTimeout(()=>el.remove(),240)}}
+const INITIAL_LOADING_MIN_MS=2000; const initialLoadingStartedAt=Date.now(); let initialLoadingHidden=false; function hideInitialLoading(){if(initialLoadingHidden)return; const wait=Math.max(0,INITIAL_LOADING_MIN_MS-(Date.now()-initialLoadingStartedAt)); setTimeout(()=>{if(initialLoadingHidden)return; const el=document.getElementById('initialLoading'); if(el){initialLoadingHidden=true;el.classList.add('hidden');setTimeout(()=>el.remove(),240)}},wait)}
 let pullStartY=0,pullDistance=0,pullTracking=false,pullBusy=false;
 function setupPullToRefresh(){
   const indicator=document.getElementById('pullRefreshIndicator');
@@ -1065,23 +1072,17 @@ function setupPullToRefresh(){
 async function initApp(){
   setupPullToRefresh();
 
-  // Keep the initial loading screen visible for at least 2 seconds so the user
-  // gets clear feedback that the app is loading/syncing data. If Google takes
-  // longer than 2 seconds, the screen stays up until the cloud load finishes.
-  const loadingStartedAt=performance.now();
-  const waitForMinimumLoading=async()=>{
-    const remaining=Math.max(0,2000-(performance.now()-loadingStartedAt));
-    if(remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));
-  };
-
+  // Show the initial loading screen for at least 2 seconds so the user
+  // always sees clear feedback while the app hydrates its data.
   const cached=loadFromLocalCache();
   render(true);
 
   if(GOOGLE_SHEETS_URL){
     localEditsSinceCloudLoad=false;
+    // Always reconcile with Google in the background. If there is no cache,
+    // keep the initial loading screen until this first cloud response arrives.
     const loaded=await loadFromGoogleSheets();
     cloudLoading=false;
-    await waitForMinimumLoading();
     hideInitialLoading();
     if(!loaded && !cached){
       console.warn('Google Sheets is configured but unavailable and no local cache exists.');
@@ -1092,7 +1093,6 @@ async function initApp(){
     if(localEditsSinceCloudLoad)syncToGoogleSheets().catch(err=>console.error('Post-load sync failed:',err));
   } else {
     cloudLoading=false;
-    await waitForMinimumLoading();
     hideInitialLoading();
   }
 
@@ -2035,6 +2035,29 @@ html,body{background:#f7f7f5;color:#111}
 
 /* Frequent Transactions: use the exact same width behavior as the View Transaction receipt */
 .frequent-receipt-sheet{width:min(400px,calc(100% - 24px))!important;max-width:none!important;box-sizing:border-box!important;margin:auto!important}
+
+<style>
+/* Keep EOM Account Balance Edit compact, matching Add Item */
+.eom-receipt .receipt-balance .receipt-edit{
+  width:auto!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0 12px!important;
+  margin:0!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+  line-height:1!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  flex:0 0 auto!important;
+  box-sizing:border-box!important;
+}
+.eom-receipt .receipt-balance .receipt-edit svg{width:14px!important;height:14px!important}
+</style>
 </style>
 
 
