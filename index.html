@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#f5f6f3">
+<meta name="theme-color" content="#f7f7f5">
 <title>Budget</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -13,7 +13,7 @@
 <style>
 :root{--bg:#f4f5f2;--surface:#fff;--surface2:#f8f9f7;--text:#1d211e;--muted:#7c847d;--line:#e5e8e4;--accent:#258a60;--accent-soft:#e6f4ed;--accent-strong:#176b48;--warn:#d39b28;--orange:#d97732;--red:#d95353;--shadow:0 12px 40px rgba(24,36,29,.08)}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#e9ece8;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{width:100%;max-width:430px;min-height:100vh;margin:auto;background:var(--bg);position:relative;overflow:hidden}.screen{padding:28px 18px 104px;animation:pageIn .18s ease both}
-@keyframes pageIn{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}} .loading-screen{min-height:calc(100dvh - 104px);display:flex;align-items:center;justify-content:center;padding:18px 0 34px}.loading-screen .card{width:100%;margin:0;text-align:center;padding:42px 20px} .loading-spinner{width:28px;height:28px;margin:0 auto;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.screen h1{font-size:30px;line-height:1.1;margin:4px 0 5px;letter-spacing:-.8px}.sub{color:var(--muted);font-size:14px}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:0 5px 20px rgba(31,44,35,.035)}.cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.cardhead h2{font-size:17px;margin:0}.link{color:var(--accent-strong);font-size:12px;background:none;border:0;padding:4px}.hero{position:relative;isolation:isolate;overflow:hidden;margin-top:18px;background:linear-gradient(145deg,#dff2e8,#eef6f1);border:1px solid #cfe6da;border-radius:28px;padding:22px 20px;box-shadow:0 16px 45px rgba(31,120,80,.08)}.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}.hero:before{width:220px;height:220px;right:-80px;top:-110px;background:radial-gradient(circle,#a8d9bf99 0%,#a8d9bf22 42%,transparent 70%)}.hero:after{width:300px;height:130px;left:-90px;bottom:-85px;background:radial-gradient(ellipse,#b9e1cd88 0%,transparent 68%);transform:rotate(-15deg)}.hero .spark{position:absolute;inset:0;opacity:.35;background-image:linear-gradient(120deg,transparent 45%,#fff9 45.3%,transparent 45.8%),linear-gradient(25deg,transparent 58%,#fff8 58.3%,transparent 58.7%);background-size:180px 180px,220px 220px}.hero .label{font-size:14px;color:#587164;position:relative}.hero .amount{font-size:43px;font-weight:780;letter-spacing:-1.8px;margin:3px 0 15px;position:relative;color:#173d2d}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative}.stat{background:#ffffffa8;border:1px solid #ffffffaa;border-radius:16px;padding:11px}.stat b{display:block;font-size:15px}.stat span{font-size:11px;color:#718076}.progress{height:11px;background:#e6e9e5;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:var(--accent);transition:width .25s}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.mini{font-size:12px;color:var(--muted)}.big{font-size:23px;font-weight:700}.quickgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.tile{border-radius:20px;padding:18px;min-height:112px;border:1px solid var(--line);background:var(--surface)}.tile.greenish{background:linear-gradient(145deg,#e9f5ef,#f5f8f5)}.tile.neutral{background:linear-gradient(145deg,#fff,#f1f3f0)}.tile h3{margin:0 0 8px;font-size:16px}.tile p{margin:0;font-size:12px;line-height:1.45;color:var(--muted)}.tile .pct{font-size:28px;font-weight:800;margin-top:8px;color:var(--accent-strong)}
+@keyframes pageIn{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}} .initial-loading{position:fixed;inset:0;z-index:9999;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#00d64f;color:#000;transition:opacity .2s ease,visibility .2s ease}.initial-loading.hidden{opacity:0;visibility:hidden;pointer-events:none}.initial-loading-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}.initial-loading-spinner{width:92px;height:92px;display:block}.initial-loading-spinner .track{fill:none;stroke:rgba(0,0,0,.18);stroke-width:5}.initial-loading-spinner .arc{fill:none;stroke:#000;stroke-width:5;stroke-linecap:round;stroke-dasharray:145 40;transform-origin:46px 46px;animation:cashSpinner 1s linear infinite}.initial-loading-spinner .dollar{fill:#000;font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;font-size:34px;font-weight:800}.initial-loading-label{font-size:18px;font-weight:750;letter-spacing:-.3px}@keyframes cashSpinner{to{transform:rotate(360deg)}}.screen h1{font-size:30px;line-height:1.1;margin:4px 0 5px;letter-spacing:-.8px}.sub{color:var(--muted);font-size:14px}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:0 5px 20px rgba(31,44,35,.035)}.cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.cardhead h2{font-size:17px;margin:0}.link{color:var(--accent-strong);font-size:12px;background:none;border:0;padding:4px}.hero{position:relative;isolation:isolate;overflow:hidden;margin-top:18px;background:linear-gradient(145deg,#dff2e8,#eef6f1);border:1px solid #cfe6da;border-radius:28px;padding:22px 20px;box-shadow:0 16px 45px rgba(31,120,80,.08)}.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}.hero:before{width:220px;height:220px;right:-80px;top:-110px;background:radial-gradient(circle,#a8d9bf99 0%,#a8d9bf22 42%,transparent 70%)}.hero:after{width:300px;height:130px;left:-90px;bottom:-85px;background:radial-gradient(ellipse,#b9e1cd88 0%,transparent 68%);transform:rotate(-15deg)}.hero .spark{position:absolute;inset:0;opacity:.35;background-image:linear-gradient(120deg,transparent 45%,#fff9 45.3%,transparent 45.8%),linear-gradient(25deg,transparent 58%,#fff8 58.3%,transparent 58.7%);background-size:180px 180px,220px 220px}.hero .label{font-size:14px;color:#587164;position:relative}.hero .amount{font-size:43px;font-weight:780;letter-spacing:-1.8px;margin:3px 0 15px;position:relative;color:#173d2d}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative}.stat{background:#ffffffa8;border:1px solid #ffffffaa;border-radius:16px;padding:11px}.stat b{display:block;font-size:15px}.stat span{font-size:11px;color:#718076}.progress{height:11px;background:#e6e9e5;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:var(--accent);transition:width .25s}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.mini{font-size:12px;color:var(--muted)}.big{font-size:23px;font-weight:700}.quickgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.tile{border-radius:20px;padding:18px;min-height:112px;border:1px solid var(--line);background:var(--surface)}.tile.greenish{background:linear-gradient(145deg,#e9f5ef,#f5f8f5)}.tile.neutral{background:linear-gradient(145deg,#fff,#f1f3f0)}.tile h3{margin:0 0 8px;font-size:16px}.tile p{margin:0;font-size:12px;line-height:1.45;color:var(--muted)}.tile .pct{font-size:28px;font-weight:800;margin-top:8px;color:var(--accent-strong)}
 .category{display:flex;align-items:center;gap:12px;margin:15px 0;position:relative}.caticon{width:42px;height:42px;flex:0 0 42px;border-radius:14px;background:#f0f3ef;color:#445149;display:grid;place-items:center}.caticon svg{width:20px;height:20px}.catmain{flex:1;min-width:0}.catmain strong{display:block;font-size:14px}.catmain small{color:var(--muted);font-size:11px}.catnum{text-align:right;white-space:nowrap}.catnum b{font-size:14px}.catnum small{display:block;color:var(--muted);font-size:11px}.catbar{height:7px;background:#e6e9e5;border-radius:10px;margin-top:7px;overflow:hidden}.catbar i{display:block;height:100%;border-radius:10px;background:var(--accent);transition:width .25s,background .25s}.catbar i.warn{background:var(--warn)}.catbar i.orange{background:var(--orange)}.catbar i.red{background:var(--red)}
 .actions{display:flex;gap:8px}.pill{border:1px solid var(--line);background:var(--surface);color:#5f6861;border-radius:12px;padding:9px 11px;font-size:12px;white-space:nowrap}.pill.active{background:var(--accent-soft);border-color:#b8dfcc;color:var(--accent-strong);font-weight:700}.secondary{border:1px solid var(--line);background:var(--surface);color:#303832;border-radius:13px;padding:10px 13px}.primary{width:100%;border:0;background:var(--accent);color:#fff;border-radius:15px;padding:14px;font-weight:700;margin-top:16px;box-shadow:0 8px 20px rgba(37,138,96,.18)}.form label{font-size:12px;color:var(--muted);display:block;margin:13px 0 6px}.form input,.form select{display:block;width:100%;height:46px;background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:14px;padding:0 13px;outline:none;appearance:none;-webkit-appearance:none}.form input[type=date]{min-width:0;line-height:46px}.form input:focus,.form select:focus{border-color:#8bc6a9;box-shadow:0 0 0 3px #8bc6a922}
 .bottom{position:fixed;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);width:min(390px,calc(100% - 28px));height:58px;padding:5px;border:1px solid rgba(229,232,228,.95);border-radius:21px;background:rgba(255,255,255,.88);backdrop-filter:blur(22px) saturate(1.15);-webkit-backdrop-filter:blur(22px) saturate(1.15);box-shadow:0 12px 34px rgba(24,36,29,.14),0 2px 7px rgba(24,36,29,.06);transition:height .46s cubic-bezier(.22,.72,.2,1),width .46s cubic-bezier(.22,.72,.2,1),padding .46s cubic-bezier(.22,.72,.2,1),border-radius .46s cubic-bezier(.22,.72,.2,1),box-shadow .46s ease,background .46s ease;will-change:height,width,padding}.nav-inner{height:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;gap:2px}.bottom.nav-shrunk{height:50px;width:min(330px,calc(100% - 52px));padding:4px;border-radius:19px;box-shadow:0 8px 24px rgba(24,36,29,.12),0 1px 5px rgba(24,36,29,.05)}.bottom.nav-shrunk .nav{width:38px;height:38px;border-radius:12px}.bottom.nav-shrunk .nav svg{width:18px;height:18px}.bottom.nav-shrunk .add{border-radius:13px;font-size:24px}.bottom.nav-shrunk .add svg{width:20px;height:20px;display:block}.nav{min-width:0;width:42px;height:42px;justify-self:center;border:0;border-radius:14px;background:transparent;color:#9aa19b;display:flex;align-items:center;justify-content:center;padding:0;transition:background .18s ease,color .18s ease,transform .18s ease}.nav svg{width:20px;height:20px;stroke:currentColor}.nav.active{color:var(--accent-strong);background:var(--accent-soft)}.nav:active{transform:scale(.92)}.add{justify-self:center;align-self:center;width:46px;height:46px;border-radius:16px;background:var(--accent);color:#fff;border:0;font-size:29px;line-height:1;box-shadow:0 8px 18px rgba(37,138,96,.26);transition:transform .18s ease,box-shadow .18s ease}.add svg{width:22px;height:22px;stroke:#fff}.add:active{transform:scale(.92);box-shadow:0 4px 10px rgba(37,138,96,.2)}
@@ -84,6 +84,8 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 .modal.open .tx-list-modal{transform:translateY(0)}
 .modal.closing .tx-list-modal{transform:translateY(105%)}.tx-list-modal .tx{padding:12px 0}
 .budget-card .catnum{padding-left:30px}.budget-card .swipe-content{padding-right:8px} .budget-card .swipe-wrap.open .swipe-content{transform:translateX(-152px)}
+/* Budget page: Cash App-inspired category cards */
+.budget-page-header{display:block;margin-top:2px}.budget-page-header h1{margin:0;font-size:30px;line-height:1.1;letter-spacing:-.8px}.budget-page-header .sub{margin-top:5px}.budget-page-add{width:34px;height:34px;border:0;border-radius:11px;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 5px 12px rgba(37,138,96,.18)}.budget-page-add svg{width:18px;height:18px}.budget-total-card{margin-top:16px;background:var(--accent);border:0;color:#fff;border-radius:22px;padding:18px;box-shadow:0 12px 28px rgba(37,138,96,.16)}.budget-total-card .label{font-size:11px;opacity:.82}.budget-total-card .amount{font-size:34px;font-weight:780;letter-spacing:-1.4px;margin:3px 0 13px}.budget-total-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.budget-total-stats div{border-left:1px solid rgba(255,255,255,.2);padding-left:9px}.budget-total-stats div:first-child{border-left:0;padding-left:0}.budget-total-stats b,.budget-total-stats span{display:block}.budget-total-stats b{font-size:12px}.budget-total-stats span{font-size:8px;opacity:.72;margin-top:2px}.budget-section-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 1px 9px}.budget-section-label .section-title{font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--text)}.budget-categories{margin-top:0;display:grid;gap:8px}.budget-category-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:5px 8px;box-shadow:0 2px 8px rgba(31,44,35,.025)}.budget-category-card .swipe-wrap{margin:-5px -8px;border-radius:14px}.budget-category-card .swipe-content{padding:5px 8px}.budget-category-card .category{margin:0;gap:9px}.budget-category-card .catmain strong{font-size:11px;line-height:1.15}.budget-category-card .catmain small{font-size:8px;line-height:1.1}.budget-category-card .catnum b{font-size:10px}.budget-category-card .catnum small{font-size:7px}.budget-category-card .caticon{width:28px;height:28px;flex-basis:28px;border-radius:8px}.budget-category-card .caticon svg{width:14px;height:14px}.budget-category-card .catbar{height:4px;margin-top:3px}.budget-empty{margin-top:10px}
 /* Category transaction sheet: anchored to the bottom with slide-in/out animation. */
 .modal#categoryTransactionsModal{display:flex;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .28s ease,visibility 0s linear .28s}
 .modal#categoryTransactionsModal.open{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .28s ease,visibility 0s linear 0s}
@@ -151,6 +153,55 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 .bottom .add{pointer-events:auto}
 .bottom .nav[data-page="tools"]{position:relative;z-index:4;pointer-events:auto}
 .tools-page{display:block!important;visibility:visible!important;opacity:1!important}
+
+/* Budget hero: black typography on bright green */
+.budget-total-card,.budget-total-card *{color:#000!important}
+.budget-total-card .label,.budget-total-card .amount,.budget-total-card .budget-total-stats span,.budget-total-card .budget-total-stats b{color:#000!important}
+
+/* Final compact Budget category cards */
+.budget-categories{gap:7px!important}
+.budget-category-card{height:72px!important;min-height:72px!important;padding:0 8px!important;border-radius:14px!important;overflow:hidden!important}
+.budget-category-card .swipe-wrap{height:72px!important;margin:0 -8px!important;border-radius:14px!important}
+.budget-category-card .swipe-content{height:72px!important;padding:0 8px!important;display:flex;align-items:center}
+.budget-category-card .category{height:72px!important;min-height:72px!important;margin:0!important;padding:0!important;gap:9px!important}
+.budget-category-card .caticon{width:34px!important;height:34px!important;flex:0 0 34px!important;border-radius:10px!important}
+.budget-category-card .caticon svg{width:16px!important;height:16px!important}
+.budget-category-card .catmain strong{font-size:13px!important;line-height:1.15!important}
+.budget-category-card .catmain small{font-size:9px!important;line-height:1.1!important}
+.budget-category-card .catbar{height:5px!important;margin-top:4px!important}
+.budget-category-card .catnum b{font-size:12px!important}
+.budget-category-card .catnum small{font-size:9px!important}
+
+/* Bright Cash-style green refresh */
+:root{--cash-green:#00d64f;--cash-green-dark:#007a2d;--cash-green-soft:#dfffe9}
+.hero-dashboard,.hero-budget{background:var(--cash-green)!important;color:#071b0d}
+.hero .label,.hero-top .label{color:#073d18!important}
+.hero .amount{color:#071b0d!important}
+.month-pill{color:#073d18!important;background:rgba(255,255,255,.38)!important}
+.hero-chart{border-bottom-color:rgba(7,61,24,.18)!important}
+.hero-chart:before{background:linear-gradient(90deg,transparent,rgba(7,61,24,.28) 25%,rgba(7,61,24,.28) 75%,transparent)!important}
+.hero-chart span{background:#073d18!important}
+.hero .stat{border-right-color:rgba(7,61,24,.18)!important}
+.hero .stat b,.hero .stat span{color:#073d18!important}
+.used-ring{background:conic-gradient(#073d18 var(--used),rgba(255,255,255,.45) 0)!important}
+.used-ring:after{background:var(--cash-green)!important}
+.hero-budget .hero-icon{background:rgba(255,255,255,.38)!important;color:#073d18!important}
+.budget-stats div{border-left-color:rgba(7,61,24,.18)!important}
+.budget-stats b,.budget-stats span{color:#073d18!important}
+#txModal .tx-sheet{background:var(--cash-green);border-color:var(--cash-green)}
+#txModal .handle{background:rgba(7,61,24,.28)}
+#txModal .modal-close{background:rgba(255,255,255,.42);color:#073d18}
+#txModal .tx-avatar{background:rgba(255,255,255,.42);color:#073d18}
+#txModal .tx-to,#txModal .tx-to b,#txModal .commission{color:#073d18}
+#txModal .amount-display{color:#071b0d}
+#txModal .amount-display .faded{color:rgba(7,61,24,.42)}
+#txModal .meta-field{background:rgba(255,255,255,.52);border-color:rgba(7,61,24,.12)}
+#txModal .meta-field label{color:#245c35}
+#txModal .meta-field input,#txModal .meta-field select{color:#071b0d}
+#txModal .send-btn{background:#071b0d;color:#fff;box-shadow:0 8px 18px rgba(7,27,13,.18)}
+#txModal .key{background:rgba(255,255,255,.48);color:#071b0d}
+#txModal .key:active{background:rgba(255,255,255,.7)}
+#txModal .danger{background:rgba(255,255,255,.55);border-color:rgba(190,40,40,.25)}
 </style>
 <script src="google-sheets-config.js"></script>
 <style>/* Tip calculator */
@@ -173,6 +224,16 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 @media(max-width:350px){.sw-exp-controls{grid-template-columns:1fr}.sw-methods{grid-template-columns:1fr 1fr}.sw-add-row{grid-template-columns:1fr auto}}
 </style></head>
 <body>
+<div id="initialLoading" class="initial-loading" role="status" aria-live="polite" aria-label="Loading budget data">
+  <div class="initial-loading-inner">
+    <svg class="initial-loading-spinner" viewBox="0 0 92 92" aria-hidden="true">
+      <circle class="track" cx="46" cy="46" r="34"></circle>
+      <circle class="arc" cx="46" cy="46" r="34"></circle>
+      <text class="dollar" x="46" y="58" text-anchor="middle">$</text>
+    </svg>
+    <div class="initial-loading-label">Loading your budget</div>
+  </div>
+</div>
 <div class="app"><main id="screen" class="screen"></main>
 <nav class="bottom" aria-label="Primary navigation">
   <div class="nav-inner">
@@ -262,7 +323,7 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 
 <script>
 const ICONS=['home','food','car','bag','person','money','plane','gift','bolt','other'];
-const ICON_PATHS={edit:'<path d="M4 16.5V20h3.5L18.8 8.7l-3.5-3.5L4 16.5Z"/><path d="m14.2 6.8 3.5 3.5M13 20h7"',trash:'<path d="M5 7h14M10 11v6M14 11v6M9 7V4h6v3M6 7l1 14h10l1-14"/>',frequent:'<path d="M6 3h12v18l-6-3-6 3z"/><path d="M9 8h6M9 12h4"/>',recurring:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M12 13v3l2 1"/>',home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',food:'<path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M16 3v18M16 3c3 1 4 3 4 6h-4"/>',car:'<path d="m5 16 1.5-6h11L19 16M3 16h18v4H3zM7 20v-2M17 20v-2M7 14h.01M17 14h.01"/>',bag:'<path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',person:'<circle cx="12" cy="8" r="3"/><path d="M5 21a7 7 0 0 1 14 0"/>',money:'<path d="M3 7h18v12H3z"/><path d="M7 7V5h10v2M8 13h8"/><circle cx="12" cy="13" r="2.5"/>',plane:'<path d="m3 11 18-7-7 18-3-8-8-3Z"/><path d="m11 14 4-4"/>',gift:'<rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M3 13h18M12 9H8a2.5 2.5 0 1 1 2.5-2.5L12 9ZM12 9h4a2.5 2.5 0 1 0-2.5-2.5L12 9Z"/>',bolt:'<path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/>',other:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>',archive:'<path d="M4 7h16v13H4z"/><path d="M3 4h18v3H3zM8 11h8"/>',tip:'<path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M5.6 18.4 7 17M12 19v2M17 17l1.4 1.4M19 12h2M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4.5"/><path d="M12 9.5v5M10.5 11h3"/>'};
+const ICON_PATHS={plus:'<path d="M12 5v14M5 12h14"/>',edit:'<path d="M4 16.5V20h3.5L18.8 8.7l-3.5-3.5L4 16.5Z"/><path d="m14.2 6.8 3.5 3.5M13 20h7"',trash:'<path d="M5 7h14M10 11v6M14 11v6M9 7V4h6v3M6 7l1 14h10l1-14"/>',frequent:'<path d="M6 3h12v18l-6-3-6 3z"/><path d="M9 8h6M9 12h4"/>',recurring:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M12 13v3l2 1"/>',home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',food:'<path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M16 3v18M16 3c3 1 4 3 4 6h-4"/>',car:'<path d="m5 16 1.5-6h11L19 16M3 16h18v4H3zM7 20v-2M17 20v-2M7 14h.01M17 14h.01"/>',bag:'<path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',person:'<circle cx="12" cy="8" r="3"/><path d="M5 21a7 7 0 0 1 14 0"/>',money:'<path d="M3 7h18v12H3z"/><path d="M7 7V5h10v2M8 13h8"/><circle cx="12" cy="13" r="2.5"/>',plane:'<path d="m3 11 18-7-7 18-3-8-8-3Z"/><path d="m11 14 4-4"/>',gift:'<rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M3 13h18M12 9H8a2.5 2.5 0 1 1 2.5-2.5L12 9ZM12 9h4a2.5 2.5 0 1 0-2.5-2.5L12 9Z"/>',bolt:'<path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/>',other:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>',archive:'<path d="M4 7h16v13H4z"/><path d="M3 4h18v3H3zM8 11h8"/>',tip:'<path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M5.6 18.4 7 17M12 19v2M17 17l1.4 1.4M19 12h2M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4.5"/><path d="M12 9.5v5M10.5 11h3"/>'};
 const defaultState={budget:4800,categories:[{name:'Home',icon:'home',budget:1200},{name:'Car',icon:'car',budget:2000},{name:'Food',icon:'food',budget:1000},{name:'Marco',icon:'person',budget:200},{name:'Kylie',icon:'person',budget:200},{name:'Other',icon:'other',budget:200}],transactions:[{id:'t1',date:'2026-08-30',desc:'Rent',amount:-1200,cat:'Home'},{id:'t2',date:'2026-08-29',desc:'Grocery Shopping',amount:-123.45,cat:'Food'},{id:'t3',date:'2026-08-29',desc:'Gas Station',amount:-45,cat:'Car'},{id:'t4',date:'2026-08-28',desc:'Salary',amount:3500,cat:'Income'},{id:'t5',date:'2026-08-29',desc:'Netflix',amount:-15.99,cat:'Other'},{id:'t6',date:'2026-08-28',desc:'Coffee',amount:-4.5,cat:'Food'},{id:'t7',date:'2026-08-28',desc:'Freelance Work',amount:250,cat:'Income'},{id:'t8',date:'2026-08-27',desc:'Home Supplies',amount:-1320,cat:'Home'},{id:'t9',date:'2026-08-26',desc:'Car Service',amount:-255,cat:'Car'},{id:'t10',date:'2026-08-25',desc:'Marco Transfer',amount:-920,cat:'Marco'},{id:'t11',date:'2026-08-24',desc:'Kylie Expense',amount:-150,cat:'Kylie'},{id:'t12',date:'2026-08-23',desc:'Other Purchase',amount:-234.56,cat:'Other'},{id:'t13',date:'2026-08-22',desc:'Food & Dining',amount:-322.05,cat:'Food'}],archive:[],frequent:[{id:'r1',desc:'Monthly Rent',amount:1200,cat:'Home'}],recurring:[],eom:{balance:0,items:[]},financialTipIndex:19};
 const totalBudget=()=>state?.categories?.reduce((sum,c)=>sum+(Number(c.budget)||0),0)||0;
 // Google Sheets sync: set your deployed Google Apps Script URL here.
@@ -294,10 +355,11 @@ function iconSVG(key){return `<svg viewBox="0 0 24 24" fill="none" stroke="curre
 function catColor(p){return p>=90?'red':p>=75?'orange':p>=50?'warn':''}
 function catRows({swipe=false}={}){let arr=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return arr.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="category category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="caticon">${iconSVG(c.icon)}</div><div class="catmain"><strong>${esc(c.name)}</strong><small>${money(Math.max(0,c.budget-c.spent))} remaining</small><div class="catbar"><i class="${cls}" style="width:${w}%"></i></div></div><div class="catnum"><b>${money(c.spent)}</b><small>${p}% used</small></div></div>`;return swipe?`<div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div>`:content}).join('')||'<div class="empty">No Categories Yet.</div>'}
 function topCategoryBars(){const arr=categoriesWithSpent().sort((a,b)=>b.spent-a.spent).slice(0,6);if(!arr.length)return '<div class="empty">No Categories Yet.</div>';const selected=arr.find(c=>c.name===selectedTopCategory)||arr[0];const selectedPct=selected.budget?Math.round(selected.spent/selected.budget*100):0;const maxPct=Math.max(1,...arr.map(c=>c.budget?c.spent/c.budget*100:0));return `<div class="dashboard-bars">${arr.map(c=>{const pct=c.budget?Math.round(c.spent/c.budget*100):0;const h=Math.max(4,Math.min(100,pct/maxPct*100));const cls=catColor(pct);return `<button type="button" class="bar-item ${c.name===selected.name?'selected':''}" data-top-cat="${escAttr(c.name)}"><div class="bar-track"><i class="bar-fill ${cls}" style="height:${h}%"></i></div><div class="bar-label">${esc(c.name)}<small>${pct}%</small></div></button>`}).join('')}</div><div class="bar-detail"><div><small>${esc(selected.name)}</small><b>${money(selected.spent)} Total Spend</b></div><div class="usage"><b>${selectedPct}%</b><small>Usage</small></div></div>`}
-function greetingForHour(hour){return hour<12?'Good Morning':hour<17?'Good Afternoon':'Good Evening'}
+function greetingForHour(hour){return hour<12?'Good morning':hour<17?'Good afternoon':'Good evening'}
 function currentMonthLabel(){return new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}
-function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}, Marlie 👋</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard"><div class="spark"></div><div class="hero-top"><div class="label">Remaining</div><div class="month-pill">${currentMonthLabel()}</div></div><div class="amount">${money(remaining)}</div><div class="hero-chart"><span></span><span></span><span></span><span></span><span></span></div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
-function budget(){const budget=totalBudget();return `<h1>Budget</h1><div class="sub">Manage your monthly budget</div><section class="hero hero-budget"><div class="hero-top"><div class="label">Total Budget</div></div><div class="amount">${money(budget)}</div><div class="budget-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><section class="card budget-card"><div class="cardhead"><h2>Categories</h2><button class="add-category-btn" id="addCategory">＋ Add Category</button></div>${catRows({swipe:true})}</section>`}
+function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard"><div class="spark"></div><div class="hero-top"><div class="label">Remaining</div><div class="month-pill">${currentMonthLabel()}</div></div><div class="amount">${money(remaining)}</div><div class="hero-chart"><span></span><span></span><span></span><span></span><span></span></div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
+function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="category category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="caticon">${iconSVG(c.icon)}</div><div class="catmain"><strong>${esc(c.name)}</strong><small>${money(Math.max(0,c.budget-c.spent))} remaining</small><div class="catbar"><i class="${cls}" style="width:${w}%"></i></div></div><div class="catnum"><b>${money(c.spent)}</b><small>${p}% used</small></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
+
 function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6,total=endPct-startPct;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];if(total>=99.999){return `M 86 ${86-outer} A ${outer} ${outer} 0 1 1 85.999 ${86+outer} A ${outer} ${outer} 0 1 1 86 ${86-outer} M 86 ${86-inner} A ${inner} ${inner} 0 1 0 86.001 ${86+inner} A ${inner} ${inner} 0 1 0 86 ${86-inner} Z`;}const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=total>50?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
 function reportMonths(){const keys=new Set([currentYM(),...state.transactions.map(t=>ym(t.date)),...state.archive.map(t=>ym(t.date))]);return [...keys].filter(Boolean).sort((a,b)=>b.localeCompare(a));}
 function monthLabel(key){const [y,m]=key.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}
@@ -352,7 +414,7 @@ function recurringPage(){const backLabel=recurringOrigin==='tools'?'‹ Tools':'
 function archivePage(){const arr=[...state.archive].sort((a,b)=>b.date.localeCompare(a.date));const backLabel=archiveOrigin==='tools'?'‹ Tools':'‹ Transactions';return `<button class="back" id="backTransactions">${backLabel}</button><h1>Archived Transactions</h1><div class="sub">${arr.length} Archived Transaction${arr.length===1?'':'s'} From Past Months</div><section class="card"><div class="cardhead"><h2>Transaction History</h2></div>${arr.length?groupArchiveByMonth(arr):'<div class="empty">No Archived Transactions.</div>'}</section>`}
 function formatDate(date){return new Date(date+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function escAttr(s){return esc(s)}
-function render(scrollTop=false){const content=cloudLoading?`<div class="loading-screen"><section class="card"><div class="loading-spinner" aria-hidden="true"></div><h2 style="margin:14px 0 6px;font-size:18px">Loading your budget</h2><div class="sub">Syncing your data…</div></section></div>`:(page==='dashboard'?dashboard():page==='budget'?budget():page==='tools'?tools():page==='categories'?categories():page==='eom'?eomPage():page==='splitwise'?splitwisePage():page==='archive'?archivePage():page==='frequent'?frequentPage():page==='recurring'?recurringPage():transactions());document.getElementById('screen').innerHTML=`${page==='frequent'?'':`<div class="page-refresh"><div class="transactions-tools"><button class="refresh-btn" id="refreshTransactions" aria-label="Refresh data" title="Refresh data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v4h4"/><path d="M4 13a8 8 0 0 0 14.9 4M20 19v-4h-4"/></svg></button><span class="last-updated" id="lastUpdated">${lastUpdatedLabel()}</span></div></div>`}${content}`;document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));bind();setupFloatingNav();if(scrollTop)window.scrollTo({top:0,behavior:'auto'})}
+function render(scrollTop=false){const content=(page==='dashboard'?dashboard():page==='budget'?budget():page==='tools'?tools():page==='categories'?categories():page==='eom'?eomPage():page==='splitwise'?splitwisePage():page==='archive'?archivePage():page==='frequent'?frequentPage():page==='recurring'?recurringPage():transactions());document.getElementById('screen').innerHTML=`${page==='frequent'?'':`<div class="page-refresh"><div class="transactions-tools"><button class="refresh-btn" id="refreshTransactions" aria-label="Refresh data" title="Refresh data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v4h4"/><path d="M4 13a8 8 0 0 0 14.9 4M20 19v-4h-4"/></svg></button><span class="last-updated" id="lastUpdated">${lastUpdatedLabel()}</span></div></div>`}${content}`;document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));bind();setupFloatingNav();if(scrollTop)window.scrollTo({top:0,behavior:'auto'})}
 let refreshInFlight=false;
 function refreshIsDue(){if(!GOOGLE_SHEETS_URL)return false;if(!lastUpdatedAt)return true;const t=Date.parse(lastUpdatedAt);return !Number.isFinite(t)||Date.now()-t>=5*60*1000}
 async function refreshFromEndpoint(silent=false){if(refreshInFlight)return false;refreshInFlight=true;const btn=document.getElementById('refreshTransactions');if(btn)btn.disabled=true;if(btn)btn.classList.add('loading');try{if(!GOOGLE_SHEETS_URL)throw new Error('No data endpoint is configured.');const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Refresh failed: HTTP '+r.status);const data=await r.json();if(data&&data.error)throw new Error(data.error);if(!data||!data.state)throw new Error('Refresh returned no data.');state=migrate(data.state);cloudReady=true;markUpdated();let changed=archiveOldTransactions();if(generateRecurringTransactions())changed=true;if(changed)await save();render(false);return true}catch(e){console.error('Refresh failed:',e);if(!silent)alert('Unable to refresh data. '+(e.message||'Please try again.'));return false}finally{refreshInFlight=false;const b=document.getElementById('refreshTransactions');if(b){b.disabled=false;b.classList.remove('loading')}}}
@@ -554,6 +616,7 @@ document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.
 document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
 document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
+function hideInitialLoading(){const el=document.getElementById('initialLoading');if(el){el.classList.add('hidden');setTimeout(()=>el.remove(),240)}}
 async function initApp(){
   // Render the shell immediately so the app does not appear frozen.
   // Google Sheets remains the only persistent source of truth.
@@ -562,6 +625,7 @@ async function initApp(){
   if(GOOGLE_SHEETS_URL){
     const loaded=await loadFromGoogleSheets();
     cloudLoading=false;
+    hideInitialLoading();
     if(!loaded){
       console.warn('Google Sheets is configured but unavailable; no localStorage fallback is used.');
       render(true);
@@ -569,6 +633,7 @@ async function initApp(){
     }
   } else {
     cloudLoading=false;
+    hideInitialLoading();
   }
 
   state.financialTipIndex=((Number(state.financialTipIndex)||0)+1)%FINANCIAL_TIPS.length;
@@ -583,4 +648,192 @@ async function initApp(){
 }
 initApp();
 </script>
+
+<style id="cash-inspired-redesign">
+/* Cash-inspired visual redesign: high-contrast black/white, crisp green accents, less dashboard-like */
+:root{
+  --bg:#f7f7f5;
+  --surface:#fff;
+  --surface2:#f3f3f1;
+  --text:#111;
+  --muted:#777;
+  --line:#e8e8e5;
+  --accent:#00d64f;
+  --accent-soft:#e7fbeD;
+  --accent-strong:#00a83d;
+  --shadow:0 8px 28px rgba(0,0,0,.06);
+}
+html,body{background:#f7f7f5;color:#111}
+.app{max-width:430px;background:#f7f7f5}
+.screen{padding:22px 18px 112px;max-width:430px}
+.screen h1{font-size:32px;line-height:1.02;letter-spacing:-1.4px;font-weight:800}
+.sub{font-size:13px;color:#8a8a86}
+.card{border:0;border-radius:24px;padding:18px;margin-top:12px;box-shadow:0 3px 16px rgba(0,0,0,.045)}
+.cardhead h2{font-size:16px;font-weight:750;letter-spacing:-.25px}
+.link{color:#111;font-size:12px;font-weight:700}
+
+/* Header */
+.dashboard-header{padding:4px 0 2px}
+.dashboard-header h1{font-size:30px}
+.icon-button,.back-circle{border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.06);color:#111}
+.icon-button{width:40px;height:40px}
+.back-circle{width:38px;height:38px;font-size:22px;margin-bottom:14px}
+
+/* Main balance card */
+.hero{margin-top:18px;border-radius:28px;border:0;box-shadow:none;padding:23px 20px}
+.hero-dashboard,.hero-budget{
+  background:#111;
+}
+.hero-dashboard:before,.hero-dashboard:after,.hero-budget:before,.hero-budget:after{display:none}
+.hero .label{font-size:12px;color:#a7a7a2;font-weight:600}
+.hero .amount{font-size:44px;line-height:1;letter-spacing:-2px;color:#fff;font-weight:800;margin:7px 0 18px}
+.hero-top .label{color:#a7a7a2}
+.month-pill{color:#fff;border:0;background:#292929;border-radius:999px;padding:8px 11px}
+.hero-chart{height:42px;border-bottom:1px solid #292929;margin:0 -2px 12px}
+.hero-chart:before{background:linear-gradient(90deg,transparent,#454545 25%,#454545 75%,transparent)}
+.hero-chart span{background:#00d64f}
+.stats{gap:0}
+.stat{background:transparent;border:0;border-right:1px solid #2c2c2c;border-radius:0;padding:6px 10px}
+.stat:last-child{border-right:0}
+.stat b{font-size:14px;color:#fff;font-weight:750}
+.stat span{font-size:9px;color:#999}
+.hero-dashboard .stats .stat.used{min-width:56px}
+.used-ring{background:conic-gradient(#00d64f var(--used),#343434 0);box-shadow:none}
+.used-ring:after{background:#111}
+
+/* Cash-style quick actions */
+.quickgrid{grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.tile{min-height:105px;border:0;border-radius:22px;padding:17px;background:#fff;box-shadow:0 3px 14px rgba(0,0,0,.045)}
+.tile.greenish,.tile.neutral{background:#fff}
+.tile h3{font-size:15px;font-weight:750;margin-bottom:7px}
+.tile p{font-size:11px;color:#858581}
+.tile .pct{font-size:25px;color:#111;margin-top:9px}
+
+/* Spending / budget bars */
+.progress{height:8px;background:#ecece9}
+.fill{background:#00d64f}
+.dashboard-bars{height:160px;gap:9px;padding-top:6px}
+.bar-track{height:116px;width:18px;max-width:18px;background:#ededeb;border-radius:99px}
+.bar-fill{background:#00d64f;border-radius:99px}
+.dashboard-bars .bar-fill.warn{background:#f2b84b}
+.dashboard-bars .bar-fill.orange{background:#ef8d45}
+.dashboard-bars .bar-fill.red{background:#e85b5b}
+.bar-label{font-size:9px;color:#666}
+.bar-pct{font-size:8px;color:#999}
+
+/* Category list */
+.category{padding:10px 0;margin:4px 0}
+.caticon{width:40px;height:40px;flex-basis:40px;border-radius:13px;background:#f1f1ef;color:#111}
+.catmain strong{font-size:13px;font-weight:700}
+.catmain small,.catnum small{font-size:10px;color:#8a8a86}
+.catnum b{font-size:13px}
+.catbar{height:5px;background:#ecece9}
+.catbar i{background:#00d64f}
+.catbar i.warn{background:#f2b84b}.catbar i.orange{background:#ef8d45}.catbar i.red{background:#e85b5b}
+
+/* Bottom navigation — floating, simple, monochrome */
+.bottom{
+  bottom:14px;
+  width:min(390px,calc(100% - 28px));
+  height:64px;
+  padding:6px;
+  border:1px solid #e4e4e1;
+  border-radius:24px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+.nav-inner{gap:3px}
+.nav{width:44px;height:44px;border-radius:15px;color:#9a9a96}
+.nav.active{color:#111;background:#f0f0ee}
+.nav svg{width:21px;height:21px;stroke-width:2}
+.add{
+  width:50px;height:50px;border-radius:18px;
+  background:#00d64f;
+  box-shadow:0 7px 18px rgba(0,214,79,.28);
+}
+.add:before{display:none}
+.add svg{width:24px;height:24px}
+.bottom.nav-shrunk{height:54px;width:min(350px,calc(100% - 44px));border-radius:21px}
+.bottom.nav-shrunk .nav{width:40px;height:40px}
+.bottom.nav-shrunk .add{width:44px;height:44px;border-radius:16px}
+
+/* Transactions */
+.tx{border:0!important;background:#fff!important}
+.tx-icon{background:#f1f1ef!important;color:#111!important}
+.tx-copy .desc{font-weight:650}
+.tx .amount{font-weight:750;color:#111}
+.tx.pending-tx{background:#f5f5f3!important;border-color:#ddd!important}
+.swipe-actions .swipe-edit{background:#777}
+.swipe-actions .swipe-delete{background:#111}
+
+/* Green action buttons */
+.primary,.send-btn{
+  background:#00d64f;
+  color:#07140a;
+  border-radius:16px;
+  box-shadow:none;
+  font-weight:800;
+}
+.secondary{border:1px solid #e1e1de;background:#fff;color:#111;border-radius:15px;font-weight:650}
+.new-transaction-btn,.action-frequent,.action-recurring,.action-archive{
+  background:#e9faef!important;border-color:#c9f1d7!important;color:#087b31!important
+}
+.add-category-btn,.recurring-add{
+  background:#e9faef;color:#087b31;border-color:#c9f1d7
+}
+
+/* Modals / sheets */
+.modal{background:rgba(0,0,0,.38);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.sheet{
+  background:#fff;
+  border:0;
+  border-radius:28px 28px 0 0;
+  box-shadow:0 -18px 55px rgba(0,0,0,.18);
+}
+.sheet .handle{background:#d7d7d4}
+.modal-close{background:#f1f1ef;color:#111;border:0}
+.tx-sheet{padding:14px 18px calc(28px + env(safe-area-inset-bottom))}
+.tx-avatar{background:#e8faee;color:#087b31}
+.amount-display{font-size:56px;color:#111;font-weight:800;letter-spacing:-2.4px}
+.amount-display .faded{color:#c8c8c4}
+.meta-field{background:#f5f5f3;border:0;border-radius:16px}
+.meta-field label{font-size:10px;color:#858581}
+.form input,.form select{background:#f5f5f3;border:1px solid transparent;border-radius:15px}
+.form input:focus,.form select:focus{border-color:#00d64f;box-shadow:0 0 0 3px rgba(0,214,79,.12)}
+.keypad{gap:8px}
+.key{background:#f1f1ef;border-radius:17px;color:#111;font-weight:600}
+.key:active{background:#dededb}
+
+/* Category analytics card */
+.categories-card{
+  background:#111;
+  border:0;
+  box-shadow:none;
+}
+.categories-card:before,.categories-card:after{display:none}
+.categories-card .cardhead h2,.categories-card .link{color:#fff}
+.categories-card .sub,.categories-card small{color:#9b9b97}
+.segmented{border-color:#333;background:#1d1d1d}
+.segmented .pill{color:#999;background:transparent}
+.segmented .pill.active{background:#00d64f;color:#07140a}
+.legend{border-color:#333;background:#171717}
+.legend>div{border-color:#2b2b2b;color:#fff}
+.donut{background:conic-gradient(from -90deg,var(--donut))}
+.donut:after{background:#111}
+.donut b{color:#fff}.donut small,.donut span{color:#999}
+
+/* Tools and lists */
+.recurring-row,.frequent-list-row{border-bottom-color:#ecece9}
+.financial-tip{background:#f1fbf4;border-color:#d9f3e1}
+.financial-tip-icon{background:#dff8e7;color:#087b31}
+.receipt-sheet{background:#fff}
+.receipt-brand{color:#087b31}
+.receipt-amount.pos{color:#087b31}.receipt-amount.neg{color:#111}
+
+/* Make section headings feel like Cash-style large labels */
+.transactions-header h1,.tools-header h1,.budget-header h1{font-weight:800}
+@media(max-width:430px){
+  .screen{padding-left:16px;padding-right:16px}
+}
+</style>
 </body></html>
