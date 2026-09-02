@@ -498,6 +498,63 @@ html,body{overscroll-behavior-y:contain}
   border-radius:28px 28px 0 0!important;
 }
 </style>
+
+<style id="frequent-modal-match-view-fix">
+/* Match Frequent Transactions to the same app-anchored geometry as View Transaction / Tip Calculator */
+#frequentListModal{
+  position:absolute!important;
+  inset:0!important;
+  align-items:flex-end!important;
+  padding:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+#frequentListModal .frequent-receipt-sheet{
+  width:min(430px,100%)!important;
+  max-width:430px!important;
+  min-width:0!important;
+  margin:0 auto!important;
+  align-self:flex-end!important;
+  box-sizing:border-box!important;
+  max-height:min(90dvh,720px)!important;
+  border-radius:28px 28px 0 0!important;
+}
+</style>
+
+<style id="frequent-exact-view-modal-match">
+/* Frequent Transactions: use the exact same sheet geometry as View Transaction. */
+.modal#frequentListModal{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  display:none!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.modal#frequentListModal.open{display:flex!important}
+.modal#frequentListModal .frequent-receipt-sheet{
+  width:min(430px,100%)!important;
+  max-width:430px!important;
+  min-width:0!important;
+  margin:0 auto!important;
+  align-self:flex-end!important;
+  box-sizing:border-box!important;
+  max-height:min(90dvh,720px)!important;
+  border-radius:28px 28px 0 0!important;
+  padding:18px 20px calc(28px + env(safe-area-inset-bottom))!important;
+  overflow:auto!important;
+  border:1px solid var(--line)!important;
+  box-shadow:0 -20px 70px rgba(25,35,29,.16)!important;
+}
+.modal#frequentListModal .frequent-receipt-sheet:before{top:-7px!important}
+.modal#frequentListModal .frequent-receipt-sheet:after{display:none!important}
+</style>
 </head>
 <body>
 <div id="initialLoading" class="initial-loading" role="status" aria-live="polite" aria-label="Loading budget data">
