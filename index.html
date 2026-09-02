@@ -1065,23 +1065,24 @@ function setupPullToRefresh(){
 async function initApp(){
   setupPullToRefresh();
 
-  // Paint the shell immediately, then hydrate it from the last local snapshot.
-  // This means a slow Apps Script request no longer leaves the user staring at
-  // the loading screen. Google remains the persistent source of truth.
+  // Keep the initial loading screen visible for at least 2 seconds so the user
+  // gets clear feedback that the app is loading/syncing data. If Google takes
+  // longer than 2 seconds, the screen stays up until the cloud load finishes.
+  const loadingStartedAt=performance.now();
+  const waitForMinimumLoading=async()=>{
+    const remaining=Math.max(0,2000-(performance.now()-loadingStartedAt));
+    if(remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));
+  };
+
   const cached=loadFromLocalCache();
   render(true);
-  if(cached){
-    cloudLoading=false;
-    hideInitialLoading();
-  }
 
   if(GOOGLE_SHEETS_URL){
     localEditsSinceCloudLoad=false;
-    // Always reconcile with Google in the background. If there is no cache,
-    // keep the initial loading screen until this first cloud response arrives.
     const loaded=await loadFromGoogleSheets();
     cloudLoading=false;
-    if(!cached)hideInitialLoading();
+    await waitForMinimumLoading();
+    hideInitialLoading();
     if(!loaded && !cached){
       console.warn('Google Sheets is configured but unavailable and no local cache exists.');
       render(true);
@@ -1089,8 +1090,9 @@ async function initApp(){
     }
     if(loaded)render(true);
     if(localEditsSinceCloudLoad)syncToGoogleSheets().catch(err=>console.error('Post-load sync failed:',err));
-  } else if(!cached){
+  } else {
     cloudLoading=false;
+    await waitForMinimumLoading();
     hideInitialLoading();
   }
 
