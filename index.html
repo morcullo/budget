@@ -486,7 +486,7 @@ function topCategoryBars(){const arr=categoriesWithSpent().sort((a,b)=>b.spent-a
 function greetingForHour(hour){return hour<12?'Good morning':hour<17?'Good afternoon':'Good evening'}
 function currentMonthLabel(){return new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}
 function dashboard(){const budget=totalBudget(),spent=totalSpent(),remaining=Math.max(0,budget-spent);return `<div class="dashboard-header"><div><h1>${greetingForHour(new Date().getHours())}</h1><div class="sub">Here's your financial overview</div></div></div><section class="hero hero-dashboard dashboard-balance-hero"><div class="label">Remaining</div><div class="amount">${money(remaining)}</div><div class="stats"><div class="stat"><span>Total Budget</span><b>${money(budget)}</b></div><div class="stat"><span>Spent</span><b>${money(spent)}</b></div><div class="stat used"><div class="used-ring" style="--used:${Math.min(100,Math.round(usage()))}%"><b>${Math.round(usage())}%</b></div><span>Used</span></div></div></section><section class="card top-card"><div class="cardhead"><h2>Spending Overview</h2><button class="link" data-go="categories">This Month ›</button></div>${topCategoryBars()}</section><section class="card latest-card"><div class="cardhead"><h2>Latest Transactions</h2><button class="link" data-go="transactions">View All ›</button></div>${sortTransactions([...state.transactions]).slice(0,3).map(txRow).join("")||'<div class="empty">No Transactions Yet.</div>'}</section>`}
-function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="budget-category-content category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="budget-category-icon">${iconSVG(c.icon||'home')}</div><div class="budget-category-main"><div class="budget-category-top"><strong>${esc(c.name)}</strong><div class="budget-category-amount"><b>${money(c.spent)}</b><span>/ ${money(c.budget)}</span></div></div><div class="budget-category-progress" aria-label="${p}% used"><div class="budget-progress-segments" aria-hidden="true">${Array.from({length:60},()=>'<span></span>').join('')}</div><span class="budget-progress-fill ${cls}" style="width:${w}%"></span></div><div class="budget-category-percent">${p}% of your monthly limit</div></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
+function budget(){const budget=totalBudget();const rows=categoriesWithSpent().sort((a,b)=>sortCat==='spent'?b.spent-a.spent:(b.budget?b.spent/b.budget:0)-(a.budget?a.spent/a.budget:0));return `<header class="budget-page-header"><h1>Budget</h1><div class="sub">Manage your monthly budget</div></header><section class="budget-total-card"><div class="label">Total Budget</div><div class="amount">${money(budget)}</div><div class="budget-total-stats"><div><b>${state.categories.length}</b><span>Categories</span></div><div><b>${money(budget)}</b><span>Allocated</span></div><div><b>100%</b><span>Planned</span></div></div></section><div class="budget-section-label"><span class="section-title">Categories</span><button type="button" class="budget-page-add" id="addCategory" aria-label="Add category" title="Add category">${iconSVG('plus')}</button></div><section class="budget-categories">${rows.length?rows.map(c=>{const p=c.budget?Math.round(c.spent/c.budget*100):0,w=Math.min(100,p),cls=catColor(p);const content=`<div class="budget-category-content category-clickable" data-category-name="${escAttr(c.name)}" role="button" tabindex="0"><div class="budget-category-icon">${iconSVG(c.icon||'home')}</div><div class="budget-category-main"><div class="budget-category-top"><strong>${esc(c.name)}</strong><div class="budget-category-amount"><b>${money(c.spent)}</b><span>/ ${money(c.budget)}</span></div></div><div class="budget-category-progress" aria-label="${p}% used"><div class="budget-progress-segments" aria-hidden="true">${Array.from({length:50},()=>'<span></span>').join('')}</div><span class="budget-progress-fill ${cls}" style="width:${w}%"></span></div><div class="budget-category-percent">${p}% of your monthly limit</div></div></div>`;return `<div class="budget-category-card"><div class="swipe-wrap" data-cat-name="${escAttr(c.name)}"><div class="swipe-actions"><button type="button" class="swipe-edit" data-edit-cat="${escAttr(c.name)}" aria-label="Edit ${escAttr(c.name)}" title="Edit">${iconSVG('edit')}</button><button type="button" class="swipe-delete" data-delete-cat="${escAttr(c.name)}" aria-label="Delete ${escAttr(c.name)}" title="Delete">${iconSVG('trash')}</button></div><div class="swipe-content">${content}</div></div></div>`}).join(''):'<div class="empty budget-empty">No Categories Yet.</div>'}</section>`} 
 
 function donutPath(startPct,endPct,outer=86,inner=56){const startAngle=startPct*3.6,endAngle=endPct*3.6,total=endPct-startPct;const rad=a=>(a-90)*Math.PI/180;const p=(r,a)=>[86+r*Math.cos(rad(a)),86+r*Math.sin(rad(a))];if(total>=99.999){return `M 86 ${86-outer} A ${outer} ${outer} 0 1 1 85.999 ${86+outer} A ${outer} ${outer} 0 1 1 86 ${86-outer} M 86 ${86-inner} A ${inner} ${inner} 0 1 0 86.001 ${86+inner} A ${inner} ${inner} 0 1 0 86 ${86-inner} Z`;}const [x1,y1]=p(outer,startAngle),[x2,y2]=p(outer,endAngle),[x3,y3]=p(inner,endAngle),[x4,y4]=p(inner,startAngle);const large=total>50?1:0;return `M ${x1} ${y1} A ${outer} ${outer} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${inner} ${inner} 0 ${large} 0 ${x4} ${y4} Z`;}
 function reportMonths(){const keys=new Set([currentYM(),...state.transactions.map(t=>ym(t.date)),...state.archive.map(t=>ym(t.date))]);return [...keys].filter(Boolean).sort((a,b)=>b.localeCompare(a));}
@@ -1360,6 +1360,34 @@ html,body{background:#f7f7f5;color:#111}
 }
 </style>
 
+<style>
+/* v31 — 50 wider progress segments */
+.budget-category-progress{
+  height:12px!important;
+  border-radius:2px!important;
+}
+.budget-progress-segments{
+  grid-template-columns:repeat(50,3.2px)!important;
+  gap:0!important;
+  justify-content:space-between!important;
+}
+.budget-progress-segments span{
+  width:3.2px!important;
+  min-width:3.2px!important;
+  height:100%!important;
+  border-radius:2px!important;
+}
+.budget-progress-fill{
+  height:100%!important;
+  border-radius:2px!important;
+}
+@media(max-width:430px){
+  .budget-category-progress{height:11px!important;border-radius:2px!important}
+  .budget-progress-segments{grid-template-columns:repeat(50,2.8px)!important}
+  .budget-progress-segments span{width:2.8px!important;min-width:2.8px!important;border-radius:2px!important}
+  .budget-progress-fill{border-radius:2px!important}
+}
+</style>
 </body></html>
 <style>
 /* v21 — finer dense budget progress + visible percentage */
