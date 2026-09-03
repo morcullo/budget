@@ -1507,6 +1507,12 @@ html,body{background:#f7f7f5;color:#111}
 .archive-month-body .date-group{margin-top:12px}
 .archive-month-body .date-group:first-child{margin-top:3px}
 .archive-month-body .date-title{font-size:9px;padding-bottom:4px}
+.date-group .date-chevron{position:relative;font-size:0;line-height:0;transform:none!important}
+.date-group .date-chevron:before{content:"";display:block;width:6px;height:6px;border-right:1.5px solid #9aa19b;border-bottom:1.5px solid #9aa19b;transform:rotate(45deg);transition:transform .2s ease}
+.date-group:not([open]) .date-chevron:before{transform:rotate(-45deg)}
+.archive-month-head b{display:inline-flex;align-items:center;justify-content:center;width:14px;height:16px;margin-left:3px;font-size:0;line-height:0}
+.archive-month-head b:before{content:"";display:block;width:6px;height:6px;border-right:1.5px solid #858581;border-bottom:1.5px solid #858581;transform:rotate(45deg);transition:transform .2s ease}
+.archive-month-receipt:not([open]) .archive-month-head b:before{transform:rotate(-45deg)}
 .archive-page-header h1{margin-top:0}
 </style>
 
