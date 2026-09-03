@@ -557,6 +557,7 @@ let lastUpdatedAt='';
 let cloudReady=false,cloudSyncing=false,cloudLoading=!!GOOGLE_SHEETS_URL;
 const LOCAL_CACHE_KEY='budget_app_state_v1';
 const LOCAL_CACHE_VERSION=1;
+const CLOUD_LOAD_TIMEOUT_MS=8000;
 let localCacheLoaded=false;
 let localEditsSinceCloudLoad=false;
 function cacheState(){
@@ -587,6 +588,12 @@ const currentYM=()=>ym(today());
 function id(){return 't_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
 function migrate(s){s.categories=(s.categories||[]).map(c=>({name:c.name,icon:ICONS.includes(c.icon)?c.icon:(c.icon==='⌂'?'home':c.icon==='♨'?'food':c.icon==='⌁'?'car':c.icon==='◇'?'bag':c.icon==='✚'?'person':c.icon==='♥'?'person':c.icon==='heart'?'person':c.icon==='❤'?'person':c.icon==='✈'?'plane':c.icon==='☕'?'gift':c.icon==='⚡'?'bolt':c.icon==='🎮'?'bolt':c.icon==='🛒'?'bag':c.icon==='🏠'?'home':c.icon==='🚗'?'car':c.icon==='💡'?'bolt':c.icon==='🎵'?'bolt':c.icon==='phone'?'other':c.icon==='briefcase'?'money':'home'),budget:Number(c.budget)||0}));s.transactions=(s.transactions||s.tx||[]).map(t=>({...t,id:t.id||id()}));s.archive=(s.archive||[]).map(t=>({...t,id:t.id||id()}));const legacyRecurring=Array.isArray(s.recurring)?s.recurring:[];s.frequent=(s.frequent||legacyRecurring.filter(r=>!r.frequency&&!r.startDate)).map(r=>({id:r.id||id(),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||''}));s.recurring=legacyRecurring.filter(r=>r.frequency||r.startDate).map(r=>({id:r.id||('rr_'+Date.now().toString(36)),desc:r.desc||'',amount:Number(r.amount)||0,cat:r.cat||s.categories[0]?.name||'',frequency:r.frequency||'monthly',startDate:r.startDate||today()}));s.eom=s.eom&&typeof s.eom==='object'?s.eom:{balance:0,items:[]};s.eom.balance=Math.max(0,Number(s.eom.balance)||0);s.eom.items=Array.isArray(s.eom.items)?s.eom.items.map(i=>({id:i.id||('eom_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6)),name:String(i.name||'').trim(),amount:Math.max(0,Number(i.amount)||0),dueDate:i.dueDate||today(),icon:ICONS.includes(i.icon)?i.icon:'money',paid:!!i.paid})).filter(i=>i.name&&i.amount>0&&i.dueDate):[];s.savingsGoals=Array.isArray(s.savingsGoals)?s.savingsGoals.map(g=>{const legacyMonths=Math.max(1,Math.round(Number(g.months)||12));const unit=g.timeframeUnit==='weeks'||g.timeframeUnit==='years'||g.timeframeUnit==='months'?g.timeframeUnit:'months';const value=Math.max(1,Math.round(Number(g.timeframeValue)||legacyMonths));return {id:g.id||('sg_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6)),name:String(g.name||'').trim(),amount:Math.max(0,Number(g.amount)||0),months:unit==='years'?value*12:unit==='weeks'?value*12/52:value,timeframeValue:value,timeframeUnit:unit,createdAt:g.createdAt||new Date().toISOString()}}).filter(g=>g.name&&g.amount>0):[];s.financialTipIndex=Number.isInteger(Number(s.financialTipIndex))?((Number(s.financialTipIndex)%20)+20)%20:19;s.budget=s.categories.reduce((sum,c)=>sum+(Number(c.budget)||0),0);return s}
 function markUpdated(){lastUpdatedAt=new Date().toISOString()}
+async function fetchWithTimeout(url,options={},timeoutMs=CLOUD_LOAD_TIMEOUT_MS){
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch(url,{...options,signal:controller.signal})}
+  finally{clearTimeout(timeout)}
+}
 async function save(){
   localEditsSinceCloudLoad=true;
   state.budget=totalBudget();
@@ -599,7 +606,7 @@ async function loadFromGoogleSheets(){
   if(!GOOGLE_SHEETS_URL)return false;
   try{
     const url=GOOGLE_SHEETS_URL+'?action=load'+(GOOGLE_SHEETS_TOKEN?'&token='+encodeURIComponent(GOOGLE_SHEETS_TOKEN):'');
-    const r=await fetch(url,{cache:'no-store'});
+    const r=await fetchWithTimeout(url,{cache:'no-store'});
     if(!r.ok)throw new Error('Cloud load failed: HTTP '+r.status);
     const data=await r.json();
     if(data&&data.error)throw new Error(data.error);
@@ -1132,7 +1139,7 @@ document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if
 document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
 document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
-const INITIAL_LOADING_MIN_MS=2000; const initialLoadingStartedAt=Date.now(); let initialLoadingHidden=false; function hideInitialLoading(){if(initialLoadingHidden)return; const wait=Math.max(0,INITIAL_LOADING_MIN_MS-(Date.now()-initialLoadingStartedAt)); setTimeout(()=>{if(initialLoadingHidden)return; const el=document.getElementById('initialLoading'); if(el){initialLoadingHidden=true;el.classList.add('hidden');setTimeout(()=>el.remove(),240)}},wait)}
+const INITIAL_LOADING_MIN_MS=500; const initialLoadingStartedAt=Date.now(); let initialLoadingHidden=false; function hideInitialLoading(){if(initialLoadingHidden)return; const wait=Math.max(0,INITIAL_LOADING_MIN_MS-(Date.now()-initialLoadingStartedAt)); setTimeout(()=>{if(initialLoadingHidden)return; const el=document.getElementById('initialLoading'); if(el){initialLoadingHidden=true;el.classList.add('hidden');setTimeout(()=>el.remove(),240)}},wait)}
 let pullStartY=0,pullDistance=0,pullTracking=false,pullBusy=false;
 function setupPullToRefresh(){
   const indicator=document.getElementById('pullRefreshIndicator');
@@ -1168,18 +1175,17 @@ function setupPullToRefresh(){
 async function initApp(){
   setupPullToRefresh();
 
-  // Show the initial loading screen for at least 2 seconds so the user
-  // always sees clear feedback while the app hydrates its data.
+  // Show brief feedback while cached data renders; cloud hydration continues
+  // without blocking the app.
   const cached=loadFromLocalCache();
   render(true);
+  hideInitialLoading();
 
   if(GOOGLE_SHEETS_URL){
     localEditsSinceCloudLoad=false;
-    // Always reconcile with Google in the background. If there is no cache,
-    // keep the initial loading screen until this first cloud response arrives.
+    // Reconcile after rendering so slow mobile networking never blocks startup.
     const loaded=await loadFromGoogleSheets();
     cloudLoading=false;
-    hideInitialLoading();
     if(!loaded && !cached){
       console.warn('Google Sheets is configured but unavailable and no local cache exists.');
       render(true);
@@ -1189,7 +1195,6 @@ async function initApp(){
     if(localEditsSinceCloudLoad)syncToGoogleSheets().catch(err=>console.error('Post-load sync failed:',err));
   } else {
     cloudLoading=false;
-    hideInitialLoading();
   }
 
   state.financialTipIndex=((Number(state.financialTipIndex)||0)+1)%FINANCIAL_TIPS.length;
