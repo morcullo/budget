@@ -928,8 +928,9 @@ function setupFloatingNav(){const nav=document.querySelector('.bottom');if(!nav)
 function savingsCalculate(source=''){
   const range=document.getElementById('savingsAmount');let exact=document.getElementById('savingsAmountExact');
   if(range){range.max='25000';range.oninput=()=>savingsCalculate('range');const maxLabel=document.querySelector('.savings-range-labels span:last-child');if(maxLabel)maxLabel.textContent='$25k'}
-  if(!exact&&range){const display=document.getElementById('savingsAmountDisplay'),label=document.querySelector('label[for="savingsAmount"]');exact=document.createElement('input');exact.id='savingsAmountExact';exact.className='savings-amount-input';exact.type='text';exact.min='100';exact.max='25000';exact.step='100';exact.value='$'+Number(range.value||5000).toLocaleString();exact.inputMode='decimal';exact.setAttribute('aria-label','Exact savings goal amount');exact.oninput=()=>{const raw=exact.value.replace(/[^0-9.]/g,''),amount=Math.max(100,Math.min(25000,Math.round(Number(raw)||100)/100*100));exact.value='$'+amount.toLocaleString();range.value=amount;savingsCalculate('exact')};if(label)label.htmlFor=exact.id;if(display)display.replaceWith(exact)}
-  const amount=Math.max(100,Math.min(25000,Math.round(Number(range?.value)||5000)/100*100));
+  if(!exact&&range){const display=document.getElementById('savingsAmountDisplay'),label=document.querySelector('label[for="savingsAmount"]');exact=document.createElement('input');exact.id='savingsAmountExact';exact.className='savings-amount-input';exact.type='text';exact.min='0';exact.step='1';exact.value='$'+Number(range.value||5000).toLocaleString();exact.inputMode='decimal';exact.setAttribute('aria-label','Exact savings goal amount');exact.oninput=()=>{const raw=exact.value.replace(/[^0-9.]/g,''),amount=Math.max(0,Number(raw)||0);exact.value='$'+amount.toLocaleString();range.value=Math.min(25000,Math.max(100,amount));savingsCalculate('exact')};if(label)label.htmlFor=exact.id;if(display)display.replaceWith(exact)}
+  const exactAmount=source==='exact'&&exact?Number(exact.value.replace(/[^0-9.]/g,'')):Number(range?.value)||5000;
+  const amount=Math.max(0,source==='exact'?exactAmount:Math.min(25000,Math.round(exactAmount)/100*100));
   const value=Math.max(1,Math.min(1200,Math.round(Number(document.getElementById('savingsTimeframeValue')?.value)||3)));
   const unit=document.getElementById('savingsTimeframeUnit')?.value||'months';
   const weeks=unit==='weeks'?value:unit==='months'?value*52/12:value*52;
@@ -942,12 +943,12 @@ function savingsCalculate(source=''){
   if(monthlyOut)monthlyOut.textContent=fmt(monthly);
   if(weeklyOut)weeklyOut.textContent=fmt(weekly);
   if(dailyOut)dailyOut.textContent=fmt(daily);
-  if(range){const min=Number(range.min)||100,max=Number(range.max)||50000;range.style.setProperty('--range-pct',((amount-min)/(max-min)*100)+'%');}
+  if(range){const min=Number(range.min)||100,max=25000;range.style.setProperty('--range-pct',((Math.min(max,Math.max(min,amount))-min)/(max-min)*100)+'%');}
 }
 function saveSavingsGoal(e){
   e.preventDefault();
   const name=document.getElementById('savingsName')?.value.trim();
-  const amount=Math.max(100,Math.min(50000,Math.round(Number(document.getElementById('savingsAmount')?.value)||0)/100*100));
+  const amount=Math.max(0,Number(document.getElementById('savingsAmountExact')?.value.replace(/[^0-9.]/g,''))||0);
   const timeframeValue=Math.max(1,Math.min(1200,Math.round(Number(document.getElementById('savingsTimeframeValue')?.value)||0)));
   const timeframeUnit=document.getElementById('savingsTimeframeUnit')?.value||'months';
   if(!name||!(amount>0)||!(timeframeValue>0))return;
