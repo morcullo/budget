@@ -258,12 +258,11 @@ html,body{overscroll-behavior-y:contain}
 .dashboard-chart-main{min-width:0;overflow:hidden;}
 .dashboard-bars{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:end;gap:8px;height:100%;padding:0 0 0;}
 .dashboard-bars .bar-item{min-width:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:10px;padding:0;border:0;background:transparent;color:inherit;}
-.dashboard-bars .bar-track{height:195px;width:100%;max-width:54px;border-radius:22px;background:#f0eff9;display:flex;align-items:flex-end;overflow:hidden;position:relative;}
-.dashboard-bars .bar-fill{width:100%;height:0;border-radius:22px 22px 18px 18px;background:#d7d5f5;transition:height .25s ease,background .2s ease;}
-.dashboard-bars .bar-item.selected .bar-fill{background:#6800f5;}
+.dashboard-bars .bar-track{height:195px;width:100%;max-width:54px;border-radius:22px;display:flex;align-items:flex-end;overflow:hidden;position:relative;}
+.dashboard-bars .bar-fill{width:100%;height:0;border-radius:22px 22px 18px 18px;transition:height .25s ease,background .2s ease;}
 .dashboard-bars .bar-label{font-size:10px;color:#4f566e;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;line-height:1.1;}
 .dashboard-bars .bar-label small{display:none;}
-.dashboard-bars .bar-item.selected .bar-label{color:#313750;font-weight:700;}
+.dashboard-bars .bar-item.selected .bar-label{font-weight:700;}
 
 @media(max-width:360px){
   .dashboard-chart{grid-template-columns:23px minmax(0,1fr);gap:6px;height:230px;}
@@ -1864,14 +1863,6 @@ html,body{background:#f7f7f5;color:#111}
   .top-card .dashboard-bars .bar-track{height:98px!important;width:45px!important;max-width:45px!important;border-radius:22px!important;}
   .top-card .dashboard-bars .bar-label{font-size:7px!important;max-width:50px!important;min-height:25px!important;}
 }
-</style>
-<style>
-/* Spending Overview: keep every bar visually active; only the selected bar is darker */
-.top-card .dashboard-bars .bar-fill{background:#3a9b6a!important;opacity:1!important;filter:none!important;box-shadow:none!important;}
-.top-card .dashboard-bars .bar-item.selected .bar-fill{background:#176b48!important;opacity:1!important;filter:none!important;box-shadow:none!important;}
-.top-card .dashboard-bars .bar-fill.warn,
-.top-card .dashboard-bars .bar-fill.orange,
-.top-card .dashboard-bars .bar-fill.red{background:#3a9b6a!important;opacity:1!important;filter:none!important;}
 </style>
 <style>
 /* Spending Overview: taller + bright green palette */
