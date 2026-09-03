@@ -90,7 +90,7 @@ html,body,.app{touch-action:manipulation}input,select,button{touch-action:manipu
 /* Budget receipt spacing + category swipe behavior */
 .budget-receipt{margin-top:20px;}
 .budget-receipt .swipe-wrap{position:relative;overflow:hidden;}
-.budget-receipt .swipe-content{position:relative;z-index:1;transition:transform .22s ease;touch-action:pan-y;background:#fffdf8;}
+.budget-receipt .swipe-content{position:relative;z-index:1;transition:transform .22s ease;touch-action:pan-y;background:#fff;}
 .budget-receipt .swipe-wrap.open .swipe-content{transform:translateX(-152px);}
 .budget-receipt .swipe-actions{position:absolute;right:0;top:0;bottom:0;width:152px;display:grid;grid-template-columns:76px 76px;z-index:0;}
 .budget-receipt .swipe-actions .swipe-edit,.budget-receipt .swipe-actions .swipe-delete{width:76px;height:100%;border:0;color:#fff;display:grid;place-items:center;}
@@ -1227,6 +1227,7 @@ async function initApp(){
 }
 const transactionHeadingObserver=new MutationObserver(()=>{if(page==='transactions'){const title=document.querySelector('.transactions-receipt-title');const subtitle=document.querySelector('.transactions-receipt-sub');const nextTitle=monthLabel(currentYM())+' Transactions';if(title&&title.textContent!==nextTitle)title.textContent=nextTitle;if(subtitle&&subtitle.textContent!=='All transactions from current month')subtitle.textContent='All transactions from current month'}else if(page==='budget'){const subtitle=document.querySelector('.transactions-receipt-sub');if(subtitle&&subtitle.textContent!=='Set monthly limits and track category spending.')subtitle.textContent='Set monthly limits and track category spending.'}});transactionHeadingObserver.observe(document.getElementById('screen'),{childList:true,subtree:true});
 const recurringHeadingObserver=new MutationObserver(()=>{if(page==='recurring'){const subtitle=document.querySelector('.recurring-receipt .transactions-receipt-sub');if(subtitle&&subtitle.textContent!=='Manage automatic transactions that repeat on a schedule.')subtitle.textContent='Manage automatic transactions that repeat on a schedule.'}});recurringHeadingObserver.observe(document.getElementById('screen'),{childList:true,subtree:true});
+const budgetSummaryObserver=new MutationObserver(()=>{if(page==='budget'){const summary=document.querySelector('.budget-receipt-summary'),body=document.querySelector('.budget-receipt-body');if(summary&&body&&summary.previousElementSibling!==body)body.parentNode.insertBefore(summary,body.nextSibling)}});budgetSummaryObserver.observe(document.getElementById('screen'),{childList:true,subtree:true});
 initApp();
 </script>
 
@@ -1650,7 +1651,7 @@ html,body{background:#f7f7f5;color:#111}
 </style>
 <style>
 /* v35 — Budget categories receipt redesign + continuous progress bars */
-.budget-receipt{margin-top:0!important;background:#fffdf8!important;border-color:#deded9!important;border-radius:4px!important;padding:22px 18px 28px!important;box-shadow:0 12px 30px rgba(0,0,0,.07)!important;overflow:visible!important;position:relative!important}
+.budget-receipt{margin-top:0!important;background:#fff!important;border-color:#deded9!important;border-radius:4px!important;padding:22px 18px 28px!important;box-shadow:0 12px 30px rgba(0,0,0,.07)!important;overflow:visible!important;position:relative!important}
 .budget-receipt:before,.budget-receipt:after{content:"";position:absolute;left:0;right:0;height:8px;background:linear-gradient(135deg,transparent 5px,#fffdf8 5px,#fffdf8 10px,transparent 10px) repeat-x;background-size:20px 8px;pointer-events:none}
 .budget-receipt:before{top:-7px}.budget-receipt:after{bottom:-7px;transform:rotate(180deg)}
 .budget-receipt .transactions-receipt-head{padding-bottom:15px}
@@ -1660,7 +1661,7 @@ html,body{background:#f7f7f5;color:#111}
 .budget-category-card .swipe-wrap,.budget-category-card .swipe-content{height:auto!important;min-height:0!important}
 .budget-category-card .swipe-wrap{margin:0!important;border-radius:0!important;border-bottom:1px dotted #d5d8d3!important}
 .budget-category-card:last-child .swipe-wrap{border-bottom:0!important}
-.budget-category-card .swipe-content{padding:13px 2px!important;background:#fffdf8!important;display:block!important;overflow:hidden!important}
+.budget-category-card .swipe-content{padding:13px 2px!important;background:#fff!important;display:block!important;overflow:hidden!important}
 .budget-category-content{width:100%!important;height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;column-gap:11px!important;align-items:center!important}
 .budget-category-icon{width:38px!important;height:38px!important;border-radius:10px!important;background:#eef7f1!important;color:#087b31!important;display:grid!important;place-items:center!important}
 .budget-category-icon svg{width:19px!important;height:19px!important}
@@ -1691,6 +1692,13 @@ html,body{background:#f7f7f5;color:#111}
 @keyframes pageInFade{from{opacity:.35}to{opacity:1}}
 .screen{animation:pageInFade .18s ease both}
 .budget-receipt-head .transactions-receipt-kicker,.budget-receipt-head .transactions-receipt-title,.budget-receipt-head .transactions-receipt-sub{padding-right:0!important;}
+.budget-receipt .budget-receipt-summary{margin-top:10px!important;padding:14px 0 12px!important;border-top:1px dashed #d8d6ce!important}
+.budget-receipt .budget-receipt-total-budget{display:none!important}
+.budget-receipt .budget-receipt-stats{margin-top:0!important;padding-top:0!important;border-top:0!important}
+.budget-receipt .budget-receipt-stats div{padding:0 8px!important}
+.budget-receipt .budget-receipt-stats b{font-size:12px!important}
+.budget-receipt .budget-receipt-stats span{font-size:8px!important}
+.budget-receipt .budget-receipt-total{margin-top:0!important;padding-top:16px!important}
 </style>
 <style>
 /* Final budget categories spacing */
@@ -1807,7 +1815,7 @@ html,body{background:#f7f7f5;color:#111}
 
 <style>
 /* Keep EOM Account Balance Edit compact, matching Add Item */
-.modal#recurringModal .recurring-sheet{background:#fffdf8;border:0;border-radius:28px 28px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
+.modal#recurringModal .recurring-sheet{background:#fff;border:0;border-radius:28px 28px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
 .modal#recurringModal .recurring-sheet .handle{background:#cfd5d0;margin-bottom:16px}
 .modal#recurringModal .recurring-sheet .row{align-items:flex-start;padding-bottom:14px;margin-bottom:14px;border-bottom:1px dashed #bfc3bd}
 .modal#recurringModal .recurring-sheet h2{font-size:21px;line-height:1.1;color:#111;font-weight:800}
@@ -1840,7 +1848,9 @@ html,body{background:#f7f7f5;color:#111}
   box-sizing:border-box!important;
 }
 .eom-receipt .receipt-balance .receipt-edit svg{width:14px!important;height:14px!important}
-.modal#categoryModal .sheet{background:#fffdf8;border:0;border-radius:26px 26px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
+.modal#categoryModal .sheet{background:#fff;border:0;border-radius:26px 26px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
+.receipt-sheet{background:#fff!important}
+.budget-receipt:before,.budget-receipt:after{background:#fff!important}
 .modal#categoryModal .sheet .handle{background:#cfd5d0;margin-bottom:16px}
 .modal#categoryModal .sheet .row{align-items:flex-start;padding-bottom:14px;margin-bottom:14px;border-bottom:1px dashed #bfc3bd}
 .modal#categoryModal .sheet h2{font-size:21px;line-height:1.1;color:#111;font-weight:800}
