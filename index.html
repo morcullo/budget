@@ -1004,13 +1004,14 @@ function txRenderSuggestions(query){
 function txApplySuggestion(item){
   const desc=document.getElementById('desc');if(!desc)return;
   desc.value=item.desc||desc.value;
-  // Only Frequent and Recurring suggestions are true reusable templates: 
-  // they fill the category and amount. Archived/regular transactions only
-  // autocomplete the description and leave the user's amount/category intact.
+  const cat=document.getElementById('cat');
+  if(cat&&item.cat&&Array.from(cat.options).some(o=>o.value===item.cat)){
+    cat.value=item.cat;
+    const category=state.categories.find(x=>x.name===cat.value);
+    document.getElementById('txAvatar').innerHTML=iconSVG(category?.icon||'home');
+  }
   if(item._full){
-    const cat=document.getElementById('cat');if(item.cat&&Array.from(cat.options).some(o=>o.value===item.cat))cat.value=item.cat;
     txAmount=String(Math.abs(Number(item.amount)||0));
-    const c=state.categories.find(x=>x.name===cat.value);document.getElementById('txAvatar').innerHTML=iconSVG(c?.icon||'home');
     updateAmountDisplay();
   }
   txCloseSuggestions();
