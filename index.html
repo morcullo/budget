@@ -1225,6 +1225,8 @@ async function initApp(){
   render(true);
   if(changed)save().catch(err=>console.error('Initial sync failed:',err));
 }
+const transactionHeadingObserver=new MutationObserver(()=>{if(page==='transactions'){const title=document.querySelector('.transactions-receipt-title');const subtitle=document.querySelector('.transactions-receipt-sub');const nextTitle=monthLabel(currentYM())+' Transactions';if(title&&title.textContent!==nextTitle)title.textContent=nextTitle;if(subtitle&&subtitle.textContent!=='All transactions from current month')subtitle.textContent='All transactions from current month'}else if(page==='budget'){const subtitle=document.querySelector('.transactions-receipt-sub');if(subtitle&&subtitle.textContent!=='Set monthly limits and track category spending.')subtitle.textContent='Set monthly limits and track category spending.'}});transactionHeadingObserver.observe(document.getElementById('screen'),{childList:true,subtree:true});
+const recurringHeadingObserver=new MutationObserver(()=>{if(page==='recurring'){const subtitle=document.querySelector('.recurring-receipt .transactions-receipt-sub');if(subtitle&&subtitle.textContent!=='Manage automatic transactions that repeat on a schedule.')subtitle.textContent='Manage automatic transactions that repeat on a schedule.'}});recurringHeadingObserver.observe(document.getElementById('screen'),{childList:true,subtree:true});
 initApp();
 </script>
 
@@ -1682,7 +1684,13 @@ html,body{background:#f7f7f5;color:#111}
 .budget-receipt-head .budget-receipt-add{position:absolute!important;top:0!important;right:0!important;z-index:3!important;}
 .budget-receipt-head .budget-page-add{width:32px!important;height:32px!important;border:0!important;border-radius:10px!important;background:#00d64f!important;color:#fff!important;display:grid!important;place-items:center!important;padding:0!important;box-shadow:none!important;}
 .budget-receipt-head .budget-page-add svg{width:17px!important;height:17px!important;stroke:#fff!important;}
-.budget-receipt-head .transactions-receipt-kicker,.budget-receipt-head .transactions-receipt-title,.budget-receipt-head .transactions-receipt-sub{padding-right:42px!important;}
+.budget-receipt-head .budget-receipt-add{position:fixed!important;top:auto!important;right:max(18px,calc((100vw - 430px)/2 + 18px))!important;bottom:90px!important;z-index:24!important}
+.budget-receipt-head .budget-page-add{width:74px!important;height:42px!important;border-radius:14px!important;font-size:12px!important;font-weight:800!important;box-shadow:0 8px 20px rgba(0,214,79,.24)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important}
+.budget-receipt-head .budget-page-add svg{display:block!important;width:15px!important;height:15px!important;stroke:#fff!important}
+.budget-receipt-head .budget-page-add:after{content:'Add'}
+@keyframes pageInFade{from{opacity:.35}to{opacity:1}}
+.screen{animation:pageInFade .18s ease both}
+.budget-receipt-head .transactions-receipt-kicker,.budget-receipt-head .transactions-receipt-title,.budget-receipt-head .transactions-receipt-sub{padding-right:0!important;}
 </style>
 <style>
 /* Final budget categories spacing */
@@ -1770,15 +1778,49 @@ html,body{background:#f7f7f5;color:#111}
 }
 .recurring-receipt .transactions-receipt-head{
   position:relative;
-  padding-right:72px;
+  padding-right:0!important;
 }
 .recurring-receipt .transactions-receipt-kicker{
   padding-right:0!important;
 }
+.recurring-receipt .recurring-receipt-new{
+  position:fixed!important;
+  top:auto!important;
+  right:max(18px,calc((100vw - 430px)/2 + 18px))!important;
+  bottom:90px!important;
+  z-index:24!important;
+  width:74px!important;
+  height:42px!important;
+  min-width:74px!important;
+  min-height:42px!important;
+  padding:0!important;
+  border-radius:14px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  box-shadow:0 8px 20px rgba(0,214,79,.24)!important;
+}
+.recurring-receipt .recurring-receipt-new svg{display:block!important;width:15px!important;height:15px!important;stroke:#fff!important}
+.recurring-receipt .recurring-receipt-new:after{content:'Add'}
 </style>
 
 <style>
 /* Keep EOM Account Balance Edit compact, matching Add Item */
+.modal#recurringModal .recurring-sheet{background:#fffdf8;border:0;border-radius:28px 28px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
+.modal#recurringModal .recurring-sheet .handle{background:#cfd5d0;margin-bottom:16px}
+.modal#recurringModal .recurring-sheet .row{align-items:flex-start;padding-bottom:14px;margin-bottom:14px;border-bottom:1px dashed #bfc3bd}
+.modal#recurringModal .recurring-sheet h2{font-size:21px;line-height:1.1;color:#111;font-weight:800}
+.modal#recurringModal .recurring-sheet h2:after{content:'Automatically add this transaction on its schedule.';display:block;margin-top:6px;color:#858581;font-size:10px;line-height:1.45;font-weight:400}
+.modal#recurringModal .recurring-modal-sub{margin:-5px 0 17px;color:#858581;font-size:10px;line-height:1.45}
+.modal#recurringModal .recurring-modal-sub{display:none}
+.modal#recurringModal .recurring-sheet .form{display:flex;flex-direction:column;gap:0}
+.modal#recurringModal .recurring-sheet .form label{font-size:9px;color:#858581;letter-spacing:1px;text-transform:uppercase;margin:12px 0 6px;font-weight:800}
+.modal#recurringModal .recurring-sheet .form input,.modal#recurringModal .recurring-sheet .form select{height:44px;border:1px solid #dfe4df;border-radius:9px;background:#f8f9f7;color:#161916;padding:0 12px;font-size:13px}
+.modal#recurringModal .recurring-sheet .form input:focus,.modal#recurringModal .recurring-sheet .form select:focus{border-color:#75b993;box-shadow:0 0 0 3px rgba(37,138,96,.12);background:#fff}
+.modal#recurringModal .recurring-sheet .recurring-save{height:48px;margin-top:18px;border-radius:12px;background:#00d64f;color:#07140a;font-size:13px;font-weight:800;box-shadow:none}
+.modal#recurringModal .recurring-sheet .recurring-add-now{height:44px;border:1px solid #b9ddc9;border-radius:11px;background:#e9faef;color:#087b31;font-size:11px;font-weight:750}
+.modal#recurringModal .recurring-sheet .recurring-delete{height:42px;border-radius:11px;font-size:11px}
 .eom-receipt .receipt-balance .receipt-edit{
   width:auto!important;
   min-width:0!important;
@@ -1798,6 +1840,20 @@ html,body{background:#f7f7f5;color:#111}
   box-sizing:border-box!important;
 }
 .eom-receipt .receipt-balance .receipt-edit svg{width:14px!important;height:14px!important}
+.modal#categoryModal .sheet{background:#fffdf8;border:0;border-radius:26px 26px 0 0;padding:22px 20px 30px;box-shadow:0 -18px 55px rgba(25,35,29,.2)}
+.modal#categoryModal .sheet .handle{background:#cfd5d0;margin-bottom:16px}
+.modal#categoryModal .sheet .row{align-items:flex-start;padding-bottom:14px;margin-bottom:14px;border-bottom:1px dashed #bfc3bd}
+.modal#categoryModal .sheet h2{font-size:21px;line-height:1.1;color:#111;font-weight:800}
+.modal#categoryModal .sheet h2:after{content:'Create a category and set its monthly spending limit.';display:block;margin-top:6px;color:#858581;font-size:10px;line-height:1.45;font-weight:400}
+.modal#categoryModal .sheet .form{display:flex;flex-direction:column;gap:0}
+.modal#categoryModal .sheet .form label{font-size:9px;color:#858581;letter-spacing:1px;text-transform:uppercase;margin:12px 0 6px;font-weight:800}
+.modal#categoryModal .sheet .form input{height:44px;border:1px solid #dfe4df;border-radius:9px;background:#f8f9f7;color:#161916;padding:0 12px;font-size:13px}
+.modal#categoryModal .sheet .form input:focus{border-color:#75b993;box-shadow:0 0 0 3px rgba(37,138,96,.12);background:#fff}
+.modal#categoryModal .sheet .icon-picker{margin-top:2px;gap:7px}
+.modal#categoryModal .sheet .icon-choice{height:42px;border:1px solid #dfe4df;border-radius:9px;background:#f8f9f7;color:#69736c}
+.modal#categoryModal .sheet .icon-choice.selected{border-color:#75b993;background:#e9faef;color:#087b31}
+.modal#categoryModal .sheet .primary{height:48px;margin-top:18px;border-radius:12px;background:#00d64f;color:#07140a;font-size:13px;font-weight:800;box-shadow:none}
+.modal#categoryModal .sheet .danger{height:42px;border-radius:11px;font-size:11px}
 </style>
 
 
