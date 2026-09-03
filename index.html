@@ -1846,8 +1846,8 @@ html,body{background:#f7f7f5;color:#111}
 .frequent-receipt-body{padding-top:3px}
 .frequent-page-new{position:fixed!important;right:max(18px,calc((100vw - 430px)/2 + 18px))!important;bottom:90px!important;z-index:24!important;width:74px!important;height:42px!important;padding:0!important;border:0!important;border-radius:14px!important;background:#00d64f!important;color:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;font-size:12px!important;font-weight:800!important;box-shadow:0 8px 20px rgba(0,214,79,.24)!important}
 .frequent-page-new svg{display:block!important;width:15px!important;height:15px!important;stroke:#fff!important}
-.frequent-receipt .recurring-receipt-row{padding:14px 2px;border-bottom:1px dotted #d5d8d3}
-.frequent-receipt .recurring-receipt-row:last-child{border-bottom:0}
+.frequent-receipt .recurring-receipt-row,.recurring-receipt .recurring-receipt-row{padding:14px 2px;border-bottom:0!important}
+.frequent-receipt .frequent-swipe + .frequent-swipe,.recurring-receipt .recurring-swipe + .recurring-swipe{border-top:1px dotted #d5d8d3}
 .frequent-receipt [data-add-frequent]{display:none!important}
 .frequent-swipe,.recurring-swipe{position:relative;overflow:hidden;border-radius:0}
 .frequent-swipe .swipe-content,.recurring-swipe .swipe-content{position:relative;z-index:1;background:#fff;transition:transform .22s ease}
