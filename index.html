@@ -795,14 +795,14 @@ function pdfNum(n){return Number(n||0).toFixed(2)}
 function pdfMoney(n){const v=Number(n)||0;return (v<0?'-':'')+'$'+pdfNum(Math.abs(v)).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
 function pdfTextColor(x,y,size,text,bold,r,g,b){return `${r} ${g} ${b} rg BT /F${bold?'2':'1'} ${size} Tf 1 0 0 1 ${x} ${y} Tm (${pdfClean(text)}) Tj ET\n`}
 function pdfText(x,y,size,text,bold=false){return pdfTextColor(x,y,size,text,bold,0.12,0.14,0.13)}
-function pdfTextGreen(x,y,size,text,bold=false){return pdfTextColor(x,y,size,text,bold,0.145,0.541,0.376)}
+function pdfTextGreen(x,y,size,text,bold=false){return pdfTextColor(x,y,size,text,bold,0,0.839,0.31)}
 function pdfTextWhite(x,y,size,text,bold=false){return pdfTextColor(x,y,size,text,bold,1,1,1)}
 function pdfTextRight(y,size,text,bold=false,white=false){const clean=pdfClean(text),w=clean.length*size*.52;return (white?pdfTextWhite:pdfText)(570-w,y,size,clean,bold)}
 function pdfLine(x1,y1,x2,y2){return `0.88 0.91 0.89 RG 0.7 w ${x1} ${y1} m ${x2} ${y2} l S\n`}
 function pdfRect(x,y,w,h,fill=[0.97,0.98,0.97],stroke=false,r=0){let s=`${fill[0]} ${fill[1]} ${fill[2]} rg `;if(r){const k=.5522848;const rr=Math.min(r,w/2,h/2);s+=`${x+rr} ${y} m ${x+w-rr} ${y} l ${x+w-rr+k*rr} ${y} ${x+w} ${y+rr-k*rr} ${x+w} ${y+rr} c ${x+w} ${y+h-rr} l ${x+w} ${y+h-rr+k*rr} ${x+w-rr+k*rr} ${y+h} ${x+w-rr} ${y+h} c ${x+rr} ${y+h} l ${x+rr-k*rr} ${y+h} ${x} ${y+h-rr+k*rr} ${x} ${y+h-rr} c ${x} ${y+rr} l ${x} ${y+rr-k*rr} ${x+rr-k*rr} ${y} ${x+rr} ${y} c f\n`;}else{s+=`${x} ${y} ${w} ${h} re f\n`}if(stroke)s+=`0.88 0.91 0.89 RG 0.7 w ${x} ${y} ${w} ${h} re S\n`;return s}
 function pdfWrapLines(text,max){const words=String(text??'').split(/\s+/),lines=[];let line='';for(const w0 of words){const w=pdfClean(w0);if(!w)continue;const test=line?line+' '+w:w;if(test.length>max){if(line)lines.push(line);line=w}else line=test}if(line)lines.push(line);return lines}
 function pdfFooter(page,total){return pdfText(42,28,7,'Budget  |  Monthly expense report')+pdfText(548,28,7,`Page ${page} of ${total}`)}
-function pdfPageHeader(label,eyebrow,title,subtitle){let c='';c+=pdfRect(0,744,612,48,[0.145,0.541,0.376]);c+=pdfTextWhite(42,764,10,'BUDGET',true);c+=pdfTextRight(764,8,label,false,true);c+=pdfTextGreen(42,711,8,eyebrow.toUpperCase(),true);c+=pdfText(42,680,24,title,true);c+=pdfTextColor(42,660,9,subtitle,false,0.43,0.48,0.45);return c}
+function pdfPageHeader(label,eyebrow,title,subtitle){let c='';c+=pdfRect(0,744,612,48,[0,0.839,0.31]);c+=pdfTextWhite(42,764,10,'$',true);c+=pdfTextRight(764,8,label,false,true);c+=pdfTextGreen(42,711,8,eyebrow.toUpperCase(),true);c+=pdfText(42,680,24,title,true);c+=pdfTextColor(42,660,9,subtitle,false,0.43,0.48,0.45);return c}
 function pdfSectionTitle(y,title,subtitle){let c=pdfText(42,y,14,title,true);if(subtitle)c+=pdfText(42,y-16,8,subtitle);return c}
 function reportPdfBytes(monthKey){
  const d=reportData(monthKey),pages=[];
@@ -826,7 +826,7 @@ function reportPdfBytes(monthKey){
  c+=pdfSectionTitle(610,'Category ranking','Only expense transactions dated in the selected month are included.');
  let y=560;c+=pdfText(42,y,7,'CATEGORY',true)+pdfText(400,y,7,'SPEND',true)+pdfText(512,y,7,'SHARE',true);y-=16;
  const mix=d.cats.filter(x=>x.spent>0),maxMix=Math.max(1,...mix.map(x=>x.spent));
- mix.forEach(cat=>{const share=d.total?cat.spent/d.total*100:0;c+=pdfLine(42,y-9,570,y-9);c+=pdfText(42,y,9,cat.name);c+=pdfRect(205,y-4,160,8,[0.90,0.94,0.92],false,4);c+=pdfRect(205,y-4,Math.max(4,160*cat.spent/maxMix),8,[0.145,0.541,0.376],false,4);c+=pdfText(400,y,9,pdfMoney(cat.spent));c+=pdfText(512,y,9,share.toFixed(1)+'%');y-=30});
+ mix.forEach(cat=>{const share=d.total?cat.spent/d.total*100:0;c+=pdfLine(42,y-9,570,y-9);c+=pdfText(42,y,9,cat.name);c+=pdfRect(205,y-4,160,8,[0.90,0.94,0.92],false,4);c+=pdfRect(205,y-4,Math.max(4,160*cat.spent/maxMix),8,[0,0.839,0.31],false,4);c+=pdfText(400,y,9,pdfMoney(cat.spent));c+=pdfText(512,y,9,share.toFixed(1)+'%');y-=30});
  if(!mix.length)c+=pdfText(42,y,9,'No expense categories have spending in this month.');
  y=Math.max(180,y-10);c+=pdfSectionTitle(y,'Summary');y-=34;const lead=mix.length?`${mix[0].name} is the largest category at ${pdfMoney(mix[0].spent)}, followed by ${mix[1]?mix[1].name:'no other category'}.`:'There is no spending to summarize for this month.';for(const line of pdfWrapLines(lead,91)){c+=pdfText(42,y,9,line);y-=14}
  pages.push(c);
@@ -874,7 +874,7 @@ function reportPdfBytes(monthKey){
    c+=pdfSectionTitle(610,'Recurring commitments',recurringChunks.length>1?`Page ${idx+1} of ${recurringChunks.length}.`:'');
    let ry=552;
    if(chunk.length){
-     chunk.forEach(r=>{c+=pdfLine(42,ry-9,570,ry-9);c+=pdfText(42,ry,9,r.desc,true);c+=pdfText(42,ry-14,8,`${r.cat}  |  Monthly`);c+=pdfText(500,ry,9,pdfMoney(r.amount),true);ry-=40});
+    chunk.forEach(r=>{c+=pdfText(42,ry,9,r.desc,true);c+=pdfText(42,ry-14,8,`Category: ${r.cat}`);c+=pdfText(160,ry-14,8,'Frequency: Monthly');c+=pdfLine(42,ry-22,570,ry-22);c+=pdfText(500,ry,9,pdfMoney(r.amount),true);ry-=40});
      if(idx===recurringChunks.length-1){c+=pdfText(42,ry-4,8,`Known monthly recurring total: ${pdfMoney(d.recTotal)}`,true);}
    }else c+=pdfText(42,552,9,'No monthly recurring commitments are configured.');
    pages.push(c);
@@ -885,7 +885,7 @@ function reportPdfBytes(monthKey){
  c+=pdfSectionTitle(610,'Automated insights','Highlights based on spending, budget performance, and transaction activity.');
  let iy=548;
  const insights=[d.cats[0]?`Largest category: ${d.cats[0].name} at ${pdfMoney(d.cats[0].spent)}, or ${d.total?(d.cats[0].spent/d.total*100).toFixed(1):'0.0'}% of total spending.`:'No spending categories recorded.',d.over[0]?`Largest variance: ${d.over[0].name} is ${pdfMoney(d.over[0].spent-d.over[0].budget)} over budget.`:'No category exceeded budget.',d.largest?`Largest transaction: ${reportEscape(d.largest.desc)} at ${pdfMoney(d.largest.amount)}.`:'No transactions recorded.',`Budget utilization: ${d.budget?d.usage.toFixed(1):'0.0'}% of planned category budgets was used.`];
- insights.forEach(t=>{const lines=pdfWrapLines(t,84);const h=Math.max(44,lines.length*14+20);c+=pdfRect(42,iy-h+8,528,h,[0.97,0.98,0.97],true,7);lines.forEach((line,i)=>c+=pdfText(54,iy-i*14,8,line));iy-=h+16});
+ insights.forEach(t=>{const lines=pdfWrapLines(t,84);const h=Math.max(52,lines.length*14+28);c+=pdfRect(42,iy-h+8,528,h,[0.97,0.98,0.97],true,7);lines.forEach((line,i)=>c+=pdfText(54,iy-8-i*14,8,line));iy-=h+16});
  pages.push(c);
 
  // Appendix — paginate the complete transaction list.
